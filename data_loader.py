@@ -35,94 +35,138 @@ class Base_Dataset(data.Dataset):
     def __len__(self):
 
         if self.partition == 'train':
-            return int(min(sum(self.alpha), len(self.target_image)) / (self.num_class - 1))
+            if self.label_flag is None:
+                return int(min(self.alpha))
+            else:
+                return int((self.num_labeled_target) / (self.num_class - 1))
         elif self.partition == 'test':
             return int(len(self.target_image) / (self.num_class - 1))
+
 
     def __getitem__(self, item):
 
         image_data = []
         label_data = []
 
-        target_real_label = []
+        # have a labeled part and a random sampled part
+        random_real_label = []
         class_index_target = []
 
-        domain_label = []
+        # domain_label = []
         ST_split = [] # Mask of targets to be evaluated
         # select index for support class
-        num_class_index_target = int(self.target_ratio * (self.num_class - 1))
 
-        if self.target_ratio > 0:
-            available_index = [key for key in self.target_image_list.keys() if len(self.target_image_list[key]) > 0
-                               and key < self.num_class - 1]
-            class_index_target = random.sample(available_index, min(num_class_index_target, len(available_index)))
-
-        class_index_source = list(set(range(self.num_class - 1)) - set(class_index_target))
-        random.shuffle(class_index_source)
-
-        for classes in class_index_source:
-            # select support samples from source domain or target domain
-            image = Image.open(random.choice(self.source_image[classes])).convert('RGB')
-
-            if self.transformer is not None:
-                image = self.transformer(image)
-            image_data.append(image)
-            label_data.append(classes)
-            domain_label.append(1)
-            ST_split.append(0)
-            # target_real_label.append(classes)
-        for classes in class_index_target:
-            # select support samples from source domain or target domain
-            image = Image.open(random.choice(self.target_image_list[classes])).convert('RGB')
-
-            if self.transformer is not None:
-                image = self.transformer(image)
-            image_data.append(image)
-            label_data.append(classes)
-            domain_label.append(0)
-            ST_split.append(0)
-            # target_real_label.append(classes)
-
-        # adding target samples
-        for i in range(self.num_class - 1):
-
+        # Phase 1
+        if self.label_flag is None:
+            class_index_source = list(range(self.num_class - 1))
+            random.shuffle(class_index_source)
             if self.partition == 'train':
-                if self.target_ratio > 0:
-                    index = random.choice(list(range(len(self.label_flag))))
-                else:
+                for classes in class_index_source:
+                    # select support samples from source domain or target domain
+                    image = Image.open(random.choice(self.source_image[classes])).convert('RGB')
+                    if self.transformer is not None:
+                        image = self.transformer(image)
+                    image_data.append(image)
+                    label_data.append(classes)
+                    ST_split.append(0)
+                # random load source
+
+
+                for i in range(self.num_class - 1):
+                    index = random.choice(list(range(len(self.source_image))))
+                    # index = random.choice(list(range(len(self.label_flag))))
+                    source_image = Image.open(self.all_source_images[index]).convert('RGB')
+                    if self.transformer is not None:
+                        source_image = self.transformer(source_image)
+                    image_data.append(source_image)
+                    label_data.append(self.all_source_labels[index])
+                    random_real_label.append(self.all_source_labels[index])
+                    # domain_label.append(0)
+                    ST_split.append(0)
+
+            if self.partition == 'test':
+                for i in range(self.num_class - 1):
                     index = random.choice(list(range(len(self.target_image))))
-                # index = random.choice(list(range(len(self.label_flag))))
-                target_image = Image.open(self.target_image[index]).convert('RGB')
+                    # index = random.choice(list(range(len(self.label_flag))))
+                    target_image = Image.open(self.target_image[index]).convert('RGB')
+                    if self.transformer is not None:
+                        target_image = self.transformer(target_image)
+                    image_data.append(target_image)
+                    label_data.append(0) # just to ignore
+                    # random_real_label.append(self.target_label[index])
+                    ST_split.append(1)
+                for i in range(self.num_class - 1):
+                    target_image = Image.open(self.target_image[item * (self.num_class - 1) + i]).convert('RGB')
+                    if self.transformer is not None:
+                        target_image = self.transformer(target_image)
+                    image_data.append(target_image)
+                    label_data.append(self.num_class)
+                    random_real_label.append(self.target_label[item * (self.num_class - 1) + i])
+                    # domain_label.append(0)
+                    ST_split.append(1)
+
+
+        # Phase 2
+        else:
+            # num_class_index_target = int(self.target_ratio * (self.num_class - 1))
+
+            if self.target_ratio > 0:
+
+                class_index_target = self.available_index
+
+                # class_index_target = random.sample(available_index, min(num_class_index_target, len(available_index)))
+
+            for classes in class_index_target:
+                # select support samples from source domain or target domain
+                image = Image.open(random.choice(self.target_image_list[classes])).convert('RGB')
+
                 if self.transformer is not None:
-                    target_image = self.transformer(target_image)
-                image_data.append(target_image)
-                label_data.append(self.label_flag[index])
-                target_real_label.append(self.target_label[index])
-                domain_label.append(0)
-                ST_split.append(1)
-            elif self.partition == 'test':
-                # For last batch
-                # if item * (self.num_class - 1) + i >= len(self.target_image):
-                #     break
-                target_image = Image.open(self.target_image[item * (self.num_class - 1) + i]).convert('RGB')
-                if self.transformer is not None:
-                    target_image = self.transformer(target_image)
-                image_data.append(target_image)
-                label_data.append(self.num_class)
-                target_real_label.append(self.target_label[item * (self.num_class - 1) + i])
-                domain_label.append(0)
-                ST_split.append(1)
+                    image = self.transformer(image)
+                image_data.append(image)
+                label_data.append(classes)
+                # domain_label.append(0)
+                ST_split.append(0)
+                # target_real_label.append(classes)
+
+            # add target samples
+            for i in range(self.num_class - 1):
+
+                if self.partition == 'train':
+                    index = random.choice(list(range(len(self.label_flag))))
+                    # index = random.choice(list(range(len(self.target_image))))
+                    target_image = Image.open(self.target_image[index]).convert('RGB')
+                    if self.transformer is not None:
+                        target_image = self.transformer(target_image)
+                    image_data.append(target_image)
+                    label_data.append(self.label_flag[index])
+                    random_real_label.append(self.target_label[index])
+                    # domain_label.append(0)
+                    ST_split.append(0)
+
+                elif self.partition == 'test':
+                    target_image = Image.open(self.target_image[item * (self.num_class - 1) + i]).convert('RGB')
+                    if self.transformer is not None:
+                        target_image = self.transformer(target_image)
+                    image_data.append(target_image)
+                    label_data.append(self.num_class)
+                    random_real_label.append(self.target_label[item * (self.num_class - 1) + i])
+                    # domain_label.append(0)
+                    ST_split.append(1)
+
         image_data = torch.stack(image_data)
-        label_data = torch.LongTensor(label_data)
-        real_label_data = torch.tensor(target_real_label)
-        domain_label = torch.tensor(domain_label)
+        label_data = torch.tensor(label_data).type(torch.LongTensor)
+        real_label_data = torch.tensor(random_real_label)
+        # domain_label = torch.tensor(domain_label)
         ST_split = torch.tensor(ST_split)
-        return image_data, label_data, real_label_data, domain_label, ST_split
+        return image_data, label_data, real_label_data, ST_split
 
     def load_dataset(self):
         source_image_list = {key: [] for key in range(self.num_class - 1)}
         target_image_list = []
         target_label_list = []
+        all_source_images = []
+        all_source_labels = []
+
         with open(self.source_path) as f:
             for ind, line in enumerate(f.readlines()):
                 image_dir, label = line.split(' ')
@@ -131,6 +175,9 @@ class Base_Dataset(data.Dataset):
                     continue
                 source_image_list[int(label)].append(image_dir)
                 # source_image_list.append(image_dir)
+                all_source_images.append(image_dir)
+                all_source_labels.append(int(label))
+
 
         with open(self.target_path) as f:
             for ind, line in enumerate(f.readlines()):
@@ -140,7 +187,7 @@ class Base_Dataset(data.Dataset):
                 target_image_list.append(image_dir)
                 target_label_list.append(int(label))
 
-        return source_image_list, target_image_list, target_label_list
+        return source_image_list, target_image_list, target_label_list, all_source_images, all_source_labels
 
 
 class Office_Dataset(Base_Dataset):
@@ -154,19 +201,22 @@ class Office_Dataset(Base_Dataset):
         self.class_name = ["back_pack", "bike", "bike_helmet", "bookcase", "bottle",
                            "calculator", "desk_chair", "desk_lamp", "desktop_computer", "file_cabinet", "unk"]
         self.num_class = len(self.class_name)
-        self.source_image, self.target_image, self.target_label = self.load_dataset()
+        self.source_image, self.target_image, self.target_label, self.all_source_images, self.all_source_labels = self.load_dataset()
         self.alpha = [len(self.source_image[key]) for key in self.source_image.keys()]
         self.label_flag = label_flag
 
-        # create the unlabeled tag
-        if self.label_flag is None:
-            self.label_flag = torch.ones(len(self.target_image)) * self.num_class
+        # source only
+        # if self.label_flag is None:
+            # self.label_flag = torch.ones(len(self.target_image)) * self.num_class
 
-        else:
+        if self.label_flag is not None:
             # if pseudo label comes
             self.target_image_list = {key: [] for key in range(self.num_class + 1)}
             for i in range(len(self.label_flag)):
                 self.target_image_list[self.label_flag[i].item()].append(self.target_image[i])
+            self.available_index = [key for key in self.target_image_list.keys() if len(self.target_image_list[key]) > 0
+                                   and key < self.num_class - 1]
+            self.num_labeled_target = sum([len(self.target_image_list[key]) for key in self.target_image_list.keys()[:-2]])
 
         if self.target_ratio > 0:
             self.alpha_value = [len(self.source_image[key]) + len(self.target_image_list[key]) for key in self.source_image.keys()]
@@ -214,19 +264,24 @@ class Home_Dataset(Base_Dataset):
                            'Fork', 'unk']
         self.num_class = len(self.class_name)
 
-        self.source_image, self.target_image, self.target_label = self.load_dataset()
+        self.source_image, self.target_image, self.target_label, self.all_source_images, self.all_source_labels = self.load_dataset()
         self.alpha = [len(self.source_image[key]) for key in self.source_image.keys()]
         self.label_flag = label_flag
 
         # create the unlabeled tag
-        if self.label_flag is None:
-            self.label_flag = torch.ones(len(self.target_image)) * self.num_class
 
-        else:
+            # self.label_flag = torch.ones(len(self.target_image)) * self.num_class
+
+        if self.label_flag is not None:
             # if pseudo label comes
             self.target_image_list = {key: [] for key in range(self.num_class + 1)}
             for i in range(len(self.label_flag)):
                 self.target_image_list[self.label_flag[i].item()].append(self.target_image[i])
+            self.available_index = [key for key in self.target_image_list.keys() if len(self.target_image_list[key]) > 0
+                               and key < self.num_class - 1]
+            self.num_labeled_target = sum(
+                [len(self.target_image_list[key]) for key in list(self.target_image_list.keys())[:-2]])
+
 
         # if self.target_ratio > 0:
         #     self.alpha_value = [len(self.source_image[key]) + len(self.target_image_list[key]) for key in
@@ -273,19 +328,25 @@ class Visda_Dataset(Base_Dataset):
         self.target_path = os.path.join(root, 'target_list.txt')
         self.class_name = ["bicycle", "bus", "car", "motorcycle", "train", "truck", 'unk']
         self.num_class = len(self.class_name)
-        self.source_image, self.target_image, self.target_label = self.load_dataset()
+        self.source_image, self.target_image, self.target_label, self.all_source_images, self.all_source_labels = self.load_dataset()
         self.alpha = [len(self.source_image[key]) for key in self.source_image.keys()]
         self.label_flag = label_flag
 
-        # create the unlabeled tag
-        if self.label_flag is None:
-            self.label_flag = torch.ones(len(self.target_image)) * self.num_class
+        # source-only stage
+        # if self.label_flag is None:
+        #     self.label_flag = torch.ones(len(self.target_image)) * self.num_class
 
-        else:
+        if self.label_flag is not None:
             # if pseudo label comes
             self.target_image_list = {key: [] for key in range(self.num_class + 1)}
             for i in range(len(self.label_flag)):
                 self.target_image_list[self.label_flag[i].item()].append(self.target_image[i])
+
+            self.available_index = [key for key in self.target_image_list.keys() if len(self.target_image_list[key]) > 0
+                                   and key < self.num_class - 1]
+            self.num_labeled_target = sum(
+                [len(self.target_image_list[key]) for key in self.target_image_list.keys()][:-2])
+
 
 class Visda18_Dataset(Base_Dataset):
     def __init__(self, root, partition, label_flag=None, target_ratio=0.0):
@@ -296,16 +357,22 @@ class Visda18_Dataset(Base_Dataset):
         self.class_name = ["areoplane","bicycle", "bus", "car", "horse", "knife", "motorcycle", "person", "plant",
                            "skateboard", "train", "truck", 'unk']
         self.num_class = len(self.class_name)
-        self.source_image, self.target_image, self.target_label = self.load_dataset()
+        self.source_image, self.target_image, self.target_label, self.all_source_images, self.all_source_labels = self.load_dataset()
         self.alpha = [len(self.source_image[key]) for key in self.source_image.keys()]
         self.label_flag = label_flag
 
         # create the unlabeled tag
-        if self.label_flag is None:
-            self.label_flag = torch.ones(len(self.target_image)) * self.num_class
 
-        else:
+            # self.label_flag = torch.ones(len(self.target_image)) * self.num_class
+
+
+        if self.label_flag is not None:
             # if pseudo label comes
             self.target_image_list = {key: [] for key in range(self.num_class + 1)}
             for i in range(len(self.label_flag)):
                 self.target_image_list[self.label_flag[i].item()].append(self.target_image[i])
+            self.available_index = [key for key in self.target_image_list.keys() if len(self.target_image_list[key]) > 0
+                               and key < self.num_class - 1]
+            self.num_labeled_target = sum(
+                [len(self.target_image_list[key]) for key in list(self.target_image_list.keys())[:-2]])
+

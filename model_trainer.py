@@ -15,7 +15,7 @@ from utils.loss import FocalLoss
 from models.component import Discriminator
 
 class ModelTrainer():
-    def __init__(self, args, data, step=0, label_flag=None, v=None, logger=None):
+    def __init__(self, args, data, model, gnn_model=None, step=0, label_flag=None, v=None, logger=None):
         self.args = args
         self.batch_size = args.batch_size
         self.data_workers = 6
@@ -28,12 +28,16 @@ class ModelTrainer():
         self.num_task = args.batch_size
         self.num_to_select = 0
 
-        self.model = models.create(args.arch, args)
-        self.model = nn.DataParallel(self.model).cuda()
-
-        #GNN
-        self.gnnModel = models.create('gnn', args)
-        self.gnnModel = nn.DataParallel(self.gnnModel).cuda()
+        self.model = model
+        # self.model = models.create(args.arch, args)
+        # self.model = nn.DataParallel(self.model).cuda()
+        #
+        # #GNN
+        if gnn_model is None:
+            self.gnnModel = models.create('gnn', args)
+            self.gnnModel = nn.DataParallel(self.gnnModel).cuda()
+        else:
+            self.gnnModel = gnn_model
 
         self.meter = meter(args.num_class)
         self.v = v
@@ -51,16 +55,16 @@ class ModelTrainer():
         self.val_acc = 0
         self.threshold = args.threshold
 
-        if self.args.discriminator:
-            self.discriminator = Discriminator(self.args.in_features)
-            self.discriminator = nn.DataParallel(self.discriminator).cuda()
+        # if self.args.discriminator:
+        #     self.discriminator = Discriminator(self.args.in_features)
+        #     self.discriminator = nn.DataParallel(self.discriminator).cuda()
 
     def get_dataloader(self, dataset, training=False):
 
-        if self.args.visualization:
-            data_loader = DataLoader(dataset, batch_size=self.batch_size, num_workers=self.data_workers,
-                                     shuffle=training, pin_memory=True, drop_last=True)
-            return data_loader
+        # if self.args.visualization:
+        #     data_loader = DataLoader(dataset, batch_size=self.batch_size, num_workers=self.data_workers,
+        #                              shuffle=training, pin_memory=True, drop_last=True)
+        #     return data_loader
 
         data_loader = DataLoader(dataset, batch_size=self.batch_size, num_workers=self.data_workers,
                                  shuffle=training, pin_memory=True, drop_last=training)
@@ -109,14 +113,14 @@ class ModelTrainer():
             if args.dataset == 'visda' or args.dataset == 'office' or args.dataset == 'visda18':
                 param_groups = [
                         {'params': self.model.module.CNN.parameters(), 'lr_mult': 0.01},
-                        {'params': self.gnnModel.parameters(), 'lr_mult': 0.1},
+                        {'params': self.gnnModel.parameters(), 'lr_mult': 0.03},
                     ]
                 if self.args.discriminator:
                     param_groups.append({'params': self.discriminator.parameters(), 'lr_mult': 0.1})
             else:
                 param_groups = [
-                    {'params': self.model.module.CNN.parameters(), 'lr_mult': 0.05},
-                    {'params': self.gnnModel.parameters(), 'lr_mult': 0.8},
+                    {'params': self.model.module.CNN.parameters(), 'lr_mult': 0.01},
+                    {'params': self.gnnModel.parameters(), 'lr_mult': 0.05},
                 ]
                 if self.args.discriminator:
                     param_groups.append({'params': self.discriminator.parameters(), 'lr_mult': 0.8})
@@ -182,14 +186,7 @@ class ModelTrainer():
                     for l in range(args.num_layers - 1):
                         edge_loss += full_edge_loss[l] * 0.5
                     edge_loss += full_edge_loss[-1] * 1
-                    loss = 1 * edge_loss + args.node_loss* source_node_loss
-
-                    if self.args.discriminator:
-                        unk_label_mask = torch.eq(targets, args.num_class-1).squeeze()
-                        domain_pred = self.discriminator(features)
-                        temp = domain_pred.view(-1)[~unk_label_mask]
-                        domain_loss = self.criterion(temp, domain_label.view(-1)[~unk_label_mask]) #(targets.size(1) / temp.size(0)) *
-                        loss = loss + args.adv_coeff * domain_loss
+                    loss = 3 * edge_loss + args.node_loss* source_node_loss
 
                     node_pred = norm_node_logits[source_node_mask, :].detach().cpu().max(1)[1]
                     node_prec = node_pred.eq(targets.masked_select(source_node_mask).detach().cpu()).double().mean()
@@ -227,15 +224,18 @@ class ModelTrainer():
 
                     self.logger.global_step += 1
 
-                    if self.args.discriminator:
-                        self.logger.log_scalar('train/domain_loss', domain_loss, self.logger.global_step)
+                    # if self.args.discriminator:
+                    #     self.logger.log_scalar('train/domain_loss', domain_loss, self.logger.global_step)
                     self.logger.log_scalar('train/node_prec', node_prec, self.logger.global_step)
                     self.logger.log_scalar('train/edge_loss', edge_loss, self.logger.global_step)
                     self.logger.log_scalar('train/OS_star', self.meter.avg[:-1].mean(), self.logger.global_step)
                     self.logger.log_scalar('train/OS', self.meter.avg.mean(), self.logger.global_step)
+                    self.logger.log_scalar('train/H-score', (2 * self.meter.avg[-1] * self.meter.avg[:-1].mean()) /
+                                           (self.meter.avg[-1] + self.meter.avg[:-1].mean()), self.step)
+
                     pbar.update()
-                    if i > 150:
-                        break
+                    # if i > 150:
+                    #     break
             if (epoch + 1) % args.log_epoch == 0:
                 print('---- Start Epoch {} Training --------'.format(epoch))
                 for k in range(args.num_class - 1):
@@ -253,10 +253,11 @@ class ModelTrainer():
         states = {'model': self.model.state_dict(),
                   'graph': self.gnnModel.state_dict(),
                   'iteration': self.logger.global_step,
-                  'val_acc': node_prec,
+                  # 'val_acc': node_prec,
                   'optimizer': self.optimizer.state_dict()}
         torch.save(states, osp.join(args.checkpoints_dir, '{}_step_{}.pth.tar'.format(args.experiment, step)))
         self.meter.reset()
+        return (self.model, self.gnnModel)
 
     def estimate_label(self):
 
@@ -283,7 +284,7 @@ class ModelTrainer():
         self.model.eval()
         self.gnnModel.eval()
         with tqdm(total=len(target_loader)) as pbar:
-            for i, (images, targets, target_labels, _, split) in enumerate(target_loader):
+            for i, (images, targets, target_labels, split) in enumerate(target_loader):
 
                 images = Variable(images, requires_grad=False).cuda()
                 targets = Variable(targets).cuda()
@@ -336,7 +337,7 @@ class ModelTrainer():
 
         return pred_labels.data.cpu().numpy(), pred_scores.data.cpu().numpy(), real_labels.data.cpu().numpy()
 
-    def select_top_data(self, pred_score):
+    def select_top_data(self, pred_label, pred_score):
         # remark samples if needs pseudo labels based on classification confidence
         if self.v is None:
             self.v = np.zeros(len(pred_score))
@@ -345,11 +346,20 @@ class ModelTrainer():
             self.num_to_select = len(unselected_idx)
         index = np.argsort(-pred_score[unselected_idx])
         index_orig = unselected_idx[index]
-        num_pos = int(self.num_to_select * self.threshold)
+        num_pos = int(self.num_to_select * self.threshold / (self.num_class - 1))
+        class_recorder = np.ones((self.num_class - 1,)) * num_pos
         num_neg = self.num_to_select - num_pos
-        for i in range(num_pos):
-            self.v[index_orig[i]] = 1
-        for i in range(num_neg):
+        i = 0
+        while class_recorder.any():
+            if class_recorder[pred_label[index_orig[i]]] > 0:
+                self.v[index_orig[i]] = 1
+                class_recorder[pred_label[index_orig[i]]] -= 1
+            i += 1
+            if i >= len(index_orig):
+                break
+        # for i in range(num_pos):
+        #     self.v[index_orig[i]] = 1
+        for i in range(1, num_neg + 1):
             self.v[index_orig[-i]] = -1
         return self.v
 
@@ -388,6 +398,8 @@ class ModelTrainer():
         self.logger.log_scalar('test/ALL', self.meter.sum.sum() / self.meter.count.sum(), self.step)
         self.logger.log_scalar('test/OS_star', self.meter.avg[:-1].mean(), self.step)
         self.logger.log_scalar('test/OS', self.meter.avg.mean(), self.step)
+        self.logger.log_scalar('test/H-score', (2 * self.meter.avg[-1] * self.meter.avg[:-1].mean()) /
+                               (self.meter.avg[-1] + self.meter.avg[:-1].mean()), self.step)
 
         print('Node predictions: OS accuracy = {:0.4f}, OS* accuracy = {:0.4f}'.format(self.meter.avg.mean(), self.meter.avg[:-1].mean()))
 
@@ -501,7 +513,7 @@ class ModelTrainer():
                 if skip_flag and i > 50:
                     break
 
-                pbar.update()
+                pbar.update(n=self.num_class)
 
         return vgg_features_target, node_features_target, labels, overall_split
 

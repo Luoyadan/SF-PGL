@@ -53,9 +53,14 @@ class Classifier(nn.Module):
     def __init__(self, args):
         super(Classifier, self).__init__()
         self.args = args
-        self.classifier = nn.Sequential(
-            nn.Linear(2048, self.args.num_class-1)
-        )
+        self.classifier = nn.Linear(args.in_features, self.args.num_class-1)
+
     def forward(self, inputs):
-        return self.classifier(inputs)
+        if len(inputs.size()) == 3:
+            batch_size, num_task, feat_size = inputs.size()
+            inputs = inputs.view(batch_size * num_task, feat_size)
+            inputs = self.classifier(inputs).view(batch_size, num_task, -1)
+        else:
+            inputs = self.classifier(inputs)
+        return inputs
 

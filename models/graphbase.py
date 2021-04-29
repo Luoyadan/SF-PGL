@@ -139,9 +139,25 @@ class EdgeUpdateNetwork(nn.Module):
         # merge_sum = torch.sum(edge_feat, -1, True)
         # # set diagonal as zero and normalize
         # edge_feat = F.normalize(sim_val * edge_feat, p=1, dim=-1) * merge_sum
-        force_edge_feat = torch.eye(num_data).unsqueeze(0).repeat(num_tasks, 1, 1).cuda()
-        edge_feat = sim_val + force_edge_feat
+        # force_edge_feat = torch.eye(num_data).unsqueeze(0).repeat(num_tasks, 1, 1).cuda()
+        # edge_feat = sim_val + force_edge_feat
+        # edge_feat = edge_feat + 1e-6
+        # edge_feat = edge_feat / torch.sum(edge_feat, dim=1).unsqueeze(1)
+
+        diag_mask = (1.0 - (torch.eye(num_data).unsqueeze(0).repeat(1, num_tasks, num_tasks))).cuda()
+
+        edge_feat = edge_feat * diag_mask
+
+        merge_sum = torch.sum(edge_feat, -1, True)
+
+        #
+
+        edge_feat = F.normalize(sim_val * edge_feat, p=1, dim=-1) * merge_sum
+
+        edge_feat = sim_val + edge_feat
+
         edge_feat = edge_feat + 1e-6
+
         edge_feat = edge_feat / torch.sum(edge_feat, dim=1).unsqueeze(1)
 
         return edge_feat
