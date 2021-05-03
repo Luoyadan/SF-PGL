@@ -98,9 +98,9 @@ def main(args):
             # train the model
             # step_size = 15 + step//2
             if step == 1:
-                num_epoch = 4
+                num_epoch = 12
             else:
-                num_epoch = 4 + step 
+                num_epoch = 12 + step 
             model, gnn_model = trainer.train(step, epochs=num_epoch)
 
             # pseudo_label
@@ -176,7 +176,7 @@ if __name__ == '__main__':
     parser.add_argument('--threshold', type=float, default=0.3)
 
     parser.add_argument('--dropout', type=float, default=0.2)
-    parser.add_argument('--EF', type=int, default=10)
+    parser.add_argument('--EF', type=int, default=5)
     parser.add_argument('--loss', type=str, default='focal', choices=['nll', 'focal'])
 
 
