@@ -1,0 +1,191 @@
+Epoch 0, current lr 0.001
+---- Start Epoch 3 Training --------
+Step: 36 | 9; Epoch: 3	Training Loss 0.221	Training Prec 78.500%	
+---- Start Epoch 7 Training --------
+Step: 72 | 9; Epoch: 7	Training Loss 0.070	Training Prec 90.500%	
+---- Start Epoch 11 Training --------
+Step: 108 | 9; Epoch: 11	Training Loss 0.034	Training Prec 95.500%	
+label estimation...
+Step: 0 | 25; 	OS Prec 5.469%	
+Target Alarm_Clock Precision: 0.716
+Target Backpack Precision: 0.537
+Target Batteries Precision: 0.333
+Target Bed Precision: 0.400
+Target Bike Precision: 0.720
+Target Bottle Precision: 0.535
+Target Bucket Precision: 0.550
+Target Calculator Precision: 0.636
+Target Calendar Precision: 0.550
+Target Candles Precision: 0.632
+Target Chair Precision: 0.377
+Target Clipboards Precision: 0.240
+Target Computer Precision: 0.364
+Target Couch Precision: 0.500
+Target Curtains Precision: 0.550
+Target Desk_Lamp Precision: 0.667
+Target Drill Precision: 0.400
+Target Eraser Precision: 0.333
+Target Exit_Sign Precision: 0.571
+Target Fan Precision: 0.444
+Target File_Cabinet Precision: 0.727
+Target Flipflops Precision: 0.761
+Target Flowers Precision: 0.778
+Target Folder Precision: 0.300
+Target Fork Precision: 0.435
+Target unk Precision: 0.096
+Node predictions: OS accuracy = 0.5059, OS* accuracy = 0.5223
+selected pseudo-labeled data: 177 of 250 is correct, accuracy: 0.7080
+positive data: 48 of 75 is correct, accuracy: 0.6400
+negative data: 129 of 175 is correct, accuracy: 0.7371
+This is 1-th step with EF=10%
+Epoch 0, current lr 0.001
+---- Start Epoch 2 Training --------
+Step: 162 | 18; Epoch: 2	Training Loss 0.448	Training Prec 96.190%	Target Prec 30.742%	
+---- Start Epoch 6 Training --------
+Step: 234 | 18; Epoch: 6	Training Loss 0.294	Training Prec 100.000%	Target Prec 40.397%	
+---- Start Epoch 10 Training --------
+Step: 306 | 18; Epoch: 10	Training Loss 0.294	Training Prec 100.000%	Target Prec 41.009%	
+label estimation...
+Step: 0 | 25; 	OS Prec 5.893%	
+Target Alarm_Clock Precision: 0.851
+Target Backpack Precision: 0.537
+Target Batteries Precision: 0.630
+Target Bed Precision: 0.175
+Target Bike Precision: 0.747
+Target Bottle Precision: 0.121
+Target Bucket Precision: 0.525
+Target Calculator Precision: 0.606
+Target Calendar Precision: 0.500
+Target Candles Precision: 0.395
+Target Chair Precision: 0.130
+Target Clipboards Precision: 0.160
+Target Computer Precision: 0.432
+Target Couch Precision: 0.475
+Target Curtains Precision: 0.500
+Target Desk_Lamp Precision: 0.286
+Target Drill Precision: 0.133
+Target Eraser Precision: 0.056
+Target Exit_Sign Precision: 0.524
+Target Fan Precision: 0.356
+Target File_Cabinet Precision: 0.591
+Target Flipflops Precision: 0.761
+Target Flowers Precision: 0.767
+Target Folder Precision: 0.250
+Target Fork Precision: 0.261
+Target unk Precision: 0.217
+Node predictions: OS accuracy = 0.4225, OS* accuracy = 0.4307
+selected pseudo-labeled data: 380 of 572 is correct, accuracy: 0.6643
+positive data: 89 of 150 is correct, accuracy: 0.5933
+negative data: 291 of 422 is correct, accuracy: 0.6896
+This is 2-th step with EF=10%
+Epoch 0, current lr 0.001
+---- Start Epoch 2 Training --------
+Step: 435 | 37; Epoch: 2	Training Loss 0.381	Training Prec 100.000%	Target Prec 38.613%	
+label estimation...
+Step: 0 | 25; 	OS Prec 5.789%	
+Target Alarm_Clock Precision: 0.797
+Target Backpack Precision: 0.683
+Target Batteries Precision: 0.556
+Target Bed Precision: 0.425
+Target Bike Precision: 0.680
+Target Bottle Precision: 0.313
+Target Bucket Precision: 0.550
+Target Calculator Precision: 0.636
+Target Calendar Precision: 0.600
+Target Candles Precision: 0.368
+Target Chair Precision: 0.348
+Target Clipboards Precision: 0.120
+Target Computer Precision: 0.568
+Target Couch Precision: 0.375
+Target Curtains Precision: 0.625
+Target Desk_Lamp Precision: 0.429
+Target Drill Precision: 0.200
+Target Eraser Precision: 0.222
+Target Exit_Sign Precision: 0.571
+Target Fan Precision: 0.400
+Target File_Cabinet Precision: 0.682
+Target Flipflops Precision: 0.739
+Target Flowers Precision: 0.644
+Target Folder Precision: 0.300
+Target Fork Precision: 0.261
+Target unk Precision: 0.350
+Node predictions: OS accuracy = 0.4786, OS* accuracy = 0.4837
+selected pseudo-labeled data: 603 of 894 is correct, accuracy: 0.6745
+positive data: 135 of 225 is correct, accuracy: 0.6000
+negative data: 468 of 669 is correct, accuracy: 0.6996
+This is 3-th step with EF=10%
+Epoch 0, current lr 0.001
+---- Start Epoch 2 Training --------
+Step: 677 | 56; Epoch: 2	Training Loss 0.586	Training Prec 100.000%	Target Prec 41.370%	
+label estimation...
+Step: 0 | 25; 	OS Prec 6.277%	
+Target Alarm_Clock Precision: 0.784
+Target Backpack Precision: 0.707
+Target Batteries Precision: 0.593
+Target Bed Precision: 0.500
+Target Bike Precision: 0.733
+Target Bottle Precision: 0.242
+Target Bucket Precision: 0.525
+Target Calculator Precision: 0.667
+Target Calendar Precision: 0.650
+Target Candles Precision: 0.408
+Target Chair Precision: 0.464
+Target Clipboards Precision: 0.080
+Target Computer Precision: 0.545
+Target Couch Precision: 0.325
+Target Curtains Precision: 0.500
+Target Desk_Lamp Precision: 0.571
+Target Drill Precision: 0.133
+Target Eraser Precision: 0.222
+Target Exit_Sign Precision: 0.571
+Target Fan Precision: 0.489
+Target File_Cabinet Precision: 0.591
+Target Flipflops Precision: 0.783
+Target Flowers Precision: 0.678
+Target Folder Precision: 0.350
+Target Fork Precision: 0.043
+Target unk Precision: 0.475
+Node predictions: OS accuracy = 0.4858, OS* accuracy = 0.4862
+selected pseudo-labeled data: 811 of 1216 is correct, accuracy: 0.6669
+positive data: 175 of 300 is correct, accuracy: 0.5833
+negative data: 636 of 916 is correct, accuracy: 0.6943
+This is 4-th step with EF=10%
+Epoch 0, current lr 0.001
+---- Start Epoch 2 Training --------
+Step: 1014 | 75; Epoch: 2	Training Loss 1.131	Training Prec 100.000%	Target Prec 39.041%	
+label estimation...
+Step: 0 | 25; 	OS Prec 6.581%	
+Target Alarm_Clock Precision: 0.811
+Target Backpack Precision: 0.805
+Target Batteries Precision: 0.556
+Target Bed Precision: 0.400
+Target Bike Precision: 0.773
+Target Bottle Precision: 0.172
+Target Bucket Precision: 0.500
+Target Calculator Precision: 0.848
+Target Calendar Precision: 0.650
+Target Candles Precision: 0.382
+Target Chair Precision: 0.406
+Target Clipboards Precision: 0.080
+Target Computer Precision: 0.591
+Target Couch Precision: 0.350
+Target Curtains Precision: 0.400
+Target Desk_Lamp Precision: 0.381
+Target Drill Precision: 0.133
+Target Eraser Precision: 0.111
+Target Exit_Sign Precision: 0.667
+Target Fan Precision: 0.467
+Target File_Cabinet Precision: 0.545
+Target Flipflops Precision: 0.761
+Target Flowers Precision: 0.744
+Target Folder Precision: 0.250
+Target Fork Precision: 0.022
+Target unk Precision: 0.602
+Node predictions: OS accuracy = 0.4772, OS* accuracy = 0.4722
+selected pseudo-labeled data: 1012 of 1538 is correct, accuracy: 0.6580
+positive data: 207 of 375 is correct, accuracy: 0.5520
+negative data: 805 of 1163 is correct, accuracy: 0.6922
+This is 5-th step with EF=10%
+Epoch 0, current lr 0.001
+---- Start Epoch 2 Training --------
+Step: 1518 | 93; Epoch: 2	Training Loss 1.449	Training Prec 100.000%	Target Prec 35.142%	

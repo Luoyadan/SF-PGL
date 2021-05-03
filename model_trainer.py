@@ -113,7 +113,7 @@ class ModelTrainer():
             if args.dataset == 'visda' or args.dataset == 'office' or args.dataset == 'visda18':
                 param_groups = [
                         {'params': self.model.module.CNN.parameters(), 'lr_mult': 0.01},
-                        {'params': self.gnnModel.parameters(), 'lr_mult': 0.03},
+                        {'params': self.gnnModel.parameters(), 'lr_mult': 0.1},
                     ]
                 if self.args.discriminator:
                     param_groups.append({'params': self.discriminator.parameters(), 'lr_mult': 0.1})
@@ -230,16 +230,16 @@ class ModelTrainer():
                     self.logger.log_scalar('train/edge_loss', edge_loss, self.logger.global_step)
                     self.logger.log_scalar('train/OS_star', self.meter.avg[:-1].mean(), self.logger.global_step)
                     self.logger.log_scalar('train/OS', self.meter.avg.mean(), self.logger.global_step)
-                    self.logger.log_scalar('train/H-score', (2 * self.meter.avg[-1] * self.meter.avg[:-1].mean()) /
-                                           (self.meter.avg[-1] + self.meter.avg[:-1].mean()), self.step)
+                    # self.logger.log_scalar('train/H-score', (2 * self.meter.avg[-1] * self.meter.avg[:-1].mean()) /
+                    #                        (self.meter.avg[-1] + self.meter.avg[:-1].mean()), self.step)
 
                     pbar.update()
                     # if i > 150:
                     #     break
             if (epoch + 1) % args.log_epoch == 0:
                 print('---- Start Epoch {} Training --------'.format(epoch))
-                for k in range(args.num_class - 1):
-                    print('Target {} Precision: {:.3f}'.format(args.class_name[k], self.meter.avg[k]))
+                # for k in range(args.num_class - 1):
+                #     print('Target {} Precision: {:.3f}'.format(args.class_name[k], self.meter.avg[k]))
 
                 print('Step: {} | {}; Epoch: {}\t'
                       'Training Loss {:.3f}\t'

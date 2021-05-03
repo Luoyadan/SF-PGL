@@ -5,8 +5,8 @@ import random
 import numpy as np
 # torch-related packages
 import torch
-import matplotlib.pyplot as plt
-from utils.visualization import visualize_TSNE
+# import matplotlib.pyplot as plt
+# from utils.visualization import visualize_TSNE
 torch.backends.cudnn.enabled = False
 # torch.backends.cudnn.deterministic = True
 # torch.backends.cudnn.benchmark = True
@@ -19,7 +19,7 @@ if not sys.warnoptions:
     warnings.simplefilter("ignore")
 
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"]="0,1,2"
+os.environ["CUDA_VISIBLE_DEVICES"]="0,1"
 
 # data
 from data_loader import Visda_Dataset, Office_Dataset, Home_Dataset, Visda18_Dataset
@@ -96,12 +96,12 @@ def main(args):
                                    logger=logger)
 
             # train the model
-            args.log_epoch = 4 + step//2
+            # step_size = 15 + step//2
             if step == 1:
-                num_epoch = 1
+                num_epoch = 4
             else:
-                num_epoch = 1 + step // 2
-            model, gnn_model = trainer.train(step, epochs=num_epoch, step_size=args.log_epoch)
+                num_epoch = 4 + step 
+            model, gnn_model = trainer.train(step, epochs=num_epoch)
 
             # pseudo_label
             pred_y, pred_score, pred_acc = trainer.estimate_label()
@@ -135,10 +135,10 @@ def set_exp_name(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Source-free Progressive Graph Learning for Open-set Domain Adaptation')
     # set up dataset & backbone embedding
-    dataset = 'visda'
+    dataset = 'home'
     parser.add_argument('--dataset', type=str, default=dataset)
     parser.add_argument('--graph_off', type=bool, default=True)
-    parser.add_argument('-a', '--arch', type=str, default='vgg')
+    parser.add_argument('-a', '--arch', type=str, default='res')
     parser.add_argument('--root_path', type=str, default='./utils/', metavar='B',
                         help='root dir')
 
@@ -152,7 +152,7 @@ if __name__ == '__main__':
                         default=os.path.join(working_dir, 'checkpoints'))
 
 
-    parser.add_argument('--pretrain_epoch', type=int, default=2)
+    parser.add_argument('--pretrain_epoch', type=int, default=12)
     # verbose setting
     parser.add_argument('--log_step', type=int, default=100)
     parser.add_argument('--log_epoch', type=int, default=4)
@@ -172,11 +172,11 @@ if __name__ == '__main__':
     parser.add_argument('--seed', type=int, default=1, metavar='S',
                         help='random seed (default: 1)')
 
-    parser.add_argument('-b', '--batch_size', type=int, default=7)
-    parser.add_argument('--threshold', type=float, default=0.7)
+    parser.add_argument('-b', '--batch_size', type=int, default=4)
+    parser.add_argument('--threshold', type=float, default=0.3)
 
     parser.add_argument('--dropout', type=float, default=0.2)
-    parser.add_argument('--EF', type=int, default=5)
+    parser.add_argument('--EF', type=int, default=10)
     parser.add_argument('--loss', type=str, default='focal', choices=['nll', 'focal'])
 
 
@@ -185,7 +185,7 @@ if __name__ == '__main__':
     parser.add_argument('--weight_decay', type=float, default=5e-5)
 
     # GNN parameters
-    parser.add_argument('--in_features', type=int, default=4096)
+    parser.add_argument('--in_features', type=int, default=2048)
     if dataset == 'home':
         parser.add_argument('--node_features', type=int, default=512)
         parser.add_argument('--edge_features', type=int, default=512)
@@ -197,8 +197,6 @@ if __name__ == '__main__':
 
     #tsne
     parser.add_argument('--visualization', type=bool, default=False)
-    # parser.add_argument('--checkpoint_path', type=str, default='/home/Desktop/Open_DA_git/checkpoints/D-visda18_A-res_L-1_E-20_B-4_step_1.pth.tar')
-
     #Discrminator
     parser.add_argument('--discriminator', type=bool, default=False)
     parser.add_argument('--adv_coeff', type=float, default=0.4)
