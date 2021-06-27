@@ -38,7 +38,7 @@ class Base_Dataset(data.Dataset):
             if self.label_flag is None:
                 return int(min(self.alpha))
             else:
-                return int(self.num_labeled_target)
+                return int(self.num_labeled_target/10)
                 # return int((self.num_labeled_target) / (self.num_class - 1))
         elif self.partition == 'test':
             return int(len(self.target_image) / (self.num_class - 1))

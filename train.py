@@ -98,9 +98,9 @@ def main(args):
             # train the model
             # step_size = 15 + step//2
             if step == 1:
-                num_epoch = 12
+                num_epoch = 25
             else:
-                num_epoch = 12 + step 
+                num_epoch = 25 + step * 2
             model, gnn_model = trainer.train(step, epochs=num_epoch)
 
             # pseudo_label
@@ -135,7 +135,7 @@ def set_exp_name(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Source-free Progressive Graph Learning for Open-set Domain Adaptation')
     # set up dataset & backbone embedding
-    dataset = 'home'
+    dataset = 'visda18'
     parser.add_argument('--dataset', type=str, default=dataset)
     parser.add_argument('--graph_off', type=bool, default=True)
     parser.add_argument('-a', '--arch', type=str, default='res')
@@ -172,11 +172,11 @@ if __name__ == '__main__':
     parser.add_argument('--seed', type=int, default=1, metavar='S',
                         help='random seed (default: 1)')
 
-    parser.add_argument('-b', '--batch_size', type=int, default=4)
+    parser.add_argument('-b', '--batch_size', type=int, default=8)
     parser.add_argument('--threshold', type=float, default=0.3)
 
     parser.add_argument('--dropout', type=float, default=0.2)
-    parser.add_argument('--EF', type=int, default=5)
+    parser.add_argument('--EF', type=int, default=10)
     parser.add_argument('--loss', type=str, default='focal', choices=['nll', 'focal'])
 
 

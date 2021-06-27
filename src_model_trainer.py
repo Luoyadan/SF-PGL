@@ -110,7 +110,7 @@ class SRCModelTrainer():
         # initialize model
 
         # change the learning rate
-        if args.arch == 'res':
+        if args.arch == 'res' or 'res152':
             if args.dataset == 'visda' or args.dataset == 'office' or args.dataset == 'visda18':
                 param_groups = [
                         {'params': self.model.module.CNN.parameters(), 'lr_mult': 0.01}

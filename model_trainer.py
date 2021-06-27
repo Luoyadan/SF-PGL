@@ -109,11 +109,11 @@ class ModelTrainer():
         # initialize model
 
         # change the learning rate
-        if args.arch == 'res':
+        if args.arch == 'res' or 'res152':
             if args.dataset == 'visda' or args.dataset == 'office' or args.dataset == 'visda18':
                 param_groups = [
-                        {'params': self.model.module.CNN.parameters(), 'lr_mult': 0.01},
-                        {'params': self.gnnModel.parameters(), 'lr_mult': 0.1},
+                        {'params': self.model.module.CNN.parameters(), 'lr_mult': 0.005},
+                        {'params': self.gnnModel.parameters(), 'lr_mult': 0.01},
                     ]
                 if self.args.discriminator:
                     param_groups.append({'params': self.discriminator.parameters(), 'lr_mult': 0.1})

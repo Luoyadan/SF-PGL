@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 from .resbase import RESBase
+from .res152base import RES152Base
 from .vggbase import VGGBase
 from .graphbase import GraphNetwork
 import torch.nn as nn
@@ -11,6 +12,7 @@ __factory = {
     'vgg': VGGBase,
     'gnn': GraphNetwork,
     'res': RESBase,
+    'res152': RES152Base
 }
 
 def names():
