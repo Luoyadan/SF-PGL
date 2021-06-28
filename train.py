@@ -152,7 +152,7 @@ if __name__ == '__main__':
                         default=os.path.join(working_dir, 'checkpoints'))
 
 
-    parser.add_argument('--pretrain_epoch', type=int, default=12)
+    parser.add_argument('--pretrain_epoch', type=int, default=15)
     # verbose setting
     parser.add_argument('--log_step', type=int, default=100)
     parser.add_argument('--log_epoch', type=int, default=4)
@@ -177,7 +177,7 @@ if __name__ == '__main__':
 
     parser.add_argument('--dropout', type=float, default=0.2)
     parser.add_argument('--EF', type=int, default=10)
-    parser.add_argument('--loss', type=str, default='focal', choices=['nll', 'focal'])
+    parser.add_argument('--loss', type=str, default='smooth', choices=['nll', 'focal', 'smooth'])
 
 
     # optimizer

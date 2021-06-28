@@ -13,7 +13,7 @@ from data_loader import Visda_Dataset, Office_Dataset, Home_Dataset, Visda18_Dat
 from utils.loss import FocalLoss
 
 from models.component import Classifier, Discriminator
-
+import pickle
 '''
 In source-free seeting:
 Phase 1: Trained with Source Data Only
@@ -52,6 +52,8 @@ class SRCModelTrainer():
             self.criterionCE = FocalLoss()
         elif args.loss == 'nll':
             self.criterionCE = nn.NLLLoss(reduction='mean')
+        elif args.loss == 'smooth':
+            self.criterionCE = LabelSmoothing(smoothing=0.5).cuda()
 
         # BCE for edge
         self.criterion = nn.BCELoss(reduction='mean')
@@ -184,7 +186,9 @@ class SRCModelTrainer():
                     elif args.loss == 'focal':
                         source_node_loss = self.criterionCE(norm_node_logits[source_node_mask, :],
                                                             targets.masked_select(source_node_mask))
-
+                    elif args.loss == 'smooth':
+                        source_node_loss = self.criterionCE(norm_node_logits[source_node_mask, :],
+                                                            targets.masked_select(source_node_mask))
                     loss = args.node_loss * source_node_loss
 
                     if not args.graph_off:
@@ -287,6 +291,8 @@ class SRCModelTrainer():
         real_labels = []
         target_loader = self.get_dataloader(test_data, training=False)
         self.model.eval()
+
+        # features_to_save = []
         # self.gnnModel.eval()
         with tqdm(total=len(target_loader)) as pbar:
             for i, (images, targets, target_labels, split) in enumerate(target_loader):
@@ -305,6 +311,7 @@ class SRCModelTrainer():
                 # edge_logits, node_logits = self.gnnModel(init_node_feat=features, init_edge_feat=init_edge,
                 #                                          target_mask=target_edge_mask)
                 node_logits = self.classifier(features)
+                # features_to_save.append(features.detach().cpu().numpy())
                 del features
                 norm_node_logits = F.softmax(node_logits[-1], dim=-1).unsqueeze(0)
                 target_score, target_pred = norm_node_logits[target_node_mask, :].max(1)
@@ -331,6 +338,22 @@ class SRCModelTrainer():
 
                 pbar.update()
 
+        # with open("15_target_features.pkl", "wb") as f:
+        #     pickle.dump(features_to_save, f)
+        
+        # print("target features are saved.")
+        
+        # # with open("target_labels.pkl", "wb") as f:
+        # #     pickle.dump(real_labels, f)
+        
+        # print("target labels are saved.")
+
+        # weights = self.classifier.module.classifier.weight.detach().cpu().numpy()
+        # with open("15_classifier_weights.pkl", "wb") as f:
+        #     pickle.dump(weights, f)
+
+        # print("class weights are saved.")
+
 
         pred_labels = torch.cat(pred_labels)
         pred_scores = torch.cat(pred_scores)
@@ -340,6 +363,7 @@ class SRCModelTrainer():
         # self.gnnModel.train()
         self.num_to_select = int(len(target_loader) * self.args.batch_size * (self.args.num_class - 1) * self.args.EF / 100)
 
+       
         return pred_labels.data.cpu().numpy(), pred_scores.data.cpu().numpy(), real_labels.data.cpu().numpy()
 
     def select_top_data(self, pred_label, pred_score):

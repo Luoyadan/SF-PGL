@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "train.py", line 206, in <module>
+    main(parser.parse_args())
+  File "train.py", line 77, in main
+    src_trainer = SRCModelTrainer(args=args, data=src_data, logger=logger)
+  File "/scratch/itee/uqyluo/SF-PGL/src_model_trainer.py", line 56, in __init__
+    self.criterionCE = LabelSmoothing(smoothing=0.5).cuda()
+NameError: name 'LabelSmoothing' is not defined
+srun: error: gpunode-1-10: task 0: Exited with exit code 1

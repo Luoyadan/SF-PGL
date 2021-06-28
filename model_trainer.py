@@ -10,7 +10,7 @@ from torch.autograd import Variable
 import numpy as np
 from utils.logger import AverageMeter as meter
 from data_loader import Visda_Dataset, Office_Dataset, Home_Dataset, Visda18_Dataset
-from utils.loss import FocalLoss
+from utils.loss import FocalLoss, LabelSmoothing
 
 from models.component import Discriminator
 
@@ -47,6 +47,8 @@ class ModelTrainer():
             self.criterionCE = FocalLoss().cuda()
         elif args.loss == 'nll':
             self.criterionCE = nn.NLLLoss(reduction='mean').cuda()
+        elif args.loss == 'smooth':
+            self.criterionCE = LabelSmoothing(smoothing=0.5).cuda()
 
         # BCE for edge
         self.criterion = nn.BCELoss(reduction='mean').cuda()
@@ -179,6 +181,10 @@ class ModelTrainer():
 
 
                     elif args.loss == 'focal':
+                        source_node_loss = self.criterionCE(norm_node_logits[source_node_mask, :],
+                                                            targets.masked_select(source_node_mask))
+                    
+                    elif args.loss == 'smooth':
                         source_node_loss = self.criterionCE(norm_node_logits[source_node_mask, :],
                                                             targets.masked_select(source_node_mask))
 

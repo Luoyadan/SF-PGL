@@ -1,0 +1,416 @@
+Epoch 0, current lr 0.001
+---- Start Epoch 3 Training --------
+Step: 2980 | 745; Epoch: 3	Training Loss 0.028	Training Prec 94.792%	
+---- Start Epoch 7 Training --------
+Step: 5960 | 745; Epoch: 7	Training Loss 0.014	Training Prec 95.833%	
+---- Start Epoch 11 Training --------
+Step: 8940 | 745; Epoch: 11	Training Loss 0.007	Training Prec 98.958%	
+label estimation...
+Step: 0 | 576; 	OS Prec 4.567%	
+Step: 100 | 576; 	OS Prec 32.414%	
+Step: 200 | 576; 	OS Prec 32.414%	
+Step: 300 | 576; 	OS Prec 32.414%	
+Step: 400 | 576; 	OS Prec 32.414%	
+Step: 500 | 576; 	OS Prec 32.414%	
+target features are saved.
+target labels are saved.
+class weights are saved.
+Target areoplane Precision: 0.519
+Target bicycle Precision: 0.389
+Target bus Precision: 0.316
+Target car Precision: 0.384
+Target horse Precision: 0.403
+Target knife Precision: 0.251
+Target motorcycle Precision: 0.311
+Target person Precision: 0.122
+Target plant Precision: 0.687
+Target skateboard Precision: 0.263
+Target train Precision: 0.418
+Target truck Precision: 0.065
+Target unk Precision: 0.072
+Node predictions: OS accuracy = 0.3231, OS* accuracy = 0.3441
+selected pseudo-labeled data: 3891 of 5529 is correct, accuracy: 0.7037
+positive data: 327 of 1656 is correct, accuracy: 0.1975
+negative data: 3564 of 3873 is correct, accuracy: 0.9202
+This is 1-th step with EF=10%
+Epoch 0, current lr 0.001
+---- Start Epoch 3 Training --------
+Step: 11255 | 20; Epoch: 3	Training Loss 1.104	Training Prec 73.469%	Target Prec 34.193%	
+---- Start Epoch 7 Training --------
+Step: 11335 | 20; Epoch: 7	Training Loss 0.917	Training Prec 88.776%	Target Prec 38.753%	
+---- Start Epoch 11 Training --------
+Step: 11415 | 20; Epoch: 11	Training Loss 0.805	Training Prec 96.939%	Target Prec 41.389%	
+---- Start Epoch 15 Training --------
+Step: 11495 | 20; Epoch: 15	Training Loss 0.805	Training Prec 95.918%	Target Prec 45.477%	
+---- Start Epoch 19 Training --------
+Step: 11575 | 20; Epoch: 19	Training Loss 0.745	Training Prec 99.010%	Target Prec 40.928%	
+---- Start Epoch 23 Training --------
+Step: 11655 | 20; Epoch: 23	Training Loss 0.746	Training Prec 97.938%	Target Prec 38.212%	
+label estimation...
+Step: 0 | 576; 	OS Prec 4.968%	
+Step: 100 | 576; 	OS Prec 57.230%	
+Step: 200 | 576; 	OS Prec 57.230%	
+Step: 300 | 576; 	OS Prec 57.230%	
+Step: 400 | 576; 	OS Prec 57.230%	
+Step: 500 | 576; 	OS Prec 57.230%	
+Target areoplane Precision: 0.635
+Target bicycle Precision: 0.738
+Target bus Precision: 0.866
+Target car Precision: 0.500
+Target horse Precision: 0.569
+Target knife Precision: 0.570
+Target motorcycle Precision: 0.775
+Target person Precision: 0.725
+Target plant Precision: 0.681
+Target skateboard Precision: 0.189
+Target train Precision: 0.631
+Target truck Precision: 0.078
+Target unk Precision: 0.178
+Node predictions: OS accuracy = 0.5488, OS* accuracy = 0.5797
+selected pseudo-labeled data: 9879 of 12576 is correct, accuracy: 0.7855
+positive data: 1030 of 3312 is correct, accuracy: 0.3110
+negative data: 8849 of 9264 is correct, accuracy: 0.9552
+This is 2-th step with EF=10%
+Epoch 0, current lr 0.001
+---- Start Epoch 3 Training --------
+Step: 11839 | 41; Epoch: 3	Training Loss 0.699	Training Prec 100.000%	Target Prec 41.806%	
+---- Start Epoch 7 Training --------
+Step: 12003 | 41; Epoch: 7	Training Loss 0.651	Training Prec 100.000%	Target Prec 37.179%	
+---- Start Epoch 11 Training --------
+Step: 12167 | 41; Epoch: 11	Training Loss 0.612	Training Prec 100.000%	Target Prec 34.317%	
+---- Start Epoch 15 Training --------
+Step: 12331 | 41; Epoch: 15	Training Loss 0.569	Training Prec 100.000%	Target Prec 35.295%	
+---- Start Epoch 19 Training --------
+Step: 12495 | 41; Epoch: 19	Training Loss 0.557	Training Prec 100.000%	Target Prec 35.262%	
+---- Start Epoch 23 Training --------
+Step: 12659 | 41; Epoch: 23	Training Loss 0.554	Training Prec 100.000%	Target Prec 36.699%	
+---- Start Epoch 27 Training --------
+Step: 12823 | 41; Epoch: 27	Training Loss 0.516	Training Prec 100.000%	Target Prec 34.760%	
+label estimation...
+Step: 0 | 576; 	OS Prec 7.692%	
+Step: 100 | 576; 	OS Prec 72.897%	
+Step: 200 | 576; 	OS Prec 72.897%	
+Step: 300 | 576; 	OS Prec 72.897%	
+Step: 400 | 576; 	OS Prec 72.897%	
+Step: 500 | 576; 	OS Prec 72.897%	
+Target areoplane Precision: 0.923
+Target bicycle Precision: 0.787
+Target bus Precision: 0.940
+Target car Precision: 0.806
+Target horse Precision: 0.908
+Target knife Precision: 0.845
+Target motorcycle Precision: 0.869
+Target person Precision: 0.907
+Target plant Precision: 0.835
+Target skateboard Precision: 0.105
+Target train Precision: 0.832
+Target truck Precision: 0.004
+Target unk Precision: 0.286
+Node predictions: OS accuracy = 0.6960, OS* accuracy = 0.7301
+selected pseudo-labeled data: 16677 of 19623 is correct, accuracy: 0.8499
+positive data: 2437 of 4968 is correct, accuracy: 0.4905
+negative data: 14240 of 14655 is correct, accuracy: 0.9717
+This is 3-th step with EF=10%
+Epoch 0, current lr 0.001
+---- Start Epoch 3 Training --------
+Step: 13112 | 62; Epoch: 3	Training Loss 0.691	Training Prec 100.000%	Target Prec 54.346%	
+---- Start Epoch 7 Training --------
+Step: 13360 | 62; Epoch: 7	Training Loss 0.735	Training Prec 100.000%	Target Prec 54.546%	
+---- Start Epoch 11 Training --------
+Step: 13608 | 62; Epoch: 11	Training Loss 0.784	Training Prec 100.000%	Target Prec 53.017%	
+---- Start Epoch 15 Training --------
+Step: 13856 | 62; Epoch: 15	Training Loss 0.780	Training Prec 100.000%	Target Prec 55.599%	
+---- Start Epoch 19 Training --------
+Step: 14104 | 62; Epoch: 19	Training Loss 0.765	Training Prec 100.000%	Target Prec 56.791%	
+---- Start Epoch 23 Training --------
+Step: 14352 | 62; Epoch: 23	Training Loss 0.828	Training Prec 100.000%	Target Prec 53.760%	
+---- Start Epoch 27 Training --------
+Step: 14600 | 62; Epoch: 27	Training Loss 0.680	Training Prec 100.000%	Target Prec 56.199%	
+label estimation...
+Step: 0 | 576; 	OS Prec 7.692%	
+Step: 100 | 576; 	OS Prec 75.636%	
+Step: 200 | 576; 	OS Prec 75.636%	
+Step: 300 | 576; 	OS Prec 75.636%	
+Step: 400 | 576; 	OS Prec 75.636%	
+Step: 500 | 576; 	OS Prec 75.636%	
+Target areoplane Precision: 0.973
+Target bicycle Precision: 0.827
+Target bus Precision: 0.904
+Target car Precision: 0.802
+Target horse Precision: 0.923
+Target knife Precision: 0.850
+Target motorcycle Precision: 0.855
+Target person Precision: 0.943
+Target plant Precision: 0.786
+Target skateboard Precision: 0.303
+Target train Precision: 0.929
+Target truck Precision: 0.000
+Target unk Precision: 0.395
+Node predictions: OS accuracy = 0.7299, OS* accuracy = 0.7579
+selected pseudo-labeled data: 23103 of 26670 is correct, accuracy: 0.8663
+positive data: 3472 of 6624 is correct, accuracy: 0.5242
+negative data: 19631 of 20046 is correct, accuracy: 0.9793
+This is 4-th step with EF=10%
+Epoch 0, current lr 0.001
+---- Start Epoch 3 Training --------
+Step: 15114 | 82; Epoch: 3	Training Loss 0.957	Training Prec 100.000%	Target Prec 70.617%	
+---- Start Epoch 7 Training --------
+Step: 15442 | 82; Epoch: 7	Training Loss 0.833	Training Prec 100.000%	Target Prec 70.148%	
+---- Start Epoch 11 Training --------
+Step: 15770 | 82; Epoch: 11	Training Loss 0.854	Training Prec 100.000%	Target Prec 69.640%	
+---- Start Epoch 15 Training --------
+Step: 16098 | 82; Epoch: 15	Training Loss 1.002	Training Prec 100.000%	Target Prec 68.493%	
+---- Start Epoch 19 Training --------
+Step: 16426 | 82; Epoch: 19	Training Loss 0.815	Training Prec 100.000%	Target Prec 70.104%	
+---- Start Epoch 23 Training --------
+Step: 16754 | 82; Epoch: 23	Training Loss 1.101	Training Prec 100.000%	Target Prec 69.802%	
+---- Start Epoch 27 Training --------
+Step: 17082 | 82; Epoch: 27	Training Loss 1.313	Training Prec 100.000%	Target Prec 69.981%	
+---- Start Epoch 31 Training --------
+Step: 17410 | 82; Epoch: 31	Training Loss 0.843	Training Prec 100.000%	Target Prec 69.818%	
+label estimation...
+Step: 0 | 576; 	OS Prec 7.692%	
+Step: 100 | 576; 	OS Prec 79.081%	
+Step: 200 | 576; 	OS Prec 79.081%	
+Step: 300 | 576; 	OS Prec 79.081%	
+Step: 400 | 576; 	OS Prec 79.081%	
+Step: 500 | 576; 	OS Prec 79.081%	
+Target areoplane Precision: 0.970
+Target bicycle Precision: 0.859
+Target bus Precision: 0.908
+Target car Precision: 0.841
+Target horse Precision: 0.923
+Target knife Precision: 0.855
+Target motorcycle Precision: 0.853
+Target person Precision: 0.940
+Target plant Precision: 0.793
+Target skateboard Precision: 0.645
+Target train Precision: 0.931
+Target truck Precision: 0.000
+Target unk Precision: 0.503
+Node predictions: OS accuracy = 0.7709, OS* accuracy = 0.7932
+selected pseudo-labeled data: 29042 of 33717 is correct, accuracy: 0.8613
+positive data: 4020 of 8280 is correct, accuracy: 0.4855
+negative data: 25022 of 25437 is correct, accuracy: 0.9837
+This is 5-th step with EF=10%
+Epoch 0, current lr 0.001
+---- Start Epoch 3 Training --------
+Step: 17904 | 103; Epoch: 3	Training Loss 1.317	Training Prec 100.000%	Target Prec 76.197%	
+---- Start Epoch 7 Training --------
+Step: 18316 | 103; Epoch: 7	Training Loss 1.145	Training Prec 100.000%	Target Prec 77.134%	
+---- Start Epoch 11 Training --------
+Step: 18728 | 103; Epoch: 11	Training Loss 1.094	Training Prec 100.000%	Target Prec 77.109%	
+---- Start Epoch 15 Training --------
+Step: 19140 | 103; Epoch: 15	Training Loss 1.136	Training Prec 100.000%	Target Prec 77.508%	
+---- Start Epoch 19 Training --------
+Step: 19552 | 103; Epoch: 19	Training Loss 1.298	Training Prec 100.000%	Target Prec 77.557%	
+---- Start Epoch 23 Training --------
+Step: 19964 | 103; Epoch: 23	Training Loss 1.511	Training Prec 100.000%	Target Prec 77.391%	
+---- Start Epoch 27 Training --------
+Step: 20376 | 103; Epoch: 27	Training Loss 1.010	Training Prec 100.000%	Target Prec 77.102%	
+---- Start Epoch 31 Training --------
+Step: 20788 | 103; Epoch: 31	Training Loss 1.323	Training Prec 100.000%	Target Prec 76.266%	
+label estimation...
+Step: 0 | 576; 	OS Prec 7.692%	
+Step: 100 | 576; 	OS Prec 80.077%	
+Step: 200 | 576; 	OS Prec 80.077%	
+Step: 300 | 576; 	OS Prec 80.077%	
+Step: 400 | 576; 	OS Prec 80.077%	
+Step: 500 | 576; 	OS Prec 80.077%	
+Target areoplane Precision: 0.973
+Target bicycle Precision: 0.856
+Target bus Precision: 0.921
+Target car Precision: 0.863
+Target horse Precision: 0.921
+Target knife Precision: 0.850
+Target motorcycle Precision: 0.851
+Target person Precision: 0.938
+Target plant Precision: 0.802
+Target skateboard Precision: 0.741
+Target train Precision: 0.929
+Target truck Precision: 0.000
+Target unk Precision: 0.611
+Node predictions: OS accuracy = 0.7890, OS* accuracy = 0.8038
+selected pseudo-labeled data: 34623 of 40764 is correct, accuracy: 0.8494
+positive data: 4210 of 9936 is correct, accuracy: 0.4237
+negative data: 30413 of 30828 is correct, accuracy: 0.9865
+This is 6-th step with EF=10%
+Epoch 0, current lr 0.001
+---- Start Epoch 3 Training --------
+Step: 21593 | 124; Epoch: 3	Training Loss 1.558	Training Prec 100.000%	Target Prec 79.715%	
+---- Start Epoch 7 Training --------
+Step: 22089 | 124; Epoch: 7	Training Loss 1.234	Training Prec 100.000%	Target Prec 80.093%	
+---- Start Epoch 11 Training --------
+Step: 22585 | 124; Epoch: 11	Training Loss 1.403	Training Prec 100.000%	Target Prec 79.654%	
+---- Start Epoch 15 Training --------
+Step: 23081 | 124; Epoch: 15	Training Loss 1.493	Training Prec 100.000%	Target Prec 78.811%	
+---- Start Epoch 19 Training --------
+Step: 23577 | 124; Epoch: 19	Training Loss 1.704	Training Prec 100.000%	Target Prec 79.143%	
+---- Start Epoch 23 Training --------
+Step: 24073 | 124; Epoch: 23	Training Loss 1.825	Training Prec 100.000%	Target Prec 80.267%	
+---- Start Epoch 27 Training --------
+Step: 24569 | 124; Epoch: 27	Training Loss 1.783	Training Prec 100.000%	Target Prec 78.863%	
+---- Start Epoch 31 Training --------
+Step: 25065 | 124; Epoch: 31	Training Loss 1.587	Training Prec 100.000%	Target Prec 79.755%	
+---- Start Epoch 35 Training --------
+Step: 25561 | 124; Epoch: 35	Training Loss 1.459	Training Prec 100.000%	Target Prec 79.461%	
+label estimation...
+Step: 0 | 576; 	OS Prec 7.692%	
+Step: 100 | 576; 	OS Prec 80.539%	
+Step: 200 | 576; 	OS Prec 80.539%	
+Step: 300 | 576; 	OS Prec 80.539%	
+Step: 400 | 576; 	OS Prec 80.539%	
+Step: 500 | 576; 	OS Prec 80.539%	
+Target areoplane Precision: 0.973
+Target bicycle Precision: 0.818
+Target bus Precision: 0.955
+Target car Precision: 0.856
+Target horse Precision: 0.921
+Target knife Precision: 0.855
+Target motorcycle Precision: 0.851
+Target person Precision: 0.945
+Target plant Precision: 0.846
+Target skateboard Precision: 0.750
+Target train Precision: 0.929
+Target truck Precision: 0.000
+Target unk Precision: 0.720
+Node predictions: OS accuracy = 0.8015, OS* accuracy = 0.8083
+selected pseudo-labeled data: 40176 of 47577 is correct, accuracy: 0.8444
+positive data: 4372 of 11358 is correct, accuracy: 0.3849
+negative data: 35804 of 36219 is correct, accuracy: 0.9885
+This is 7-th step with EF=10%
+Epoch 0, current lr 0.001
+---- Start Epoch 3 Training --------
+Step: 26249 | 141; Epoch: 3	Training Loss 1.881	Training Prec 100.000%	Target Prec 80.670%	
+---- Start Epoch 7 Training --------
+Step: 26813 | 141; Epoch: 7	Training Loss 1.975	Training Prec 100.000%	Target Prec 81.493%	
+---- Start Epoch 11 Training --------
+Step: 27377 | 141; Epoch: 11	Training Loss 1.544	Training Prec 100.000%	Target Prec 80.710%	
+---- Start Epoch 15 Training --------
+Step: 27941 | 141; Epoch: 15	Training Loss 1.953	Training Prec 100.000%	Target Prec 80.696%	
+---- Start Epoch 19 Training --------
+Step: 28505 | 141; Epoch: 19	Training Loss 2.062	Training Prec 100.000%	Target Prec 80.954%	
+---- Start Epoch 23 Training --------
+Step: 29069 | 141; Epoch: 23	Training Loss 1.612	Training Prec 100.000%	Target Prec 81.360%	
+---- Start Epoch 27 Training --------
+Step: 29633 | 141; Epoch: 27	Training Loss 2.004	Training Prec 100.000%	Target Prec 80.254%	
+---- Start Epoch 31 Training --------
+Step: 30197 | 141; Epoch: 31	Training Loss 1.808	Training Prec 100.000%	Target Prec 80.787%	
+---- Start Epoch 35 Training --------
+Step: 30761 | 141; Epoch: 35	Training Loss 1.590	Training Prec 100.000%	Target Prec 79.530%	
+label estimation...
+Step: 0 | 576; 	OS Prec 7.692%	
+Step: 100 | 576; 	OS Prec 80.052%	
+Step: 200 | 576; 	OS Prec 80.052%	
+Step: 300 | 576; 	OS Prec 80.052%	
+Step: 400 | 576; 	OS Prec 80.052%	
+Step: 500 | 576; 	OS Prec 80.052%	
+Target areoplane Precision: 0.973
+Target bicycle Precision: 0.772
+Target bus Precision: 0.955
+Target car Precision: 0.856
+Target horse Precision: 0.923
+Target knife Precision: 0.855
+Target motorcycle Precision: 0.850
+Target person Precision: 0.907
+Target plant Precision: 0.859
+Target skateboard Precision: 0.750
+Target train Precision: 0.931
+Target truck Precision: 0.000
+Target unk Precision: 0.828
+Node predictions: OS accuracy = 0.8046, OS* accuracy = 0.8027
+selected pseudo-labeled data: 45575 of 53535 is correct, accuracy: 0.8513
+positive data: 4380 of 11925 is correct, accuracy: 0.3673
+negative data: 41195 of 41610 is correct, accuracy: 0.9900
+This is 8-th step with EF=10%
+Epoch 0, current lr 0.001
+---- Start Epoch 3 Training --------
+Step: 31780 | 149; Epoch: 3	Training Loss 2.361	Training Prec 100.000%	Target Prec 80.805%	
+---- Start Epoch 7 Training --------
+Step: 32376 | 149; Epoch: 7	Training Loss 2.104	Training Prec 100.000%	Target Prec 80.725%	
+---- Start Epoch 11 Training --------
+Step: 32972 | 149; Epoch: 11	Training Loss 2.020	Training Prec 100.000%	Target Prec 80.287%	
+---- Start Epoch 15 Training --------
+Step: 33568 | 149; Epoch: 15	Training Loss 2.052	Training Prec 100.000%	Target Prec 79.368%	
+---- Start Epoch 19 Training --------
+Step: 34164 | 149; Epoch: 19	Training Loss 2.383	Training Prec 100.000%	Target Prec 79.942%	
+---- Start Epoch 23 Training --------
+Step: 34760 | 149; Epoch: 23	Training Loss 2.034	Training Prec 100.000%	Target Prec 80.376%	
+---- Start Epoch 27 Training --------
+Step: 35356 | 149; Epoch: 27	Training Loss 2.070	Training Prec 100.000%	Target Prec 80.069%	
+---- Start Epoch 31 Training --------
+Step: 35952 | 149; Epoch: 31	Training Loss 2.604	Training Prec 100.000%	Target Prec 80.123%	
+---- Start Epoch 35 Training --------
+Step: 36548 | 149; Epoch: 35	Training Loss 2.121	Training Prec 100.000%	Target Prec 80.109%	
+---- Start Epoch 39 Training --------
+Step: 37144 | 149; Epoch: 39	Training Loss 1.969	Training Prec 100.000%	Target Prec 80.031%	
+label estimation...
+Step: 0 | 576; 	OS Prec 7.612%	
+Step: 100 | 576; 	OS Prec 79.840%	
+Step: 200 | 576; 	OS Prec 79.840%	
+Step: 300 | 576; 	OS Prec 79.840%	
+Step: 400 | 576; 	OS Prec 79.840%	
+Step: 500 | 576; 	OS Prec 79.840%	
+Target areoplane Precision: 0.964
+Target bicycle Precision: 0.741
+Target bus Precision: 0.955
+Target car Precision: 0.855
+Target horse Precision: 0.923
+Target knife Precision: 0.855
+Target motorcycle Precision: 0.853
+Target person Precision: 0.917
+Target plant Precision: 0.857
+Target skateboard Precision: 0.750
+Target train Precision: 0.929
+Target truck Precision: 0.000
+Target unk Precision: 0.862
+Node predictions: OS accuracy = 0.8048, OS* accuracy = 0.8000
+selected pseudo-labeled data: 47258 of 55272 is correct, accuracy: 0.8550
+positive data: 4369 of 11968 is correct, accuracy: 0.3651
+negative data: 42889 of 43304 is correct, accuracy: 0.9904
+This is 9-th step with EF=10%
+Epoch 0, current lr 0.001
+---- Start Epoch 3 Training --------
+Step: 37889 | 149; Epoch: 3	Training Loss 2.477	Training Prec 100.000%	Target Prec 0.000%	
+---- Start Epoch 7 Training --------
+Step: 38485 | 149; Epoch: 7	Training Loss 2.144	Training Prec 100.000%	Target Prec 0.000%	
+---- Start Epoch 11 Training --------
+Step: 39081 | 149; Epoch: 11	Training Loss 2.148	Training Prec 100.000%	Target Prec 0.000%	
+---- Start Epoch 15 Training --------
+Step: 39677 | 149; Epoch: 15	Training Loss 1.998	Training Prec 100.000%	Target Prec 0.000%	
+---- Start Epoch 19 Training --------
+Step: 40273 | 149; Epoch: 19	Training Loss 2.110	Training Prec 100.000%	Target Prec 0.000%	
+---- Start Epoch 23 Training --------
+Step: 40869 | 149; Epoch: 23	Training Loss 2.604	Training Prec 100.000%	Target Prec 0.000%	
+---- Start Epoch 27 Training --------
+Step: 41465 | 149; Epoch: 27	Training Loss 2.138	Training Prec 100.000%	Target Prec 0.000%	
+---- Start Epoch 31 Training --------
+Step: 42061 | 149; Epoch: 31	Training Loss 2.258	Training Prec 100.000%	Target Prec 0.000%	
+---- Start Epoch 35 Training --------
+Step: 42657 | 149; Epoch: 35	Training Loss 1.849	Training Prec 100.000%	Target Prec 0.000%	
+---- Start Epoch 39 Training --------
+Step: 43253 | 149; Epoch: 39	Training Loss 2.310	Training Prec 100.000%	Target Prec 0.000%	
+label estimation...
+Step: 0 | 576; 	OS Prec 7.612%	
+Step: 100 | 576; 	OS Prec 79.467%	
+Step: 200 | 576; 	OS Prec 79.467%	
+Step: 300 | 576; 	OS Prec 79.467%	
+Step: 400 | 576; 	OS Prec 79.467%	
+Step: 500 | 576; 	OS Prec 79.467%	
+Target areoplane Precision: 0.970
+Target bicycle Precision: 0.744
+Target bus Precision: 0.955
+Target car Precision: 0.854
+Target horse Precision: 0.919
+Target knife Precision: 0.855
+Target motorcycle Precision: 0.851
+Target person Precision: 0.945
+Target plant Precision: 0.806
+Target skateboard Precision: 0.741
+Target train Precision: 0.924
+Target truck Precision: 0.000
+Target unk Precision: 0.862
+Node predictions: OS accuracy = 0.8021, OS* accuracy = 0.7971
+selected pseudo-labeled data: 47241 of 55272 is correct, accuracy: 0.8547
+positive data: 4352 of 11968 is correct, accuracy: 0.3636
+negative data: 42889 of 43304 is correct, accuracy: 0.9904
