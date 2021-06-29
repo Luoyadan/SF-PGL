@@ -10,7 +10,7 @@ from torch.autograd import Variable
 import numpy as np
 from utils.logger import AverageMeter as meter
 from data_loader import Visda_Dataset, Office_Dataset, Home_Dataset, Visda18_Dataset
-from utils.loss import FocalLoss
+from utils.loss import FocalLoss, LabelSmoothing
 
 from models.component import Classifier, Discriminator
 import pickle
@@ -50,10 +50,10 @@ class SRCModelTrainer():
         # CE for node classification
         if args.loss == 'focal':
             self.criterionCE = FocalLoss()
-        elif args.loss == 'nll':
+        elif args.loss == 'nll' or 'smooth':
             self.criterionCE = nn.NLLLoss(reduction='mean')
-        elif args.loss == 'smooth':
-            self.criterionCE = LabelSmoothing(smoothing=0.5).cuda()
+        # elif args.loss == 'smooth':
+        #     self.criterionCE = LabelSmoothing(smoothing=0.5).cuda()
 
         # BCE for edge
         self.criterion = nn.BCELoss(reduction='mean')
@@ -183,12 +183,12 @@ class SRCModelTrainer():
                                                             targets.masked_select(source_node_mask))
 
 
-                    elif args.loss == 'focal':
+                    elif args.loss == 'focal' or 'smooth':
                         source_node_loss = self.criterionCE(norm_node_logits[source_node_mask, :],
                                                             targets.masked_select(source_node_mask))
-                    elif args.loss == 'smooth':
-                        source_node_loss = self.criterionCE(norm_node_logits[source_node_mask, :],
-                                                            targets.masked_select(source_node_mask))
+                    # elif args.loss == 'smooth':
+                    #     source_node_loss = self.criterionCE(norm_node_logits[source_node_mask, :],
+                    #                                         targets.masked_select(source_node_mask))
                     loss = args.node_loss * source_node_loss
 
                     if not args.graph_off:

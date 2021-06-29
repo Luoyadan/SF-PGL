@@ -98,9 +98,9 @@ def main(args):
             # train the model
             # step_size = 15 + step//2
             if step == 1:
-                num_epoch = 25
+                num_epoch = 15
             else:
-                num_epoch = 25 + step * 2
+                num_epoch = 6 + step
             model, gnn_model = trainer.train(step, epochs=num_epoch)
 
             # pseudo_label
@@ -152,7 +152,7 @@ if __name__ == '__main__':
                         default=os.path.join(working_dir, 'checkpoints'))
 
 
-    parser.add_argument('--pretrain_epoch', type=int, default=15)
+    parser.add_argument('--pretrain_epoch', type=int, default=12)
     # verbose setting
     parser.add_argument('--log_step', type=int, default=100)
     parser.add_argument('--log_epoch', type=int, default=4)
@@ -173,11 +173,11 @@ if __name__ == '__main__':
                         help='random seed (default: 1)')
 
     parser.add_argument('-b', '--batch_size', type=int, default=8)
-    parser.add_argument('--threshold', type=float, default=0.3)
+    parser.add_argument('--threshold', type=float, default=0.2)
 
     parser.add_argument('--dropout', type=float, default=0.2)
     parser.add_argument('--EF', type=int, default=10)
-    parser.add_argument('--loss', type=str, default='smooth', choices=['nll', 'focal', 'smooth'])
+    parser.add_argument('--loss', type=str, default='nll', choices=['nll', 'focal', 'smooth'])
 
 
     # optimizer
