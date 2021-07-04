@@ -11,7 +11,7 @@ import numpy as np
 from utils.logger import AverageMeter as meter
 from data_loader import Visda_Dataset, Office_Dataset, Home_Dataset, Visda18_Dataset
 from utils.loss import FocalLoss, LabelSmoothing
-
+from torch.distributions import Categorical
 from models.component import Classifier, Discriminator
 import pickle
 '''
@@ -27,7 +27,7 @@ class SRCModelTrainer():
         self.step = step
         self.data = data
         self.label_flag = label_flag
-
+        self.class_name = data.class_name
         self.num_class = data.num_class
         self.num_task = args.batch_size
         self.num_task = args.batch_size
@@ -50,10 +50,10 @@ class SRCModelTrainer():
         # CE for node classification
         if args.loss == 'focal':
             self.criterionCE = FocalLoss()
-        elif args.loss == 'nll' or 'smooth':
+        elif args.loss == 'nll':
             self.criterionCE = nn.NLLLoss(reduction='mean')
-        # elif args.loss == 'smooth':
-        #     self.criterionCE = LabelSmoothing(smoothing=0.5).cuda()
+        elif args.loss == 'smooth':
+            self.criterionCE = LabelSmoothing(smoothing=0.3).cuda()
 
         # BCE for edge
         self.criterion = nn.BCELoss(reduction='mean')
@@ -183,12 +183,12 @@ class SRCModelTrainer():
                                                             targets.masked_select(source_node_mask))
 
 
-                    elif args.loss == 'focal' or 'smooth':
+                    elif args.loss == 'focal':
                         source_node_loss = self.criterionCE(norm_node_logits[source_node_mask, :],
                                                             targets.masked_select(source_node_mask))
-                    # elif args.loss == 'smooth':
-                    #     source_node_loss = self.criterionCE(norm_node_logits[source_node_mask, :],
-                    #                                         targets.masked_select(source_node_mask))
+                    elif args.loss == 'smooth':
+                        source_node_loss = self.criterionCE(norm_node_logits[source_node_mask, :],
+                                                            targets.masked_select(source_node_mask))
                     loss = args.node_loss * source_node_loss
 
                     if not args.graph_off:
@@ -289,6 +289,8 @@ class SRCModelTrainer():
         pred_labels = []
         pred_scores = []
         real_labels = []
+        pred_entropy = []
+        pred_std = []
         target_loader = self.get_dataloader(test_data, training=False)
         self.model.eval()
 
@@ -314,6 +316,12 @@ class SRCModelTrainer():
                 # features_to_save.append(features.detach().cpu().numpy())
                 del features
                 norm_node_logits = F.softmax(node_logits[-1], dim=-1).unsqueeze(0)
+                if args.ranking == 'entropy':
+                    target_entropy = Categorical(probs = norm_node_logits[target_node_mask, :]).entropy()
+                    pred_entropy.append(target_entropy.cpu().detach())
+                elif args.ranking == 'uncertainty':
+                    target_std = torch.std(norm_node_logits[target_node_mask, :], dim=0)
+                    pred_std.append(target_std)
                 target_score, target_pred = norm_node_logits[target_node_mask, :].max(1)
 
                 # only for debugging
@@ -329,7 +337,7 @@ class SRCModelTrainer():
                 pred_labels.append(target_pred.cpu().detach())
                 pred_scores.append(target_score.cpu().detach())
                 real_labels.append(target_labels.cpu().detach())
-
+                
                 if i % self.args.log_step == 0:
                     print('Step: {} | {}; \t'
                           'OS Prec {:.3%}\t'
@@ -354,21 +362,28 @@ class SRCModelTrainer():
 
         # print("class weights are saved.")
 
-
+        
         pred_labels = torch.cat(pred_labels)
         pred_scores = torch.cat(pred_scores)
+        
         real_labels = torch.cat(real_labels)
 
         self.model.train()
         # self.gnnModel.train()
         self.num_to_select = int(len(target_loader) * self.args.batch_size * (self.args.num_class - 1) * self.args.EF / 100)
 
-       
-        return pred_labels.data.cpu().numpy(), pred_scores.data.cpu().numpy(), real_labels.data.cpu().numpy()
+        if args.ranking == 'entropy':
+            pred_entropy = torch.cat(pred_entropy)
+            return pred_labels.data.cpu().numpy(), pred_scores.data.cpu().numpy(), real_labels.data.cpu().numpy(), pred_entropy.data.cpu().numpy(), None
+        elif args.ranking == 'uncertainty':
+            pred_std = torch.cat(pred_std)
+            return pred_labels.data.cpu().numpy(), pred_score.data.cpu().numpy(), real_label.data.cpu().numpy(), None, pred_std.data.cpu().numpy()
+        else: 
+            return pred_labels.data.cpu().numpy(), pred_scores.data.cpu().numpy(), real_labels.data.cpu().numpy(), None, None
 
-    def select_top_data(self, pred_label, pred_score):
+    def select_top_data(self, pred_label, pred_score, pred_entropy=None, pred_std=None):
         # remark samples if needs pseudo labels based on classification confidence
-
+        highest_conf_recorder = np.zeros((self.num_class, ))
         if self.v is None:
             self.v = np.zeros(len(pred_score))
         unselected_idx = np.where(self.v == 0)[0]
@@ -376,7 +391,10 @@ class SRCModelTrainer():
         if len(unselected_idx) < self.num_to_select:
             self.num_to_select = len(unselected_idx)
 
-        index = np.argsort(-pred_score[unselected_idx])
+        if pred_entropy is not None:
+            index = np.argsort(-pred_score[unselected_idx] + 0.4*pred_entropy[unselected_idx])
+        else:
+            index = np.argsort(-pred_score[unselected_idx])
         index_orig = unselected_idx[index]
         num_pos = int(self.num_to_select * self.threshold / (self.num_class - 1))
         class_recorder = np.ones((self.num_class - 1, )) * num_pos
@@ -386,12 +404,19 @@ class SRCModelTrainer():
             if class_recorder[pred_label[index_orig[i]]] > 0:
                 self.v[index_orig[i]] = 1
                 class_recorder[pred_label[index_orig[i]]] -= 1
+                if class_recorder[pred_label[index_orig[i]]] == 0:
+                    highest_conf_recorder[pred_label[index_orig[i]]] = pred_score[index_orig[i]]
             i += 1
             if i >= len(index_orig):
                 break
         for i in range(1, num_neg + 1):
             self.v[index_orig[-i]] = -1
+        # record the threshhold for the unk class
+        highest_conf_recorder[-1] = pred_score[index_orig[-i]]
+        for i in range(self.num_class):
+            print("Pseudo Label for class {} is threshholded by {}".format(self.class_name[i], highest_conf_recorder[i]))
         return self.v
+
 
     def generate_new_train_data(self, sel_idx, pred_y, real_label):
         # create the new dataset merged with pseudo labels

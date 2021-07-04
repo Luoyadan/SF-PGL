@@ -78,8 +78,8 @@ def main(args):
     model = src_trainer.train(epochs=args.pretrain_epoch)
 
     # Phase 2
-    pred_y, pred_score, pred_acc = src_trainer.estimate_label()
-    selected_idx = src_trainer.select_top_data(pred_y, pred_score)
+    pred_y, pred_score, pred_acc, pred_ent, pred_std = src_trainer.estimate_label()
+    selected_idx = src_trainer.select_top_data(pred_y, pred_score, pred_ent, pred_std)
 
     label_flag, data = src_trainer.generate_new_train_data(selected_idx, pred_y, pred_acc)
 
@@ -98,16 +98,16 @@ def main(args):
             # train the model
             # step_size = 15 + step//2
             if step == 1:
-                num_epoch = 15
+                num_epoch = 25
             else:
-                num_epoch = 6 + step
+                num_epoch = 25 + step * 2
             model, gnn_model = trainer.train(step, epochs=num_epoch)
 
             # pseudo_label
-            pred_y, pred_score, pred_acc = trainer.estimate_label()
+            pred_y, pred_score, pred_acc, pred_ent, pred_std = trainer.estimate_label()
 
             # select data from target to source
-            selected_idx = trainer.select_top_data(pred_y, pred_score)
+            selected_idx = trainer.select_top_data(pred_y, pred_score, pred_ent, pred_std)
 
             # add new data
             label_flag, data = trainer.generate_new_train_data(selected_idx, pred_y, pred_acc)
@@ -172,12 +172,13 @@ if __name__ == '__main__':
     parser.add_argument('--seed', type=int, default=1, metavar='S',
                         help='random seed (default: 1)')
 
-    parser.add_argument('-b', '--batch_size', type=int, default=8)
-    parser.add_argument('--threshold', type=float, default=0.2)
+    parser.add_argument('-b', '--batch_size', type=int, default=4)
+    parser.add_argument('--threshold', type=float, default=0.1)
 
     parser.add_argument('--dropout', type=float, default=0.2)
-    parser.add_argument('--EF', type=int, default=10)
+    parser.add_argument('--EF', type=int, default=20)
     parser.add_argument('--loss', type=str, default='nll', choices=['nll', 'focal', 'smooth'])
+    parser.add_argument('--ranking', type=str, default='entropy', choices=['entropy', 'logits', 'uncertainty'])
 
 
     # optimizer

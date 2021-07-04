@@ -11,7 +11,7 @@ import numpy as np
 from utils.logger import AverageMeter as meter
 from data_loader import Visda_Dataset, Office_Dataset, Home_Dataset, Visda18_Dataset
 from utils.loss import FocalLoss, LabelSmoothing
-
+from torch.distributions import Categorical
 from models.component import Discriminator
 
 class ModelTrainer():
@@ -48,7 +48,7 @@ class ModelTrainer():
         elif args.loss == 'nll':
             self.criterionCE = nn.NLLLoss(reduction='mean').cuda()
         elif args.loss == 'smooth':
-            self.criterionCE = LabelSmoothing(smoothing=0.5).cuda()
+            self.criterionCE = LabelSmoothing(smoothing=0.3).cuda()
 
         # BCE for edge
         self.criterion = nn.BCELoss(reduction='mean').cuda()
@@ -286,6 +286,7 @@ class ModelTrainer():
         pred_labels = []
         pred_scores = []
         real_labels = []
+        pred_entropy = []
         target_loader = self.get_dataloader(test_data, training=False)
         self.model.eval()
         self.gnnModel.eval()
@@ -309,7 +310,9 @@ class ModelTrainer():
                 del features
                 norm_node_logits = F.softmax(node_logits[-1], dim=-1)
                 target_score, target_pred = norm_node_logits[target_node_mask, :].max(1)
-
+                if args.ranking == 'entropy':
+                    target_entropy = Categorical(probs = norm_node_logits[target_node_mask, :]).entropy()
+                    pred_entropy.append(target_entropy.cpu().detach())
                 # only for debugging
                 target_labels = Variable(target_labels).cuda()
                 target_labels = self.transform_shape(target_labels.unsqueeze(-1)).view(-1)
@@ -323,6 +326,7 @@ class ModelTrainer():
                 pred_labels.append(target_pred.cpu().detach())
                 pred_scores.append(target_score.cpu().detach())
                 real_labels.append(target_labels.cpu().detach())
+                
 
                 if i % self.args.log_step == 0:
                     print('Step: {} | {}; \t'
@@ -341,32 +345,50 @@ class ModelTrainer():
         self.gnnModel.train()
         self.num_to_select = int(len(target_loader) * self.args.batch_size * (self.args.num_class - 1) * self.args.EF / 100)
 
-        return pred_labels.data.cpu().numpy(), pred_scores.data.cpu().numpy(), real_labels.data.cpu().numpy()
+        if args.ranking == 'entropy':
+            pred_entropy = torch.cat(pred_entropy)
+            return pred_labels.data.cpu().numpy(), pred_scores.data.cpu().numpy(), real_labels.data.cpu().numpy(), pred_entropy.data.cpu().numpy(), None
+        elif args.ranking == 'uncertainty':
+            pred_std = torch.cat(pred_std)
+            return pred_labels.data.cpu().numpy(), pred_score.data.cpu().numpy(), real_label.data.cpu().numpy(), None, pred_std.data.cpu().numpy()
+        else: 
+            return pred_labels.data.cpu().numpy(), pred_scores.data.cpu().numpy(), real_labels.data.cpu().numpy(), None, None
 
-    def select_top_data(self, pred_label, pred_score):
-        # remark samples if needs pseudo labels based on classification confidence
+
+
+    def select_top_data(self, pred_label, pred_score, pred_entropy=None):
+        highest_conf_recorder = np.zeros((self.num_class, ))
         if self.v is None:
             self.v = np.zeros(len(pred_score))
         unselected_idx = np.where(self.v == 0)[0]
+
         if len(unselected_idx) < self.num_to_select:
             self.num_to_select = len(unselected_idx)
-        index = np.argsort(-pred_score[unselected_idx])
+
+        if pred_entropy is not None:
+            index = np.argsort(-pred_score[unselected_idx] + 0.4*pred_entropy[unselected_idx])
+        else:
+            index = np.argsort(-pred_score[unselected_idx])
         index_orig = unselected_idx[index]
         num_pos = int(self.num_to_select * self.threshold / (self.num_class - 1))
-        class_recorder = np.ones((self.num_class - 1,)) * num_pos
-        num_neg = self.num_to_select - num_pos
+        class_recorder = np.ones((self.num_class - 1, )) * num_pos
+        num_neg = self.num_to_select - int(num_pos * (self.num_class - 1))
         i = 0
         while class_recorder.any():
             if class_recorder[pred_label[index_orig[i]]] > 0:
                 self.v[index_orig[i]] = 1
                 class_recorder[pred_label[index_orig[i]]] -= 1
+                if class_recorder[pred_label[index_orig[i]]] == 0:
+                    highest_conf_recorder[pred_label[index_orig[i]]] = pred_score[index_orig[i]]
             i += 1
             if i >= len(index_orig):
                 break
-        # for i in range(num_pos):
-        #     self.v[index_orig[i]] = 1
         for i in range(1, num_neg + 1):
             self.v[index_orig[-i]] = -1
+        # record the threshhold for the unk class
+        highest_conf_recorder[-1] = pred_score[index_orig[-i]]
+        for i in range(self.num_class):
+            print("Pseudo Label for class {} is threshholded by {}".format(self.class_name[i], highest_conf_recorder[i]))
         return self.v
 
     def generate_new_train_data(self, sel_idx, pred_y, real_label):
@@ -522,12 +544,3 @@ class ModelTrainer():
                 pbar.update(n=self.num_class)
 
         return vgg_features_target, node_features_target, labels, overall_split
-
-
-
-
-
-
-
-
-
