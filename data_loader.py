@@ -42,6 +42,8 @@ class Base_Dataset(data.Dataset):
                 # return int((self.num_labeled_target) / (self.num_class - 1))
         elif self.partition == 'test':
             return int(len(self.target_image) / (self.num_class - 1))
+        elif self.partition == 'tune':
+            return int(len(self.target_image))
 
 
     def __getitem__(self, item):
@@ -62,16 +64,15 @@ class Base_Dataset(data.Dataset):
             class_index_source = list(range(self.num_class - 1))
             random.shuffle(class_index_source)
             if self.partition == 'train':
+                # load labeled source samples by class
                 for classes in class_index_source:
-                    # select support samples from source domain or target domain
                     image = Image.open(random.choice(self.source_image[classes])).convert('RGB')
                     if self.transformer is not None:
                         image = self.transformer(image)
                     image_data.append(image)
                     label_data.append(classes)
                     ST_split.append(0)
-                # random load source
-
+                # randomly load source
 
                 for i in range(self.num_class - 1):
                     index = random.choice(list(range(len(self.source_image))))
@@ -85,7 +86,8 @@ class Base_Dataset(data.Dataset):
                     # domain_label.append(0)
                     ST_split.append(0)
 
-            if self.partition == 'test':
+            elif self.partition == 'test':
+                # randomly load target samples 
                 for i in range(self.num_class - 1):
                     index = random.choice(list(range(len(self.target_image))))
                     # index = random.choice(list(range(len(self.label_flag))))
@@ -94,17 +96,38 @@ class Base_Dataset(data.Dataset):
                         target_image = self.transformer(target_image)
                     image_data.append(target_image)
                     label_data.append(0) # just to ignore
-                    # random_real_label.append(self.target_label[index])
                     ST_split.append(1)
+                # load target by index
                 for i in range(self.num_class - 1):
                     target_image = Image.open(self.target_image[item * (self.num_class - 1) + i]).convert('RGB')
                     if self.transformer is not None:
                         target_image = self.transformer(target_image)
                     image_data.append(target_image)
-                    label_data.append(self.num_class)
+                    label_data.append(self.num_class) # mark as target samples to evaluate
                     random_real_label.append(self.target_label[item * (self.num_class - 1) + i])
-                    # domain_label.append(0)
                     ST_split.append(1)
+            
+            elif self.partition == 'tune':
+                # randomly load target samples 
+                index = random.choice(list(range(len(self.target_image))))
+                # index = random.choice(list(range(len(self.label_flag))))
+                target_image = Image.open(self.target_image[index]).convert('RGB')
+                if self.transformer is not None:
+                    target_image = self.transformer(target_image)
+                image_data.append(target_image)
+                label_data.append(0) # just to ignore
+                ST_split.append(1) # depre
+
+                # load target by index
+                target_image = Image.open(self.target_image[item]).convert('RGB')
+                if self.transformer is not None:
+                    target_image = self.transformer(target_image)
+                image_data.append(target_image)
+                label_data.append(self.num_class) # mark as target samples to evaluate
+                random_real_label.append(self.target_label[item])
+                ST_split.append(1)
+
+
 
 
         # Phase 2

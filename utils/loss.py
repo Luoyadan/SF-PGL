@@ -71,3 +71,10 @@ class LabelSmoothing(_WeightedLoss):
             log_preds = log_preds * self.weight.unsqueeze(0)
 
         return self.reduce_loss(-(targets * log_preds).sum(dim=-1))
+
+def Entropy(input_):
+    bs = input_.size(0)
+    epsilon = 1e-5
+    entropy = -input_ * torch.log(input_ + epsilon)
+    entropy = torch.sum(entropy, dim=1)
+    return entropy 
