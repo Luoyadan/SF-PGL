@@ -133,10 +133,14 @@ if __name__ == '__main__':
     dataset = 'visda18'
     parser.add_argument('--dataset', type=str, default=dataset)
     parser.add_argument('--graph_off', type=bool, default=True)
+    parser.add_argument('--center_loss', type=bool, default=True)
+
+
     parser.add_argument('-a', '--arch', type=str, default='res')
     parser.add_argument('--root_path', type=str, default='./utils/', metavar='B',
                         help='root dir')
-    parser.add_argument('--pretrain_resume', type=bool, default=True)
+    parser.add_argument('--pretrain_resume', type=bool, default=False)
+    parser.add_argument('--finetune', type=bool, default=True)
 
     # set up path
     working_dir = os.path.dirname(os.path.abspath(__file__))
@@ -149,7 +153,7 @@ if __name__ == '__main__':
 
 
     parser.add_argument('--pretrain_epoch', type=int, default=5)
-    parser.add_argument('--tune_epoch', type=int, default=6)
+    parser.add_argument('--tune_epoch', type=int, default=20)
     # verbose setting
     parser.add_argument('--log_step', type=int, default=100)
     parser.add_argument('--log_epoch', type=int, default=4)
@@ -202,6 +206,6 @@ if __name__ == '__main__':
     #GNN hyper-parameters
     parser.add_argument('--node_loss', type=float, default=0.3)
 
-    parser.add_argument('--diverse_loss', type=float, default=1.0)
+    parser.add_argument('--diverse_loss', type=float, default=3.0)
     main(parser.parse_args())
 

@@ -10,7 +10,7 @@ from torch.autograd import Variable
 import numpy as np
 from utils.logger import AverageMeter as meter
 from data_loader import Visda_Dataset, Office_Dataset, Home_Dataset, Visda18_Dataset
-from utils.loss import FocalLoss, LabelSmoothing, Entropy
+from utils.loss import FocalLoss, LabelSmoothing, Entropy, CenterLoss
 from torch.distributions import Categorical
 from models.component import Classifier, Discriminator
 import pickle
@@ -56,6 +56,9 @@ class SRCModelTrainer():
         elif args.loss == 'smooth':
             self.criterionCE = LabelSmoothing(smoothing=0.3).cuda()
 
+        if args.center_loss:
+            self.criterionCenter = CenterLoss(num_classes=self.num_class-1, feat_dim=args.in_features)
+
         # BCE for edge
         self.criterion = nn.BCELoss(reduction='mean')
         self.global_step = 0
@@ -63,7 +66,7 @@ class SRCModelTrainer():
         self.val_acc = 0
         # self.threshold = args.threshold
         self.unk_threshold = 0.3 + 1 / self.num_class
-        self.pos_threshold = 0.8
+        self.pos_threshold = 0.91
 
     def get_dataloader(self, dataset, training=False, sampler=None):
 
@@ -75,7 +78,7 @@ class SRCModelTrainer():
             data_loader = DataLoader(dataset, batch_size=self.batch_size, num_workers=self.data_workers,
                                  shuffle=training, pin_memory=True, drop_last=training)
         else:
-            data_loader = DataLoader(dataset, batch_size=self.batch_size, num_workers=self.data_workers,
+            data_loader = DataLoader(dataset, batch_size=self.batch_size * self.num_class, num_workers=self.data_workers,
                                  sampler=sampler, shuffle=False, pin_memory=True, drop_last=training)
         return data_loader
 
@@ -119,11 +122,8 @@ class SRCModelTrainer():
         return tensor
 
     def train(self, step=0, epochs=1, step_size=55):
+        
         args = self.args
-
-        train_loader = self.get_dataloader(self.data, training=True)
-
-        # initialize model
 
         # change the learning rate
         if args.arch == 'res' or 'res152':
@@ -157,6 +157,23 @@ class SRCModelTrainer():
         self.optimizer = torch.optim.Adam(params=param_groups,
                                           lr=args.lr,
                                           weight_decay=args.weight_decay)
+        
+        if self.args.pretrain_resume:
+            checkpoint = torch.load(osp.join(args.checkpoints_dir, 'SRC_{}_step_{}.pth.tar'.format(args.experiment, step)))
+            self.model.load_state_dict(checkpoint['model'])
+            self.classifier.load_state_dict(checkpoint['classifier'])
+            self.optimizer.load_state_dict(checkpoint['optimizer'])
+            self.logger.global_step = checkpoint['iteration']
+
+            return self.model
+
+        
+
+        train_loader = self.get_dataloader(self.data, training=True)
+
+        # initialize model
+
+        
         self.model.train()
         if not args.graph_off:
             self.gnnModel.train()
@@ -172,7 +189,7 @@ class SRCModelTrainer():
                     targets = Variable(inputs[1]).cuda()
 
                     # random source part
-                    targets_DT = targets[:, args.num_class - 1:].reshape(-1)
+                    
                     targets = self.transform_shape(targets.unsqueeze(-1)).squeeze(-1)
 
 
@@ -181,6 +198,8 @@ class SRCModelTrainer():
                     # extract backbone features
                     features = self.model(images)
                     features = self.transform_shape(features)
+
+                    
 
                     # feed into graph networks
                     if self.args.graph_off:
@@ -203,7 +222,13 @@ class SRCModelTrainer():
                     elif args.loss == 'smooth':
                         source_node_loss = self.criterionCE(norm_node_logits[source_node_mask, :],
                                                             targets.masked_select(source_node_mask))
+                                                            
                     loss = args.node_loss * source_node_loss
+
+                    if args.center_loss:
+                        center_loss = self.criterionCenter(norm_node_logits[source_node_mask, :],
+                                                            targets.masked_select(source_node_mask))
+                        loss = loss + center_loss
 
                     if not args.graph_off:
                         full_edge_loss = [self.criterion(edge_logit.masked_select(source_edge_mask),
@@ -229,8 +254,10 @@ class SRCModelTrainer():
 
                     # if self.args.discriminator:
                     #     self.logger.log_scalar('train/domain_loss', domain_loss, self.logger.global_step)
+                    if self.args.center_loss:
+                        self.logger.log_scalar('train/center_loss', center_loss, self.logger.global_step)
                     self.logger.log_scalar('train/node_prec', node_prec, self.logger.global_step)
-                    self.logger.log_scalar('train/edge_loss', 0, self.logger.global_step)
+                    self.logger.log_scalar('train/source_node_loss', source_node_loss, self.logger.global_step)
                     # self.logger.log_scalar('train/OS_star', self.meter.avg[:-1].mean(), self.logger.global_step)
                     # self.logger.log_scalar('train/OS', self.meter.avg.mean(), self.logger.global_step)
                     pbar.update()
@@ -250,9 +277,8 @@ class SRCModelTrainer():
 
         # save model
         states = {'model': self.model.state_dict(),
-                  # 'graph': self.gnnModel.state_dict(),
+                  'classifier': self.classifier.state_dict(),
                   'iteration': self.logger.global_step,
-                  'val_acc': node_prec,
                   'optimizer': self.optimizer.state_dict()}
         torch.save(states, osp.join(args.checkpoints_dir, 'SRC_{}_step_{}.pth.tar'.format(args.experiment, step)))
         self.meter.reset()
@@ -281,7 +307,7 @@ class SRCModelTrainer():
         pred_std = []
         target_loader = self.get_dataloader(test_data, training=False)
         self.model.eval()
-
+        self.classifier.eval()
         # features_to_save = []
         # self.gnnModel.eval()
         with tqdm(total=len(target_loader)) as pbar:
@@ -376,10 +402,11 @@ class SRCModelTrainer():
         print('Start Tuning...')
         self.reset_lr()
         self.model.train()
+        self.classifier.eval()
         self.meter.reset()
         for epoch in range(self.args.tune_epoch):
 
-            self.adjust_lr(epoch, 3)
+            self.adjust_lr(epoch, 10)
 
             with tqdm(total=len(tune_loader)) as pbar:
                 for i, (images, targets, target_labels, split) in enumerate(tune_loader):
@@ -400,7 +427,7 @@ class SRCModelTrainer():
                     node_logits = self.classifier(features)
                     
 
-                    # compute edge loss
+                    
                     norm_node_logits = F.softmax(node_logits[-1], dim=-1).unsqueeze(0)
 
                     # soft entropy loss
@@ -408,9 +435,9 @@ class SRCModelTrainer():
                     msoftmax = norm_node_logits[target_node_mask, :].mean(dim=0)
 
                     # global diverse loss
-                    gentropy_loss = torch.sum(-msoftmax * torch.log(msoftmax + 1e-5))
+                    gentropy_loss = torch.sum(msoftmax * torch.log(msoftmax + 1e-5))
     
-                    loss = entropy_loss - gentropy_loss * self.args.diverse_loss
+                    loss = entropy_loss + gentropy_loss * self.args.diverse_loss
 
                     # only for debugging
                     target_labels = Variable(target_labels).cuda()
@@ -459,7 +486,7 @@ class SRCModelTrainer():
 
     def select_top_data(self, pred_label, pred_score, real_label, pred_entropy=None, pred_std=None):
         # remark samples if needs pseudo labels based on classification confidence
-        highest_conf_recorder = np.zeros((self.num_class, ))
+        # highest_conf_recorder = np.zeros((self.num_class, ))
         if self.v is None:
             self.v = np.zeros(len(pred_score))
         unselected_idx = np.where(self.v == 0)[0]
@@ -477,13 +504,22 @@ class SRCModelTrainer():
 
         # handover to unsupervised fine-tune
         print("starting to tuning on the subset containing {}/{} samples".format(len(rest_index), len(unselected_idx)))
-        self.target_finetune(rest_index)
-        print("finished fine-tune")
 
-        new_pred_label, new_pred_score, new_real_label, new_pred_ent, new_pred_std = self.estimate_label()
+        if self.args.finetune:
+            self.target_finetune(rest_index)
+            print("finished fine-tune")
+            new_pred_label, new_pred_score, new_real_label, new_pred_ent, new_pred_std = self.estimate_label()
+             # check the order
+            assert (new_real_label == real_label).all() 
+        else:
+            new_pred_label = pred_label
+            new_real_label = real_label
         
-        # check the order
-        assert (new_real_label == real_label).all() 
+
+
+        
+        
+       
 
         positive_pseudo_idx = np.where(new_pred_score[rest_index] > self.pos_threshold)[0]
         self.v[rest_index[positive_pseudo_idx]] = 1
@@ -491,24 +527,6 @@ class SRCModelTrainer():
         pos_prec = (real_label[rest_index[positive_pseudo_idx]] == new_pred_label[rest_index[positive_pseudo_idx]]).astype(float).mean()
         print("select {} positive samples, acc: {}".format(num_pos_to_select, pos_prec))
 
-
-        
-        # i = 0
-        # while class_recorder.any():
-        #     if class_recorder[pred_label[index_orig[i]]] > 0:
-        #         self.v[index_orig[i]] = 1
-        #         class_recorder[pred_label[index_orig[i]]] -= 1
-        #         if class_recorder[pred_label[index_orig[i]]] == 0:
-        #             highest_conf_recorder[pred_label[index_orig[i]]] = pred_score[index_orig[i]]
-        #     i += 1
-        #     if i >= len(index_orig):
-        #         break
-        # for i in range(1, num_neg + 1):
-        #     self.v[index_orig[-i]] = -1
-        # # record the threshhold for the unk class
-        # highest_conf_recorder[-1] = pred_score[index_orig[-i]]
-        # for i in range(self.num_class):
-        #     print("Pseudo Label for class {} is threshholded by {}".format(self.class_name[i], highest_conf_recorder[i]))
         return self.v, new_pred_label, new_real_label
 
 

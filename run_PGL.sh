@@ -4,8 +4,8 @@
 #SBATCH --job-name=SF_PGL
 #SBATCH --time=48:00:00
 #SBATCH --mem-per-cpu=30G
-#SBATCH -o tensor_out_test.txt
-#SBATCH -e tensor_err_test.txt
+#SBATCH -o tensor_out_test2.txt
+#SBATCH -e tensor_err_test2.txt
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:tesla-smx2:2
 #SBATCH --ntasks-per-node=1

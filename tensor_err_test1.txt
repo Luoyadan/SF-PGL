@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "train_new.py", line 207, in <module>
+    main(parser.parse_args())
+  File "train_new.py", line 78, in main
+    model = src_trainer.train(epochs=args.pretrain_epoch)
+  File "/scratch/itee/uqyluo/SF-PGL/src_model_trainer_new.py", line 163, in train
+    self.logger.global_step(checkpoint['iteration'])
+TypeError: 'int' object is not callable
+srun: error: gpunode-1-6: task 0: Exited with exit code 1

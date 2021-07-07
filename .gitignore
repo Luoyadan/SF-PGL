@@ -3,6 +3,8 @@ checkpoints/
 logs/
 .idea/
 wiener_logs/
+new_logs/
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
