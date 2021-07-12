@@ -1,339 +1,77 @@
 Epoch 0, current lr 0.001
 ---- Start Epoch 3 Training --------
 Step: 5960 | 1490; Epoch: 3	Training Loss 0.027	Training Prec 97.917%	
+---- Start Epoch 7 Training --------
+Step: 11920 | 1490; Epoch: 7	Training Loss 0.012	Training Prec 97.917%	
+---- Start Epoch 11 Training --------
+Step: 17880 | 1490; Epoch: 11	Training Loss 0.008	Training Prec 98.958%	
 label estimation...
 Step: 0 | 1152; 	OS Prec 3.045%	
-Step: 100 | 1152; 	OS Prec 29.892%	
-Step: 200 | 1152; 	OS Prec 29.782%	
-Step: 300 | 1152; 	OS Prec 29.782%	
-Step: 400 | 1152; 	OS Prec 29.782%	
-Step: 500 | 1152; 	OS Prec 29.782%	
-Step: 600 | 1152; 	OS Prec 29.782%	
-Step: 700 | 1152; 	OS Prec 29.782%	
-Step: 800 | 1152; 	OS Prec 29.782%	
-Step: 900 | 1152; 	OS Prec 29.782%	
-Step: 1000 | 1152; 	OS Prec 29.782%	
-Step: 1100 | 1152; 	OS Prec 29.782%	
-removing 17382 unk samples, acc: 0.9310205960188701
-starting to tuning on the subset containing 37890/55272 samples
-Start Tuning...
-learning rate reset.
+Step: 100 | 1152; 	OS Prec 30.102%	
+Step: 200 | 1152; 	OS Prec 30.666%	
+Step: 300 | 1152; 	OS Prec 30.666%	
+Step: 400 | 1152; 	OS Prec 30.666%	
+Step: 500 | 1152; 	OS Prec 30.666%	
+Step: 600 | 1152; 	OS Prec 30.666%	
+Step: 700 | 1152; 	OS Prec 30.666%	
+Step: 800 | 1152; 	OS Prec 30.666%	
+Step: 900 | 1152; 	OS Prec 30.666%	
+Step: 1000 | 1152; 	OS Prec 30.666%	
+Step: 1100 | 1152; 	OS Prec 30.666%	
+removing 16715 unk samples, acc: 0.9314986539036794
+Pseudo Label for class areoplane is threshholded by 0.0, lefting 649.0 samples
+Pseudo Label for class bicycle is threshholded by 0.0, lefting 1808.0 samples
+Pseudo Label for class bus is threshholded by 0.0, lefting 1036.0 samples
+Pseudo Label for class car is threshholded by 0.0, lefting 1529.0 samples
+Pseudo Label for class horse is threshholded by 0.41354915499687195, lefting 0.0 samples
+Pseudo Label for class knife is threshholded by 0.0, lefting 711.0 samples
+Pseudo Label for class motorcycle is threshholded by 0.4071460962295532, lefting 0.0 samples
+Pseudo Label for class person is threshholded by 0.0, lefting 2098.0 samples
+Pseudo Label for class plant is threshholded by 0.959064781665802, lefting 0.0 samples
+Pseudo Label for class skateboard is threshholded by 0.42679882049560547, lefting 0.0 samples
+Pseudo Label for class train is threshholded by 0.4766973853111267, lefting 0.0 samples
+Pseudo Label for class truck is threshholded by 0.0, lefting 1910.0 samples
+Target areoplane Precision: 0.365
+Target bicycle Precision: 0.383
+Target bus Precision: 0.348
+Target car Precision: 0.283
+Target horse Precision: 0.465
+Target knife Precision: 0.130
+Target motorcycle Precision: 0.337
+Target person Precision: 0.110
+Target plant Precision: 0.648
+Target skateboard Precision: 0.246
+Target train Precision: 0.213
+Target truck Precision: 0.083
+Target unk Precision: 0.313
+Node predictions: OS accuracy = 0.3018, OS* accuracy = 0.3008
+selected pseudo-labeled data: 17096 of 43598 is correct, accuracy: 0.3921
+positive data: 1526 of 26883 is correct, accuracy: 0.0568
+negative data: 15570 of 16715 is correct, accuracy: 0.9315
+This is 1-th step
 Epoch 0, current lr 0.001
----- Start Epoch 0 Tuning --------
-Target areoplane Precision: 0.191
-Target bicycle Precision: 0.760
-Target bus Precision: 0.075
-Target car Precision: 0.457
-Target horse Precision: 0.497
-Target knife Precision: 0.146
-Target motorcycle Precision: 0.397
-Target person Precision: 0.382
-Target plant Precision: 0.214
-Target skateboard Precision: 0.101
-Target train Precision: 0.057
-Target truck Precision: 0.033
-Step: 8179 | 729; Epoch: 0	Training Loss -2.281	Tuning Prec 0.000%	
----- Start Epoch 1 Tuning --------
-Target areoplane Precision: 0.030
-Target bicycle Precision: 0.600
-Target bus Precision: 0.045
-Target car Precision: 0.470
-Target horse Precision: 0.533
-Target knife Precision: 0.095
-Target motorcycle Precision: 0.425
-Target person Precision: 0.301
-Target plant Precision: 0.241
-Target skateboard Precision: 0.084
-Target train Precision: 0.030
-Target truck Precision: 0.018
-Step: 8908 | 729; Epoch: 1	Training Loss -2.249	Tuning Prec 2.941%	
----- Start Epoch 2 Tuning --------
-Target areoplane Precision: 0.003
-Target bicycle Precision: 0.568
-Target bus Precision: 0.059
-Target car Precision: 0.437
-Target horse Precision: 0.542
-Target knife Precision: 0.101
-Target motorcycle Precision: 0.481
-Target person Precision: 0.304
-Target plant Precision: 0.179
-Target skateboard Precision: 0.062
-Target train Precision: 0.040
-Target truck Precision: 0.022
-Step: 9637 | 729; Epoch: 2	Training Loss -2.322	Tuning Prec 0.000%	
-Epoch 3, current lr 0.0005
----- Start Epoch 3 Tuning --------
-Target areoplane Precision: 0.007
-Target bicycle Precision: 0.612
-Target bus Precision: 0.048
-Target car Precision: 0.429
-Target horse Precision: 0.481
-Target knife Precision: 0.101
-Target motorcycle Precision: 0.478
-Target person Precision: 0.259
-Target plant Precision: 0.184
-Target skateboard Precision: 0.051
-Target train Precision: 0.010
-Target truck Precision: 0.042
-Step: 10366 | 729; Epoch: 3	Training Loss -2.092	Tuning Prec 0.000%	
----- Start Epoch 4 Tuning --------
-Target areoplane Precision: 0.013
-Target bicycle Precision: 0.644
-Target bus Precision: 0.075
-Target car Precision: 0.443
-Target horse Precision: 0.436
-Target knife Precision: 0.101
-Target motorcycle Precision: 0.459
-Target person Precision: 0.227
-Target plant Precision: 0.198
-Target skateboard Precision: 0.056
-Target train Precision: 0.010
-Target truck Precision: 0.042
-Step: 11095 | 729; Epoch: 4	Training Loss -2.263	Tuning Prec 0.000%	
----- Start Epoch 5 Tuning --------
-Target areoplane Precision: 0.003
-Target bicycle Precision: 0.528
-Target bus Precision: 0.061
-Target car Precision: 0.443
-Target horse Precision: 0.467
-Target knife Precision: 0.101
-Target motorcycle Precision: 0.472
-Target person Precision: 0.188
-Target plant Precision: 0.190
-Target skateboard Precision: 0.056
-Target train Precision: 0.010
-Target truck Precision: 0.044
-Step: 11824 | 729; Epoch: 5	Training Loss -2.338	Tuning Prec 0.000%	
-Epoch 6, current lr 0.00025
----- Start Epoch 6 Tuning --------
-Target areoplane Precision: 0.010
-Target bicycle Precision: 0.580
-Target bus Precision: 0.064
-Target car Precision: 0.426
-Target horse Precision: 0.469
-Target knife Precision: 0.101
-Target motorcycle Precision: 0.453
-Target person Precision: 0.184
-Target plant Precision: 0.158
-Target skateboard Precision: 0.067
-Target train Precision: 0.010
-Target truck Precision: 0.064
-Step: 12553 | 729; Epoch: 6	Training Loss -2.326	Tuning Prec 2.941%	
----- Start Epoch 7 Tuning --------
-Target areoplane Precision: 0.003
-Target bicycle Precision: 0.584
-Target bus Precision: 0.048
-Target car Precision: 0.443
-Target horse Precision: 0.492
-Target knife Precision: 0.095
-Target motorcycle Precision: 0.461
-Target person Precision: 0.191
-Target plant Precision: 0.142
-Target skateboard Precision: 0.090
-Target train Precision: 0.007
-Target truck Precision: 0.080
-Step: 13282 | 729; Epoch: 7	Training Loss -2.331	Tuning Prec 2.941%	
----- Start Epoch 8 Tuning --------
-Target areoplane Precision: 0.003
-Target bicycle Precision: 0.556
-Target bus Precision: 0.043
-Target car Precision: 0.473
-Target horse Precision: 0.481
-Target knife Precision: 0.095
-Target motorcycle Precision: 0.487
-Target person Precision: 0.178
-Target plant Precision: 0.147
-Target skateboard Precision: 0.062
-Target train Precision: 0.007
-Target truck Precision: 0.080
-Step: 14011 | 729; Epoch: 8	Training Loss -2.338	Tuning Prec 0.000%	
-Epoch 9, current lr 0.000125
----- Start Epoch 9 Tuning --------
-Target areoplane Precision: 0.010
-Target bicycle Precision: 0.556
-Target bus Precision: 0.040
-Target car Precision: 0.456
-Target horse Precision: 0.475
-Target knife Precision: 0.101
-Target motorcycle Precision: 0.420
-Target person Precision: 0.184
-Target plant Precision: 0.144
-Target skateboard Precision: 0.039
-Target train Precision: 0.010
-Target truck Precision: 0.082
-Step: 14740 | 729; Epoch: 9	Training Loss -2.304	Tuning Prec 2.941%	
----- Start Epoch 10 Tuning --------
-Target areoplane Precision: 0.003
-Target bicycle Precision: 0.564
-Target bus Precision: 0.045
-Target car Precision: 0.474
-Target horse Precision: 0.481
-Target knife Precision: 0.095
-Target motorcycle Precision: 0.453
-Target person Precision: 0.181
-Target plant Precision: 0.131
-Target skateboard Precision: 0.051
-Target train Precision: 0.010
-Target truck Precision: 0.071
-Step: 15469 | 729; Epoch: 10	Training Loss -2.236	Tuning Prec 0.000%	
----- Start Epoch 11 Tuning --------
-Target areoplane Precision: 0.003
-Target bicycle Precision: 0.568
-Target bus Precision: 0.048
-Target car Precision: 0.462
-Target horse Precision: 0.494
-Target knife Precision: 0.070
-Target motorcycle Precision: 0.431
-Target person Precision: 0.172
-Target plant Precision: 0.139
-Target skateboard Precision: 0.056
-Target train Precision: 0.007
-Target truck Precision: 0.076
-Step: 16198 | 729; Epoch: 11	Training Loss -2.326	Tuning Prec 2.941%	
-Epoch 12, current lr 6.25e-05
----- Start Epoch 12 Tuning --------
-Target areoplane Precision: 0.007
-Target bicycle Precision: 0.588
-Target bus Precision: 0.037
-Target car Precision: 0.463
-Target horse Precision: 0.469
-Target knife Precision: 0.089
-Target motorcycle Precision: 0.427
-Target person Precision: 0.184
-Target plant Precision: 0.139
-Target skateboard Precision: 0.073
-Target train Precision: 0.010
-Target truck Precision: 0.071
-Step: 16927 | 729; Epoch: 12	Training Loss -2.340	Tuning Prec 0.000%	
----- Start Epoch 13 Tuning --------
-Target areoplane Precision: 0.003
-Target bicycle Precision: 0.600
-Target bus Precision: 0.043
-Target car Precision: 0.455
-Target horse Precision: 0.489
-Target knife Precision: 0.089
-Target motorcycle Precision: 0.414
-Target person Precision: 0.181
-Target plant Precision: 0.134
-Target skateboard Precision: 0.062
-Target train Precision: 0.003
-Target truck Precision: 0.076
-Step: 17656 | 729; Epoch: 13	Training Loss -2.361	Tuning Prec 8.824%	
----- Start Epoch 14 Tuning --------
-Target areoplane Precision: 0.003
-Target bicycle Precision: 0.564
-Target bus Precision: 0.045
-Target car Precision: 0.476
-Target horse Precision: 0.481
-Target knife Precision: 0.082
-Target motorcycle Precision: 0.425
-Target person Precision: 0.162
-Target plant Precision: 0.144
-Target skateboard Precision: 0.090
-Target train Precision: 0.007
-Target truck Precision: 0.071
-Step: 18385 | 729; Epoch: 14	Training Loss -2.377	Tuning Prec 0.000%	
-Epoch 15, current lr 3.125e-05
----- Start Epoch 15 Tuning --------
-Target areoplane Precision: 0.003
-Target bicycle Precision: 0.564
-Target bus Precision: 0.037
-Target car Precision: 0.459
-Target horse Precision: 0.475
-Target knife Precision: 0.095
-Target motorcycle Precision: 0.431
-Target person Precision: 0.188
-Target plant Precision: 0.144
-Target skateboard Precision: 0.084
-Target train Precision: 0.010
-Target truck Precision: 0.058
-Step: 19114 | 729; Epoch: 15	Training Loss -2.288	Tuning Prec 2.941%	
----- Start Epoch 16 Tuning --------
-Target areoplane Precision: 0.003
-Target bicycle Precision: 0.584
-Target bus Precision: 0.043
-Target car Precision: 0.476
-Target horse Precision: 0.500
-Target knife Precision: 0.089
-Target motorcycle Precision: 0.446
-Target person Precision: 0.172
-Target plant Precision: 0.134
-Target skateboard Precision: 0.062
-Target train Precision: 0.003
-Target truck Precision: 0.062
-Step: 19843 | 729; Epoch: 16	Training Loss -2.302	Tuning Prec 2.941%	
----- Start Epoch 17 Tuning --------
-Target areoplane Precision: 0.003
-Target bicycle Precision: 0.576
-Target bus Precision: 0.037
-Target car Precision: 0.468
-Target horse Precision: 0.497
-Target knife Precision: 0.095
-Target motorcycle Precision: 0.450
-Target person Precision: 0.175
-Target plant Precision: 0.139
-Target skateboard Precision: 0.051
-Target train Precision: 0.003
-Target truck Precision: 0.076
-Step: 20572 | 729; Epoch: 17	Training Loss -2.295	Tuning Prec 5.882%	
-Epoch 18, current lr 1.5625e-05
----- Start Epoch 18 Tuning --------
-Target areoplane Precision: 0.003
-Target bicycle Precision: 0.532
-Target bus Precision: 0.037
-Target car Precision: 0.456
-Target horse Precision: 0.475
-Target knife Precision: 0.108
-Target motorcycle Precision: 0.442
-Target person Precision: 0.152
-Target plant Precision: 0.134
-Target skateboard Precision: 0.051
-Target train Precision: 0.007
-Target truck Precision: 0.060
-Step: 21301 | 729; Epoch: 18	Training Loss -2.414	Tuning Prec 2.941%	
----- Start Epoch 19 Tuning --------
-Target areoplane Precision: 0.003
-Target bicycle Precision: 0.516
-Target bus Precision: 0.035
-Target car Precision: 0.472
-Target horse Precision: 0.478
-Target knife Precision: 0.076
-Target motorcycle Precision: 0.442
-Target person Precision: 0.184
-Target plant Precision: 0.147
-Target skateboard Precision: 0.096
-Target train Precision: 0.010
-Target truck Precision: 0.062
-Step: 22030 | 729; Epoch: 19	Training Loss -2.301	Tuning Prec 5.882%	
-finished fine-tune
+---- Start Epoch 3 Training --------
+Step: 20568 | 672; Epoch: 3	Training Loss 0.697	Training Prec 96.825%	Target Prec 30.859%	
+---- Start Epoch 7 Training --------
+Step: 23256 | 672; Epoch: 7	Training Loss 0.646	Training Prec 100.000%	Target Prec 31.387%	
+---- Start Epoch 11 Training --------
+Step: 25944 | 672; Epoch: 11	Training Loss 0.665	Training Prec 100.000%	Target Prec 30.457%	
+---- Start Epoch 15 Training --------
+Step: 28632 | 672; Epoch: 15	Training Loss 0.582	Training Prec 100.000%	Target Prec 31.157%	
+---- Start Epoch 19 Training --------
+Step: 31320 | 672; Epoch: 19	Training Loss 0.517	Training Prec 100.000%	Target Prec 30.802%	
+---- Start Epoch 23 Training --------
+Step: 34008 | 672; Epoch: 23	Training Loss 0.656	Training Prec 100.000%	Target Prec 31.028%	
 label estimation...
-Step: 0 | 1152; 	OS Prec 0.000%	
-Step: 100 | 1152; 	OS Prec 18.512%	
-Step: 200 | 1152; 	OS Prec 19.164%	
-Step: 300 | 1152; 	OS Prec 19.164%	
-Step: 400 | 1152; 	OS Prec 19.164%	
-Step: 500 | 1152; 	OS Prec 19.164%	
-Step: 600 | 1152; 	OS Prec 19.164%	
-Step: 700 | 1152; 	OS Prec 19.164%	
-Step: 800 | 1152; 	OS Prec 19.164%	
-Step: 900 | 1152; 	OS Prec 19.164%	
-Step: 1000 | 1152; 	OS Prec 19.164%	
-Step: 1100 | 1152; 	OS Prec 19.164%	
-select 35610 positive samples, acc: 0.028924459421510812
-Target areoplane Precision: 0.003
-Target bicycle Precision: 0.412
-Target bus Precision: 0.036
-Target car Precision: 0.360
-Target horse Precision: 0.380
-Target knife Precision: 0.072
-Target motorcycle Precision: 0.335
-Target person Precision: 0.138
-Target plant Precision: 0.123
-Target skateboard Precision: 0.053
-Target train Precision: 0.007
-Target truck Precision: 0.060
-Target unk Precision: 0.325
-Node predictions: OS accuracy = 0.1772, OS* accuracy = 0.1648
-selected pseudo-labeled data: 17213 of 52992 is correct, accuracy: 0.3248
-positive data: 1030 of 35610 is correct, accuracy: 0.0289
-negative data: 16183 of 17382 is correct, accuracy: 0.9310
+Step: 0 | 1152; 	OS Prec 7.532%	
+Step: 100 | 1152; 	OS Prec 65.322%	
+Step: 200 | 1152; 	OS Prec 65.408%	
+Step: 300 | 1152; 	OS Prec 65.408%	
+Step: 400 | 1152; 	OS Prec 65.408%	
+Step: 500 | 1152; 	OS Prec 65.408%	
+Step: 600 | 1152; 	OS Prec 65.408%	
+Step: 700 | 1152; 	OS Prec 65.408%	
+Step: 800 | 1152; 	OS Prec 65.408%	
+Step: 900 | 1152; 	OS Prec 65.408%	
+Step: 1000 | 1152; 	OS Prec 65.408%	
+Step: 1100 | 1152; 	OS Prec 65.408%	

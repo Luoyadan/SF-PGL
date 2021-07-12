@@ -61,12 +61,13 @@ class SRCModelTrainer():
 
         # BCE for edge
         self.criterion = nn.BCELoss(reduction='mean')
+        self.threshold = args.threshold
         self.global_step = 0
         self.logger = logger
         self.val_acc = 0
         # self.threshold = args.threshold
-        self.unk_threshold = 0.3 + 1 / self.num_class
-        self.pos_threshold = 0.91
+        self.unk_threshold = 0.8
+        self.pos_threshold = 0.95
 
     def get_dataloader(self, dataset, training=False, sampler=None):
 
@@ -158,7 +159,7 @@ class SRCModelTrainer():
                                           lr=args.lr,
                                           weight_decay=args.weight_decay)
         
-        if self.args.pretrain_resume:
+        if self.args.pretrain_resume or self.args.eval_only:
             checkpoint = torch.load(osp.join(args.checkpoints_dir, 'SRC_{}_step_{}.pth.tar'.format(args.experiment, step)))
             self.model.load_state_dict(checkpoint['model'])
             self.classifier.load_state_dict(checkpoint['classifier'])
@@ -226,7 +227,7 @@ class SRCModelTrainer():
                     loss = args.node_loss * source_node_loss
 
                     if args.center_loss:
-                        center_loss = self.criterionCenter(norm_node_logits[source_node_mask, :],
+                        center_loss = self.criterionCenter(features[source_node_mask, :],
                                                             targets.masked_select(source_node_mask))
                         loss = loss + center_loss
 
@@ -496,16 +497,18 @@ class SRCModelTrainer():
         unk_index = np.where(pred_score[unselected_idx] <= self.unk_threshold)[0]
         rest_index = unselected_idx[np.where(pred_score[unselected_idx] > self.unk_threshold)[0]]
         num_unk_to_remove = len(unk_index)
-        self.v[unselected_idx[unk_index]] = -1
+        # self.v[unselected_idx[unk_index]] = -1
+
 
         # only for debugging
-        unk_prec = (real_label[unselected_idx[unk_index]] == (self.num_class - 1)).astype(float).mean()
-        print("removing {} unk samples, acc: {}".format(num_unk_to_remove, unk_prec))
+        # unk_prec = (real_label[unselected_idx[unk_index]] == (self.num_class - 1)).astype(float).mean()
+        # print("removing {} unk samples, acc: {}".format(num_unk_to_remove, unk_prec))
 
-        # handover to unsupervised fine-tune
-        print("starting to tuning on the subset containing {}/{} samples".format(len(rest_index), len(unselected_idx)))
+        
 
         if self.args.finetune:
+            # handover to unsupervised fine-tune
+            print("starting to tuning on the subset containing {}/{} samples".format(len(rest_index), len(unselected_idx)))
             self.target_finetune(rest_index)
             print("finished fine-tune")
             new_pred_label, new_pred_score, new_real_label, new_pred_ent, new_pred_std = self.estimate_label()
@@ -513,19 +516,44 @@ class SRCModelTrainer():
             assert (new_real_label == real_label).all() 
         else:
             new_pred_label = pred_label
-            new_real_label = real_label
-        
-
-
-        
-        
+            new_real_label = real_label 
+            new_pred_score = pred_score 
        
+        if self.args.ranking == 'logits':
+            # remark samples if needs pseudo labels based on classification confidence
+            highest_conf_recorder = np.zeros((self.num_class, ))
+            if self.v is None:
+                self.v = np.zeros(len(pred_score))
+            unselected_idx = np.where(self.v == 0)[0]
 
-        positive_pseudo_idx = np.where(new_pred_score[rest_index] > self.pos_threshold)[0]
-        self.v[rest_index[positive_pseudo_idx]] = 1
-        num_pos_to_select = len(positive_pseudo_idx)
-        pos_prec = (real_label[rest_index[positive_pseudo_idx]] == new_pred_label[rest_index[positive_pseudo_idx]]).astype(float).mean()
-        print("select {} positive samples, acc: {}".format(num_pos_to_select, pos_prec))
+            if len(unselected_idx) < self.num_to_select:
+                self.num_to_select = len(unselected_idx)
+
+            if pred_entropy is not None:
+                index = np.argsort(-pred_score[unselected_idx] + 0.4*pred_entropy[unselected_idx])
+            else:
+                index = np.argsort(-pred_score[unselected_idx])
+            index_orig = unselected_idx[index]
+            num_pos = int(self.num_to_select * self.threshold / (self.num_class - 1))
+            class_recorder = np.ones((self.num_class - 1, )) * num_pos
+            num_neg = self.num_to_select - int(num_pos * (self.num_class - 1))
+            i = 0
+            while class_recorder.any():
+                if class_recorder[pred_label[index_orig[i]]] > 0:
+                    self.v[index_orig[i]] = 1
+                    class_recorder[pred_label[index_orig[i]]] -= 1
+                    if class_recorder[pred_label[index_orig[i]]] == 0:
+                        highest_conf_recorder[pred_label[index_orig[i]]] = pred_score[index_orig[i]]
+                i += 1
+                if i >= len(index_orig):
+                    break
+            for i in range(1, num_neg + 1):
+                self.v[index_orig[-i]] = -1
+            # record the threshhold for the unk class
+            highest_conf_recorder[-1] = pred_score[index_orig[-i]]
+            for i in range(self.num_class):
+                print("Pseudo Label for class {} is threshholded by {}".format(self.class_name[i], highest_conf_recorder[i]))
+            self.confidence_recorder = highest_conf_recorder
 
         return self.v, new_pred_label, new_real_label
 
@@ -580,20 +608,20 @@ class SRCModelTrainer():
         # update source data
         if self.args.dataset == 'visda':
             new_data = Visda_Dataset(root=self.args.data_dir, partition='train', label_flag=new_label_flag,
-                                     target_ratio=(self.step + 1) * self.args.EF / 100)
+                                     target_ratio=(self.step + 1) * self.args.EF / 100, confidence_ratio=self.confidence_recorder)
 
         elif self.args.dataset == 'office':
             new_data = Office_Dataset(root=self.args.data_dir, partition='train', label_flag=new_label_flag,
                                        source=self.args.source_name, target=self.args.target_name,
-                                      target_ratio=(self.step + 1) * self.args.EF / 100)
+                                      target_ratio=(self.step + 1) * self.args.EF / 100, confidence_ratio=self.confidence_recorder)
 
         elif self.args.dataset == 'home':
             new_data = Home_Dataset(root=self.args.data_dir, partition='train', label_flag=new_label_flag,
                                     source=self.args.source_name, target=self.args.target_name,
-                                    target_ratio=(self.step + 1) * self.args.EF / 100)
+                                    target_ratio=(self.step + 1) * self.args.EF / 100, confidence_ratio=self.confidence_recorder)
         elif self.args.dataset == 'visda18':
             new_data = Visda18_Dataset(root=self.args.data_dir, partition='train', label_flag=new_label_flag,
-                                     target_ratio=(self.step + 1) * self.args.EF / 100)
+                                     target_ratio=(self.step + 1) * self.args.EF / 100, confidence_ratio=self.confidence_recorder)
 
         print('selected pseudo-labeled data: {} of {} is correct, accuracy: {:0.4f}'.format(correct, total, acc))
         print('positive data: {} of {} is correct, accuracy: {:0.4f}'.format(pos_correct, pos_total, pos_acc))

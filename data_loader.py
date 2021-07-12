@@ -7,7 +7,7 @@ import random
 import os
 import numpy as np
 from PIL import Image
-
+from torch.nn.functional import softmax
 class Base_Dataset(data.Dataset):
     def __init__(self, root, partition, target_ratio=0.0):
         super(Base_Dataset, self).__init__()
@@ -373,7 +373,7 @@ class Visda_Dataset(Base_Dataset):
 
 
 class Visda18_Dataset(Base_Dataset):
-    def __init__(self, root, partition, label_flag=None, target_ratio=0.0):
+    def __init__(self, root, partition, label_flag=None, target_ratio=0.0, confidence_ratio=None):
         super(Visda18_Dataset, self).__init__(root, partition, target_ratio)
         # set dataset info
         self.source_path = os.path.join(root, 'source_list_k.txt')
@@ -399,4 +399,11 @@ class Visda18_Dataset(Base_Dataset):
                                and key < self.num_class - 1]
             self.num_labeled_target = sum(
                 [len(self.target_image_list[key]) for key in list(self.target_image_list.keys())[:-2]])
+            if confidence_ratio is not None:
+                self.class_ratio = 1 - torch.tensor(confidence_ratio[:-1])
+            else:
+                self.class_ratio = torch.tensor([self.num_labeled_target - len(self.target_image_list[key]) for key in list(self.target_image_list.keys())[:-2]]).float()
+            self.class_ratio = softmax(self.class_ratio)
+            print("class weighted reconsidered")
+            print(self.class_ratio)
 

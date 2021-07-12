@@ -1,0 +1,171 @@
+label estimation...
+Step: 0 | 1152; 	OS Prec 3.045%	
+Step: 100 | 1152; 	OS Prec 30.102%	
+Step: 200 | 1152; 	OS Prec 30.666%	
+Step: 300 | 1152; 	OS Prec 30.666%	
+Step: 400 | 1152; 	OS Prec 30.666%	
+Step: 500 | 1152; 	OS Prec 30.666%	
+Step: 600 | 1152; 	OS Prec 30.666%	
+Step: 700 | 1152; 	OS Prec 30.666%	
+Step: 800 | 1152; 	OS Prec 30.666%	
+Step: 900 | 1152; 	OS Prec 30.666%	
+Step: 1000 | 1152; 	OS Prec 30.666%	
+Step: 1100 | 1152; 	OS Prec 30.666%	
+removing 31022 unk samples, acc: 0.9180903874669589
+starting to tuning on the subset containing 24250/55272 samples
+Start Tuning...
+learning rate reset.
+Epoch 0, current lr 0.001
+---- Start Epoch 0 Tuning --------
+Target areoplane Precision: 0.340
+Target bicycle Precision: 0.507
+Target bus Precision: 0.154
+Target car Precision: 0.619
+Target horse Precision: 0.556
+Target knife Precision: 0.389
+Target motorcycle Precision: 0.445
+Target person Precision: 0.434
+Target plant Precision: 0.358
+Target skateboard Precision: 0.233
+Target train Precision: 0.604
+Target truck Precision: 0.090
+Step: 18347 | 467; Epoch: 0	Training Loss -6.562	Tuning Prec 0.000%	
+---- Start Epoch 1 Tuning --------
+Target areoplane Precision: 0.066
+Target bicycle Precision: 0.296
+Target bus Precision: 0.213
+Target car Precision: 0.573
+Target horse Precision: 0.495
+Target knife Precision: 0.442
+Target motorcycle Precision: 0.363
+Target person Precision: 0.320
+Target plant Precision: 0.284
+Target skateboard Precision: 0.172
+Target train Precision: 0.458
+Target truck Precision: 0.082
+Step: 18814 | 467; Epoch: 1	Training Loss -6.894	Tuning Prec 0.000%	
+---- Start Epoch 2 Tuning --------
+Target areoplane Precision: 0.014
+Target bicycle Precision: 0.256
+Target bus Precision: 0.385
+Target car Precision: 0.506
+Target horse Precision: 0.469
+Target knife Precision: 0.305
+Target motorcycle Precision: 0.369
+Target person Precision: 0.269
+Target plant Precision: 0.263
+Target skateboard Precision: 0.172
+Target train Precision: 0.354
+Target truck Precision: 0.093
+Step: 19281 | 467; Epoch: 2	Training Loss -6.838	Tuning Prec 0.000%	
+---- Start Epoch 3 Tuning --------
+Target areoplane Precision: 0.000
+Target bicycle Precision: 0.182
+Target bus Precision: 0.620
+Target car Precision: 0.405
+Target horse Precision: 0.498
+Target knife Precision: 0.316
+Target motorcycle Precision: 0.259
+Target person Precision: 0.192
+Target plant Precision: 0.204
+Target skateboard Precision: 0.147
+Target train Precision: 0.182
+Target truck Precision: 0.100
+Step: 19748 | 467; Epoch: 3	Training Loss -7.043	Tuning Prec 0.000%	
+finished fine-tune
+label estimation...
+Step: 0 | 1152; 	OS Prec 0.000%	
+Step: 100 | 1152; 	OS Prec 18.514%	
+Step: 200 | 1152; 	OS Prec 19.670%	
+Step: 300 | 1152; 	OS Prec 19.670%	
+Step: 400 | 1152; 	OS Prec 19.670%	
+Step: 500 | 1152; 	OS Prec 19.670%	
+Step: 600 | 1152; 	OS Prec 19.670%	
+Step: 700 | 1152; 	OS Prec 19.670%	
+Step: 800 | 1152; 	OS Prec 19.670%	
+Step: 900 | 1152; 	OS Prec 19.670%	
+Step: 1000 | 1152; 	OS Prec 19.670%	
+Step: 1100 | 1152; 	OS Prec 19.670%	
+Pseudo Label for class areoplane is threshholded by 0.8269792795181274
+Pseudo Label for class bicycle is threshholded by 0.5549684762954712
+Pseudo Label for class bus is threshholded by 0.6107397079467773
+Pseudo Label for class car is threshholded by 0.6450104713439941
+Pseudo Label for class horse is threshholded by 0.9547553062438965
+Pseudo Label for class knife is threshholded by 0.690521240234375
+Pseudo Label for class motorcycle is threshholded by 0.8640403151512146
+Pseudo Label for class person is threshholded by 0.3944415748119354
+Pseudo Label for class plant is threshholded by 0.9940044283866882
+Pseudo Label for class skateboard is threshholded by 0.8732145428657532
+Pseudo Label for class train is threshholded by 0.8092414140701294
+Pseudo Label for class truck is threshholded by 0.46211692690849304
+Pseudo Label for class unk is threshholded by 0.15398404002189636
+Target areoplane Precision: 0.005
+Target bicycle Precision: 0.124
+Target bus Precision: 0.659
+Target car Precision: 0.276
+Target horse Precision: 0.443
+Target knife Precision: 0.217
+Target motorcycle Precision: 0.128
+Target person Precision: 0.152
+Target plant Precision: 0.104
+Target skateboard Precision: 0.162
+Target train Precision: 0.113
+Target truck Precision: 0.153
+Target unk Precision: 0.011
+Node predictions: OS accuracy = 0.1961, OS* accuracy = 0.2115
+selected pseudo-labeled data: 1038 of 11059 is correct, accuracy: 0.0939
+positive data: 512 of 10500 is correct, accuracy: 0.0488
+negative data: 526 of 559 is correct, accuracy: 0.9410
+This is 1-th step
+Epoch 0, current lr 0.001
+---- Start Epoch 3 Training --------
+Step: 20796 | 262; Epoch: 3	Training Loss 0.633	Training Prec 100.000%	Target Prec 20.586%	
+---- Start Epoch 7 Training --------
+Step: 21844 | 262; Epoch: 7	Training Loss 0.513	Training Prec 100.000%	Target Prec 19.476%	
+---- Start Epoch 11 Training --------
+Step: 22892 | 262; Epoch: 11	Training Loss 0.446	Training Prec 100.000%	Target Prec 19.057%	
+label estimation...
+Step: 0 | 1152; 	OS Prec 0.000%	
+Step: 100 | 1152; 	OS Prec 26.716%	
+Step: 200 | 1152; 	OS Prec 27.494%	
+Step: 300 | 1152; 	OS Prec 27.494%	
+Step: 400 | 1152; 	OS Prec 27.494%	
+Step: 500 | 1152; 	OS Prec 27.494%	
+Step: 600 | 1152; 	OS Prec 27.494%	
+Step: 700 | 1152; 	OS Prec 27.494%	
+Step: 800 | 1152; 	OS Prec 27.494%	
+Step: 900 | 1152; 	OS Prec 27.494%	
+Step: 1000 | 1152; 	OS Prec 27.494%	
+Step: 1100 | 1152; 	OS Prec 27.494%	
+Pseudo Label for class areoplane is threshholded by 0.13141824305057526
+Pseudo Label for class bicycle is threshholded by 0.11948581784963608
+Pseudo Label for class bus is threshholded by 0.2806500792503357
+Pseudo Label for class car is threshholded by 0.11070571839809418
+Pseudo Label for class horse is threshholded by 0.11159596592187881
+Pseudo Label for class knife is threshholded by 0.1856672763824463
+Pseudo Label for class motorcycle is threshholded by 0.14709803462028503
+Pseudo Label for class person is threshholded by 0.16703104972839355
+Pseudo Label for class plant is threshholded by 0.19247540831565857
+Pseudo Label for class skateboard is threshholded by 0.18291883170604706
+Pseudo Label for class train is threshholded by 0.11367044597864151
+Pseudo Label for class truck is threshholded by 0.14166750013828278
+Pseudo Label for class unk is threshholded by 0.09248093515634537
+Target areoplane Precision: 0.000
+Target bicycle Precision: 0.055
+Target bus Precision: 0.972
+Target car Precision: 0.333
+Target horse Precision: 0.921
+Target knife Precision: 0.237
+Target motorcycle Precision: 0.126
+Target person Precision: 0.307
+Target plant Precision: 0.145
+Target skateboard Precision: 0.355
+Target train Precision: 0.000
+Target truck Precision: 0.101
+Target unk Precision: 0.022
+Node predictions: OS accuracy = 0.2750, OS* accuracy = 0.2961
+selected pseudo-labeled data: 2666 of 22118 is correct, accuracy: 0.1205
+positive data: 1582 of 21000 is correct, accuracy: 0.0753
+negative data: 1084 of 1118 is correct, accuracy: 0.9696
+This is 2-th step
+Epoch 0, current lr 0.001

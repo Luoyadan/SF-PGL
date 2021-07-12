@@ -26,6 +26,16 @@ from data_loader import Visda_Dataset, Office_Dataset, Home_Dataset, Visda18_Dat
 from model_trainer_new import ModelTrainer
 from src_model_trainer_new import SRCModelTrainer
 from utils.logger import Logger
+from utils.visualization import draw_reliability_graph
+
+def set_exp_name(args):
+    exp_name = 'D-{}'.format(args.dataset)
+    if args.dataset == 'office' or args.dataset == 'home':
+        exp_name += '_src-{}_tar-{}'.format(args.source_name, args.target_name)
+    exp_name += '_A-{}'.format(args.arch)
+    exp_name += '_L-{}'.format(args.num_layers)
+    exp_name += '_E-{}_B-{}'.format(args.EF, args.batch_size)
+    return exp_name
 
 def main(args):
 
@@ -77,54 +87,56 @@ def main(args):
     src_trainer = SRCModelTrainer(args=args, data=src_data, logger=logger)
     model = src_trainer.train(epochs=args.pretrain_epoch)
 
-    # Phase 2
-    pred_y, pred_score, pred_acc, pred_ent, pred_std = src_trainer.estimate_label()
-    selected_idx, new_pred_y, new_pred_acc = src_trainer.select_top_data(pred_y, pred_score, pred_acc, pred_ent, pred_std)
 
-    label_flag, data = src_trainer.generate_new_train_data(selected_idx, new_pred_y, new_pred_acc)
-
-    # initialize GNN
-    gnn_model = None
-    del src_trainer
-
-    step = 1
-    while(~selected_idx.any()):
-
-        print("This is {}-th step".format(step))
-
-        trainer = ModelTrainer(args=args, data=data, model=model, gnn_model=gnn_model, step=step, label_flag=label_flag, v=selected_idx,
+    if args.eval_only:
+        # initialize GNN
+        del src_trainer
+        # step to specify
+        step_to_eval = 10
+        trainer = ModelTrainer(args=args, data=src_data, model=model, gnn_model=None, step=step_to_eval, label_flag=None, v=None,
                                 logger=logger)
+        preds, labels = trainer.evaluate()
+        
+        draw_reliability_graph(preds, labels, args.experiment)
 
-        # train the model
-        # step_size = 15 + step//2
-        if step == 1:
-            num_epoch = 25
-        else:
-            num_epoch = 25 + step * 2
-        model, gnn_model = trainer.train(step, epochs=num_epoch)
+    else:
+        # Phase 2
+        pred_y, pred_score, pred_acc, pred_ent, pred_std = src_trainer.estimate_label()
+        selected_idx, new_pred_y, new_pred_acc = src_trainer.select_top_data(pred_y, pred_score, pred_acc, pred_ent, pred_std)
+        
 
-        # pseudo_label
-        pred_y, pred_score, pred_acc, pred_ent, pred_std = trainer.estimate_label()
-
-        # select data from target to source
-        selected_idx = trainer.select_top_data(pred_y, pred_score, pred_ent, pred_std)
-
-        # add new data
-        label_flag, data = trainer.generate_new_train_data(selected_idx, pred_y, pred_acc)
-
-        # continue
-        step += 1
+        label_flag, data = src_trainer.generate_new_train_data(selected_idx, new_pred_y, new_pred_acc)
+        # initialize GNN
+        gnn_model = None
+        del src_trainer
 
 
+        # step = 1
+        for step in range(1, total_step):
 
-def set_exp_name(args):
-    exp_name = 'D-{}'.format(args.dataset)
-    if args.dataset == 'office' or args.dataset == 'home':
-        exp_name += '_src-{}_tar-{}'.format(args.source_name, args.target_name)
-    exp_name += '_A-{}'.format(args.arch)
-    exp_name += '_L-{}'.format(args.num_layers)
-    exp_name += '_E-{}_B-{}'.format(args.EF, args.batch_size)
-    return exp_name
+            print("This is {}-th step".format(step))
+
+            trainer = ModelTrainer(args=args, data=data, model=model, gnn_model=gnn_model, step=step, label_flag=label_flag, v=selected_idx,
+                                    logger=logger)
+
+            # train the model
+            # step_size = 15 + step//2
+            if step == 1:
+                num_epoch = 15
+            else:
+                num_epoch = 10 + step * 3
+            model, gnn_model = trainer.train(step, epochs=num_epoch)
+
+            # pseudo_label
+            pred_y, pred_score, pred_acc, pred_ent, pred_std = trainer.estimate_label()
+
+            # select data from target to source
+            selected_idx = trainer.select_top_data(pred_y, pred_score, pred_ent, pred_std)
+
+            # add new data
+            label_flag, data = trainer.generate_new_train_data(selected_idx, pred_y, pred_acc)
+
+
 
 
 if __name__ == '__main__':
@@ -133,14 +145,15 @@ if __name__ == '__main__':
     dataset = 'visda18'
     parser.add_argument('--dataset', type=str, default=dataset)
     parser.add_argument('--graph_off', type=bool, default=True)
-    parser.add_argument('--center_loss', type=bool, default=True)
+    parser.add_argument('--center_loss', type=bool, default=False)
 
 
     parser.add_argument('-a', '--arch', type=str, default='res')
     parser.add_argument('--root_path', type=str, default='./utils/', metavar='B',
                         help='root dir')
     parser.add_argument('--pretrain_resume', type=bool, default=False)
-    parser.add_argument('--finetune', type=bool, default=True)
+    parser.add_argument('--finetune', type=bool, default=False)
+    parser.add_argument('--eval_only', type=bool, default=False)
 
     # set up path
     working_dir = os.path.dirname(os.path.abspath(__file__))
@@ -152,8 +165,8 @@ if __name__ == '__main__':
                         default=os.path.join(working_dir, 'checkpoints'))
 
 
-    parser.add_argument('--pretrain_epoch', type=int, default=5)
-    parser.add_argument('--tune_epoch', type=int, default=20)
+    parser.add_argument('--pretrain_epoch', type=int, default=12)
+    parser.add_argument('--tune_epoch', type=int, default=4)
     # verbose setting
     parser.add_argument('--log_step', type=int, default=100)
     parser.add_argument('--log_epoch', type=int, default=4)

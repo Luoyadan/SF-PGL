@@ -13,6 +13,8 @@ from data_loader import Visda_Dataset, Office_Dataset, Home_Dataset, Visda18_Dat
 from utils.loss import FocalLoss, LabelSmoothing
 from torch.distributions import Categorical
 from models.component import Discriminator
+from torch.nn.functional import one_hot
+
 
 class ModelTrainer():
     def __init__(self, args, data, model, gnn_model=None, step=0, label_flag=None, v=None, logger=None):
@@ -26,7 +28,10 @@ class ModelTrainer():
 
         self.num_class = data.num_class
         self.num_task = args.batch_size
-        self.num_to_select = 0
+        # self.num_to_select = int(len(np.where(v == 0)[0]) * self.args.EF / 100)
+        self.class_name = data.class_name
+        self.class_ratio = None
+
 
         self.model = model
         # self.model = models.create(args.arch, args)
@@ -46,7 +51,7 @@ class ModelTrainer():
         if args.loss == 'focal':
             self.criterionCE = FocalLoss().cuda()
         elif args.loss == 'nll':
-            self.criterionCE = nn.NLLLoss(reduction='mean').cuda()
+            self.criterionCE = nn.NLLLoss(weight=self.class_ratio, reduction='mean').cuda()
         elif args.loss == 'smooth':
             self.criterionCE = LabelSmoothing(smoothing=0.3).cuda()
 
@@ -57,9 +62,18 @@ class ModelTrainer():
         self.val_acc = 0
         self.threshold = args.threshold
 
-        # if self.args.discriminator:
-        #     self.discriminator = Discriminator(self.args.in_features)
-        #     self.discriminator = nn.DataParallel(self.discriminator).cuda()
+        if self.args.eval_only:
+            checkpoint = torch.load(osp.join(args.checkpoints_dir, '{}_step_{}.pth.tar'.format(args.experiment, step)))
+            self.model.load_state_dict(checkpoint['model'])
+            self.gnnModel.load_state_dict(checkpoint['graph'])
+            # self.optimizer.load_state_dict(checkpoint['optimizer'])
+            self.logger.global_step = checkpoint['iteration']
+            # self.label_flag = checkpoint['label_flag']
+            # print(self.label_flag.shape)
+        else:
+            self.class_ratio = data.class_ratio.float()
+
+           
 
     def get_dataloader(self, dataset, training=False):
 
@@ -255,15 +269,87 @@ class ModelTrainer():
                               node_prec.data.cpu().numpy(), self.meter.avg[:-1].mean()))
                 self.meter.reset()
 
-        # save model
-        states = {'model': self.model.state_dict(),
-                  'graph': self.gnnModel.state_dict(),
-                  'iteration': self.logger.global_step,
-                  # 'val_acc': node_prec,
-                  'optimizer': self.optimizer.state_dict()}
-        torch.save(states, osp.join(args.checkpoints_dir, '{}_step_{}.pth.tar'.format(args.experiment, step)))
         self.meter.reset()
         return (self.model, self.gnnModel)
+    
+    def evaluate(self):
+        self.model.eval()
+        self.gnnModel.eval()
+
+        args = self.args
+        print('label estimation...')
+        if args.dataset == 'visda':
+            test_data = Visda_Dataset(root=args.data_dir, partition='test', label_flag=self.label_flag, target_ratio=self.step * args.EF / 100)
+        elif args.dataset == 'office':
+            test_data = Office_Dataset(root=args.data_dir, partition='test', label_flag=self.label_flag,
+                                       source=args.source_name, target=args.target_name, target_ratio=self.step * args.EF / 100)
+        elif args.dataset == 'home':
+            test_data = Home_Dataset(root=args.data_dir, partition='test', label_flag=self.label_flag, source=args.source_name,
+                              target=args.target_name, target_ratio=self.step * args.EF / 100)
+        elif args.dataset == 'visda18':
+            test_data = Visda18_Dataset(root=args.data_dir, partition='test', label_flag=self.label_flag,
+                                      target_ratio=self.step * args.EF / 100)
+        self.meter.reset()
+        # append labels and scores for target samples
+        # pred_labels = []
+        pred_scores = []
+        real_labels = []
+
+        target_loader = self.get_dataloader(test_data, training=False)
+        
+        with tqdm(total=len(target_loader)) as pbar:
+            for i, (images, targets, target_labels, split) in enumerate(target_loader):
+
+                images = Variable(images, requires_grad=False).cuda()
+                targets = Variable(targets).cuda()
+                targets = self.transform_shape(targets.unsqueeze(-1)).squeeze(-1)
+
+                init_edge, target_edge_mask, source_edge_mask, target_node_mask, source_node_mask = self.label2edge(targets)
+
+                # extract backbone features
+                features = self.model(images)
+                features = self.transform_shape(features)
+                torch.cuda.empty_cache()
+                # feed into graph networks
+                edge_logits, node_logits = self.gnnModel(init_node_feat=features, init_edge_feat=init_edge,
+                                                         target_mask=target_edge_mask)
+
+                del features
+                norm_node_logits = F.softmax(node_logits[-1], dim=-1)[target_node_mask, :]
+                target_score, target_pred = norm_node_logits.max(1)
+               
+                # only for debugging
+                target_labels = Variable(target_labels).cuda()
+                target_labels = self.transform_shape(target_labels.unsqueeze(-1)).view(-1)
+                pred = target_pred.detach().cpu()
+                target_prec = pred.eq(target_labels.detach().cpu()).double()
+
+                self.meter.update(
+                    target_labels.detach().cpu().view(-1).data.cpu().numpy(),
+                    target_prec.numpy())
+
+                
+                pred_scores.extend(norm_node_logits.cpu().detach().numpy())
+                real_labels.extend(target_labels.cpu().detach().numpy())
+                
+
+                if i % self.args.log_step == 0:
+                    print('Step: {} | {}; \t'
+                          'OS Prec {:.3%}\t'
+                          .format(i, len(target_loader),
+                                  self.meter.avg.mean()))
+
+                pbar.update()
+
+
+        preds = np.array(pred_scores)
+        labels = np.array(real_labels)
+        for k in range(self.args.num_class):
+            print('Target {} Precision: {:.3f}'.format(self.args.class_name[k], self.meter.avg[k]))
+        
+        return preds, labels
+
+
 
     def estimate_label(self):
 
@@ -287,6 +373,7 @@ class ModelTrainer():
         pred_scores = []
         real_labels = []
         pred_entropy = []
+        pred_std = []
         target_loader = self.get_dataloader(test_data, training=False)
         self.model.eval()
         self.gnnModel.eval()
@@ -313,6 +400,10 @@ class ModelTrainer():
                 if args.ranking == 'entropy':
                     target_entropy = Categorical(probs = norm_node_logits[target_node_mask, :]).entropy()
                     pred_entropy.append(target_entropy.cpu().detach())
+           
+                elif args.ranking == 'uncertainty':
+                    target_std = torch.std(norm_node_logits[target_node_mask, :], dim=0)
+                    pred_std.append(target_std)
                 # only for debugging
                 target_labels = Variable(target_labels).cuda()
                 target_labels = self.transform_shape(target_labels.unsqueeze(-1)).view(-1)
@@ -340,23 +431,24 @@ class ModelTrainer():
         pred_labels = torch.cat(pred_labels)
         pred_scores = torch.cat(pred_scores)
         real_labels = torch.cat(real_labels)
-
+        self.num_to_select = int(len(target_loader) * self.args.batch_size * (self.args.num_class - 1) * self.args.EF / 100)
         self.model.train()
         self.gnnModel.train()
-        self.num_to_select = int(len(target_loader) * self.args.batch_size * (self.args.num_class - 1) * self.args.EF / 100)
+
+        
 
         if args.ranking == 'entropy':
             pred_entropy = torch.cat(pred_entropy)
             return pred_labels.data.cpu().numpy(), pred_scores.data.cpu().numpy(), real_labels.data.cpu().numpy(), pred_entropy.data.cpu().numpy(), None
         elif args.ranking == 'uncertainty':
             pred_std = torch.cat(pred_std)
-            return pred_labels.data.cpu().numpy(), pred_score.data.cpu().numpy(), real_label.data.cpu().numpy(), None, pred_std.data.cpu().numpy()
+            return pred_labels.data.cpu().numpy(), pred_scores.data.cpu().numpy(), real_labels.data.cpu().numpy(), None, pred_std.data.cpu().numpy()
         else: 
             return pred_labels.data.cpu().numpy(), pred_scores.data.cpu().numpy(), real_labels.data.cpu().numpy(), None, None
 
 
 
-    def select_top_data(self, pred_label, pred_score, pred_entropy=None):
+    def select_top_data(self, pred_label, pred_score, pred_entropy=None, pred_std=None):
         highest_conf_recorder = np.zeros((self.num_class, ))
         if self.v is None:
             self.v = np.zeros(len(pred_score))
@@ -389,6 +481,8 @@ class ModelTrainer():
         highest_conf_recorder[-1] = pred_score[index_orig[-i]]
         for i in range(self.num_class):
             print("Pseudo Label for class {} is threshholded by {}".format(self.class_name[i], highest_conf_recorder[i]))
+
+        self.confidence_recorder = highest_conf_recorder
         return self.v
 
     def generate_new_train_data(self, sel_idx, pred_y, real_label):
@@ -441,24 +535,33 @@ class ModelTrainer():
         # update source data
         if self.args.dataset == 'visda':
             new_data = Visda_Dataset(root=self.args.data_dir, partition='train', label_flag=new_label_flag,
-                                     target_ratio=(self.step + 1) * self.args.EF / 100)
+                                     target_ratio=(self.step + 1) * self.args.EF / 100, confidence_ratio=self.confidence_recorder)
 
         elif self.args.dataset == 'office':
             new_data = Office_Dataset(root=self.args.data_dir, partition='train', label_flag=new_label_flag,
                                        source=self.args.source_name, target=self.args.target_name,
-                                      target_ratio=(self.step + 1) * self.args.EF / 100)
+                                      target_ratio=(self.step + 1) * self.args.EF / 100, confidence_ratio=self.confidence_recorder)
 
         elif self.args.dataset == 'home':
             new_data = Home_Dataset(root=self.args.data_dir, partition='train', label_flag=new_label_flag,
                                     source=self.args.source_name, target=self.args.target_name,
-                                    target_ratio=(self.step + 1) * self.args.EF / 100)
+                                    target_ratio=(self.step + 1) * self.args.EF / 100, confidence_ratio=self.confidence_recorder)
         elif self.args.dataset == 'visda18':
             new_data = Visda18_Dataset(root=self.args.data_dir, partition='train', label_flag=new_label_flag,
-                                     target_ratio=(self.step + 1) * self.args.EF / 100)
+                                     target_ratio=(self.step + 1) * self.args.EF / 100, confidence_ratio=self.confidence_recorder)
 
         print('selected pseudo-labeled data: {} of {} is correct, accuracy: {:0.4f}'.format(correct, total, acc))
         print('positive data: {} of {} is correct, accuracy: {:0.4f}'.format(pos_correct, pos_total, pos_acc))
         print('negative data: {} of {} is correct, accuracy: {:0.4f}'.format(neg_correct, neg_total, neg_acc))
+
+        # save model
+        states = {'model': self.model.state_dict(),
+                  'graph': self.gnnModel.state_dict(),
+                  'iteration': self.logger.global_step,
+                  'optimizer': self.optimizer.state_dict(),
+                  'label_flag': new_label_flag}
+        torch.save(states, osp.join(self.args.checkpoints_dir, '{}_step_{}.pth.tar'.format(self.args.experiment, self.step)))
+        print("Step {} model weights saved.".format(self.step))
         return new_label_flag, new_data
 
     def one_hot_encode(self, num_classes, class_idx):
