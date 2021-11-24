@@ -33,7 +33,7 @@ class ModelTrainer():
         self.class_ratio = None
 
 
-        self.model = model
+        self.model = model.model
         # self.model = models.create(args.arch, args)
         # self.model = nn.DataParallel(self.model).cuda()
         #
@@ -64,7 +64,9 @@ class ModelTrainer():
 
         if self.args.eval_only:
             checkpoint = torch.load(osp.join(args.checkpoints_dir, '{}_step_{}.pth.tar'.format(args.experiment, step)))
+            # print(self.model)
             self.model.load_state_dict(checkpoint['model'])
+            
             self.gnnModel.load_state_dict(checkpoint['graph'])
             # self.optimizer.load_state_dict(checkpoint['optimizer'])
             self.logger.global_step = checkpoint['iteration']
@@ -77,10 +79,10 @@ class ModelTrainer():
 
     def get_dataloader(self, dataset, training=False):
 
-        # if self.args.visualization:
-        #     data_loader = DataLoader(dataset, batch_size=self.batch_size, num_workers=self.data_workers,
-        #                              shuffle=training, pin_memory=True, drop_last=True)
-        #     return data_loader
+        if self.args.visualization:
+            data_loader = DataLoader(dataset, batch_size=4, num_workers=self.data_workers,
+                                     shuffle=training, pin_memory=True, drop_last=True)
+            return data_loader
 
         data_loader = DataLoader(dataset, batch_size=self.batch_size, num_workers=self.data_workers,
                                  shuffle=training, pin_memory=True, drop_last=training)
@@ -594,41 +596,59 @@ class ModelTrainer():
 
     def extract_feature(self):
         print('Feature extracting...')
+        args = self.args
         self.meter.reset()
+
+        if args.dataset == 'visda':
+            test_data = Visda_Dataset(root=args.data_dir, partition='vis', label_flag='vis', target_ratio=self.step * args.EF / 100)
+        elif args.dataset == 'office':
+            test_data = Office_Dataset(root=args.data_dir, partition='vis', label_flag='vis',
+                                       source=args.source_name, target=args.target_name, target_ratio=self.step * args.EF / 100)
+        elif args.dataset == 'home':
+            test_data = Home_Dataset(root=args.data_dir, partition='vis', label_flag='vis', source=args.source_name,
+                              target=args.target_name, target_ratio=self.step * args.EF / 100)
+        elif args.dataset == 'visda18':
+            test_data = Visda18_Dataset(root=args.data_dir, partition='vis', label_flag='vis',
+                                      target_ratio=self.step * args.EF / 100)
+            
         # append labels and scores for target samples
         vgg_features_target = []
         node_features_target = []
         labels = []
         overall_split = []
-        target_loader = self.get_dataloader(self.data, training=False)
+        
+        target_loader = self.get_dataloader(test_data, training=False)
         self.model.eval()
         self.gnnModel.eval()
         num_correct = 0
         skip_flag = self.args.visualization
-        with tqdm(total=len(target_loader)) as pbar:
-            for i, (images, targets, target_labels, _, split) in enumerate(target_loader):
+        print('extract features for target data...')
+        with tqdm(total=51) as pbar:
+            
+            for i, (images, targets, target_labels, split) in enumerate(target_loader):
 
                 # for debugging
                 # if i > 100:
                 #     break
                 images = Variable(images, requires_grad=False).cuda()
                 targets = Variable(targets).cuda()
-
-                # only for debugging
-                # target_labels = Variable(target_labels).cuda()
-
+                
+                images = Variable(images, requires_grad=False).cuda()
+                targets = Variable(targets).cuda()
                 targets = self.transform_shape(targets.unsqueeze(-1)).squeeze(-1)
-                target_labels = self.transform_shape(target_labels.unsqueeze(-1)).squeeze(-1).cuda()
+
                 init_edge, target_edge_mask, source_edge_mask, target_node_mask, source_node_mask = self.label2edge(targets)
-                # gt_edge = self.label2edge_gt(target_labels)
+
                 # extract backbone features
                 features = self.model(images)
                 features = self.transform_shape(features)
-
+                torch.cuda.empty_cache()
                 # feed into graph networks
                 edge_logits, node_feat = self.gnnModel(init_node_feat=features, init_edge_feat=init_edge,
                                                          target_mask=target_edge_mask)
-                vgg_features_target.append(features.data.cpu())
+
+                
+                # vgg_features_target.append(features.data.cpu())
                 #####heat map only
                 # temp = np.array(edge_logits[0].data.cpu()) * 4
                 # ax = sns.heatmap(temp.squeeze(), vmax=1)#
@@ -644,6 +664,8 @@ class ModelTrainer():
                 if skip_flag and i > 50:
                     break
 
-                pbar.update(n=self.num_class)
+                pbar.update(n=1)
+        
+        
 
         return vgg_features_target, node_features_target, labels, overall_split

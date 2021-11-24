@@ -165,7 +165,7 @@ class SRCModelTrainer():
             self.classifier.load_state_dict(checkpoint['classifier'])
             self.optimizer.load_state_dict(checkpoint['optimizer'])
             self.logger.global_step = checkpoint['iteration']
-
+            print('succefully load weights for the source pretrained model: {} at Step {}'.format(args.experiment, step))
             return self.model
 
         

@@ -44,6 +44,8 @@ class Base_Dataset(data.Dataset):
             return int(len(self.target_image) / (self.num_class - 1))
         elif self.partition == 'tune':
             return int(len(self.target_image))
+        elif self.partition == 'vis':
+            return int(len(self.target_image))
 
 
     def __getitem__(self, item):
@@ -133,49 +135,71 @@ class Base_Dataset(data.Dataset):
         # Phase 2
         else:
             # num_class_index_target = int(self.target_ratio * (self.num_class - 1))
-
-            if self.target_ratio > 0:
-
-                class_index_target = self.available_index
-
-                # class_index_target = random.sample(available_index, min(num_class_index_target, len(available_index)))
-
-            for classes in class_index_target:
-                # select support samples from source domain or target domain
-                image = Image.open(random.choice(self.target_image_list[classes])).convert('RGB')
-
-                if self.transformer is not None:
-                    image = self.transformer(image)
-                image_data.append(image)
-                label_data.append(classes)
-                # domain_label.append(0)
-                ST_split.append(0)
-                # target_real_label.append(classes)
-
-            # add target samples
-            for i in range(self.num_class - 1):
-
-                if self.partition == 'train':
-                    index = random.choice(list(range(len(self.label_flag))))
-                    # index = random.choice(list(range(len(self.target_image))))
+            if self.partition == 'vis':
+                for classes in range(self.num_class - 1):
+                    image = Image.open(random.choice(self.source_image[classes])).convert('RGB')
+                    if self.transformer is not None:
+                        image = self.transformer(image)
+                    image_data.append(image)
+                    label_data.append(classes)
+                    ST_split.append(0)
+                    
+                for classes in range(self.num_class - 1):    
+                    index = random.choice(list(range(len(self.target_image))))
                     target_image = Image.open(self.target_image[index]).convert('RGB')
                     if self.transformer is not None:
                         target_image = self.transformer(target_image)
                     image_data.append(target_image)
-                    label_data.append(self.label_flag[index])
+                    label_data.append(self.target_label[index])
                     random_real_label.append(self.target_label[index])
+                    ST_split.append(1)
+        
+                
+                
+            else:
+
+                if self.target_ratio > 0:
+
+                    class_index_target = self.available_index
+
+                    # class_index_target = random.sample(available_index, min(num_class_index_target, len(available_index)))
+
+                for classes in class_index_target:
+                    # select support samples from source domain or target domain
+                    image = Image.open(random.choice(self.target_image_list[classes])).convert('RGB')
+
+                    if self.transformer is not None:
+                        image = self.transformer(image)
+                    image_data.append(image)
+                    label_data.append(classes)
                     # domain_label.append(0)
                     ST_split.append(0)
+                    # target_real_label.append(classes)
 
-                elif self.partition == 'test':
-                    target_image = Image.open(self.target_image[item * (self.num_class - 1) + i]).convert('RGB')
-                    if self.transformer is not None:
-                        target_image = self.transformer(target_image)
-                    image_data.append(target_image)
-                    label_data.append(self.num_class)
-                    random_real_label.append(self.target_label[item * (self.num_class - 1) + i])
-                    # domain_label.append(0)
-                    ST_split.append(1)
+                # add target samples
+                for i in range(self.num_class - 1):
+
+                    if self.partition == 'train':
+                        index = random.choice(list(range(len(self.label_flag))))
+                        # index = random.choice(list(range(len(self.target_image))))
+                        target_image = Image.open(self.target_image[index]).convert('RGB')
+                        if self.transformer is not None:
+                            target_image = self.transformer(target_image)
+                        image_data.append(target_image)
+                        label_data.append(self.label_flag[index])
+                        random_real_label.append(self.target_label[index])
+                        # domain_label.append(0)
+                        ST_split.append(0)
+
+                    elif self.partition == 'test':
+                        target_image = Image.open(self.target_image[item * (self.num_class - 1) + i]).convert('RGB')
+                        if self.transformer is not None:
+                            target_image = self.transformer(target_image)
+                        image_data.append(target_image)
+                        label_data.append(self.num_class)
+                        random_real_label.append(self.target_label[item * (self.num_class - 1) + i])
+                        # domain_label.append(0)
+                        ST_split.append(1)
 
         image_data = torch.stack(image_data)
         label_data = torch.tensor(label_data).type(torch.LongTensor)
@@ -216,7 +240,7 @@ class Base_Dataset(data.Dataset):
 
 class Office_Dataset(Base_Dataset):
 
-    def __init__(self, root, partition, label_flag=None, source='A', target='W', target_ratio=0.0):
+    def __init__(self, root, partition, label_flag=None, source='A', target='W', target_ratio=0.0, confidence_ratio=None):
         super(Office_Dataset, self).__init__(root, partition, target_ratio)
         # set dataset info
         src_name, tar_name = self.getFilePath(source, target)
@@ -241,6 +265,13 @@ class Office_Dataset(Base_Dataset):
             self.available_index = [key for key in self.target_image_list.keys() if len(self.target_image_list[key]) > 0
                                    and key < self.num_class - 1]
             self.num_labeled_target = sum([len(self.target_image_list[key]) for key in self.target_image_list.keys()[:-2]])
+            if confidence_ratio is not None:
+                self.class_ratio = 1 - torch.tensor(confidence_ratio[:-1])
+            else:
+                self.class_ratio = torch.tensor([self.num_labeled_target - len(self.target_image_list[key]) for key in list(self.target_image_list.keys())[:-2]]).float()
+            self.class_ratio = softmax(self.class_ratio)
+            print("class weighted reconsidered")
+            print(self.class_ratio)
 
         if self.target_ratio > 0:
             self.alpha_value = [len(self.source_image[key]) + len(self.target_image_list[key]) for key in self.source_image.keys()]
@@ -277,7 +308,7 @@ class Office_Dataset(Base_Dataset):
 
 
 class Home_Dataset(Base_Dataset):
-    def __init__(self, root, partition, label_flag=None, source='A', target='R', target_ratio=0.0):
+    def __init__(self, root, partition, label_flag=None, source='A', target='R', target_ratio=0.0, confidence_ratio=None):
         super(Home_Dataset, self).__init__(root, partition, target_ratio)
         src_name, tar_name = self.getFilePath(source, target)
         self.source_path = os.path.join(root, src_name)
@@ -305,6 +336,13 @@ class Home_Dataset(Base_Dataset):
                                and key < self.num_class - 1]
             self.num_labeled_target = sum(
                 [len(self.target_image_list[key]) for key in list(self.target_image_list.keys())[:-2]])
+            if confidence_ratio is not None:
+                self.class_ratio = 1 - torch.tensor(confidence_ratio[:-1])
+            else:
+                self.class_ratio = torch.tensor([self.num_labeled_target - len(self.target_image_list[key]) for key in list(self.target_image_list.keys())[:-2]]).float()
+            self.class_ratio = softmax(self.class_ratio)
+            print("class weighted reconsidered")
+            print(self.class_ratio)
 
 
         # if self.target_ratio > 0:
@@ -345,7 +383,7 @@ class Home_Dataset(Base_Dataset):
 
 
 class Visda_Dataset(Base_Dataset):
-    def __init__(self, root, partition, label_flag=None, target_ratio=0.0):
+    def __init__(self, root, partition, label_flag=None, target_ratio=0.0, confidence_ratio=None):
         super(Visda_Dataset, self).__init__(root, partition, target_ratio)
         # set dataset info
         self.source_path = os.path.join(root, 'source_list.txt')
@@ -370,6 +408,13 @@ class Visda_Dataset(Base_Dataset):
                                    and key < self.num_class - 1]
             self.num_labeled_target = sum(
                 [len(self.target_image_list[key]) for key in self.target_image_list.keys()][:-2])
+            if confidence_ratio is not None:
+                self.class_ratio = 1 - torch.tensor(confidence_ratio[:-1])
+            else:
+                self.class_ratio = torch.tensor([self.num_labeled_target - len(self.target_image_list[key]) for key in list(self.target_image_list.keys())[:-2]]).float()
+            self.class_ratio = softmax(self.class_ratio)
+            print("class weighted reconsidered")
+            print(self.class_ratio)
 
 
 class Visda18_Dataset(Base_Dataset):
@@ -390,7 +435,7 @@ class Visda18_Dataset(Base_Dataset):
             # self.label_flag = torch.ones(len(self.target_image)) * self.num_class
 
 
-        if self.label_flag is not None:
+        if self.label_flag is not None and self.label_flag is not 'vis':
             # if pseudo label comes
             self.target_image_list = {key: [] for key in range(self.num_class + 1)}
             for i in range(len(self.label_flag)):

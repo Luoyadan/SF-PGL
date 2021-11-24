@@ -1,0 +1,15 @@
+
+The following have been reloaded with a version change:
+  1) anaconda/3.5 => anaconda/3.6
+
+Traceback (most recent call last):
+  File "train_new.py", line 249, in <module>
+    main(parser.parse_args())
+  File "train_new.py", line 61, in main
+    src_data = Visda_Dataset(root=args.data_dir, partition='train', label_flag=None)
+  File "/scratch/itee/uqyluo/SF-PGL/data_loader.py", line 393, in __init__
+    self.source_image, self.target_image, self.target_label, self.all_source_images, self.all_source_labels = self.load_dataset()
+  File "/scratch/itee/uqyluo/SF-PGL/data_loader.py", line 218, in load_dataset
+    with open(self.source_path) as f:
+FileNotFoundError: [Errno 2] No such file or directory: '/scratch/itee/uqyluo/SF-PGL/data/visda/source_list.txt'
+srun: error: gpunode-1-10: task 0: Exited with exit code 1

@@ -30,7 +30,7 @@ def visualize_TSNE(feat, label, num_class, args, split):
     label = (label > num_class-2).astype(np.int).reshape(-1)
     label = label + 1
     ind = np.argsort(label)
-    split_idx = np.array(torch.cat(split)).reshape(-1)
+    split_idx = torch.cat(split).view(-1).numpy()
 
     target_idx = np.where(split_idx == 1)[0]
     source_idx = np.where(split_idx == 0)[0]
@@ -77,7 +77,7 @@ def visualize_TSNE(feat, label, num_class, args, split):
     ax.axis('off')
     ax.axis('tight')
 
-    ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05), fancybox=True, ncol=5, markerscale=4)
+    # ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05), fancybox=True, ncol=5, markerscale=4)
     txts = []
     # We add the labels for each digit.
     # txts = ["back_pack", "bike", "bike_helmet", "bookcase", "bottle",

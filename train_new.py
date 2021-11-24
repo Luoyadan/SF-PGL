@@ -6,11 +6,11 @@ import numpy as np
 # torch-related packages
 import torch
 # import matplotlib.pyplot as plt
-# from utils.visualization import visualize_TSNE
+from utils.visualization import visualize_TSNE
 torch.backends.cudnn.enabled = False
 # torch.backends.cudnn.deterministic = True
 # torch.backends.cudnn.benchmark = True
-
+import pickle
 
 import sys
 import warnings
@@ -27,6 +27,8 @@ from model_trainer_new import ModelTrainer
 from src_model_trainer_new import SRCModelTrainer
 from utils.logger import Logger
 from utils.visualization import draw_reliability_graph
+import matplotlib.pyplot as plt
+
 
 def set_exp_name(args):
     exp_name = 'D-{}'.format(args.dataset)
@@ -83,23 +85,13 @@ def main(args):
     args.experiment = set_exp_name(args)
     logger = Logger(args)
 
-    # Phase 1
-    src_trainer = SRCModelTrainer(args=args, data=src_data, logger=logger)
-    model = src_trainer.train(epochs=args.pretrain_epoch)
+    
 
 
-    if args.eval_only:
-        # initialize GNN
-        del src_trainer
-        # step to specify
-        step_to_eval = 10
-        trainer = ModelTrainer(args=args, data=src_data, model=model, gnn_model=None, step=step_to_eval, label_flag=None, v=None,
-                                logger=logger)
-        preds, labels = trainer.evaluate()
-        
-        draw_reliability_graph(preds, labels, args.experiment)
-
-    else:
+    if not args.eval_only:
+        # Phase 1
+        src_trainer = SRCModelTrainer(args=args, data=src_data, logger=logger)
+        model = src_trainer.train(epochs=args.pretrain_epoch)
         # Phase 2
         pred_y, pred_score, pred_acc, pred_ent, pred_std = src_trainer.estimate_label()
         selected_idx, new_pred_y, new_pred_acc = src_trainer.select_top_data(pred_y, pred_score, pred_acc, pred_ent, pred_std)
@@ -136,24 +128,58 @@ def main(args):
             # add new data
             label_flag, data = trainer.generate_new_train_data(selected_idx, pred_y, pred_acc)
 
+    else:
+        # evaluation only
+        if os.path.exists('./vis.pickle'):
+            with open('./vis.pickle', 'rb') as f:
+                data = pickle.load(f)
+            node_feat = data['node_feat']
+            target_labels = data['target_labels']
+            split = data['split']
+            visualize_TSNE(node_feat, target_labels, args.num_class, args, split)
+
+            plt.savefig('./node_tsne.pdf', dpi=500)
+            print('successfully drawed and saved.')
+        else:
+            step_to_eval = args.step_to_eval
+            # Load model from Phase 1
+            src_model = SRCModelTrainer(args=args, data=src_data, step=step_to_eval, logger=logger)
+            
+            # initialize GNN
+        
+            trainer = ModelTrainer(args=args, data=src_data, model=src_model, gnn_model=None, step=step_to_eval, label_flag=None, v=None,
+                                    logger=logger)
+            _, node_feat, target_labels, split = trainer.extract_feature()
+            vis_data = {'node_feat':node_feat, 'target_labels':target_labels, 'split':split}
+            with open('./vis.pickle', 'wb') as f:
+                pickle.dump(vis_data, f)
+            print('successfully saved vis data.')
+            
+        
+        # preds, labels = trainer.evaluate()
+        
+        # draw_reliability_graph(preds, labels, args.experiment)
+        
+
 
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Source-free Progressive Graph Learning for Open-set Domain Adaptation')
     # set up dataset & backbone embedding
-    dataset = 'visda18'
+    dataset = 'visda'
     parser.add_argument('--dataset', type=str, default=dataset)
     parser.add_argument('--graph_off', type=bool, default=True)
     parser.add_argument('--center_loss', type=bool, default=False)
 
 
-    parser.add_argument('-a', '--arch', type=str, default='res')
+    parser.add_argument('-a', '--arch', type=str, default='res', choices=['res', 'res152', 'vgg'])
     parser.add_argument('--root_path', type=str, default='./utils/', metavar='B',
                         help='root dir')
     parser.add_argument('--pretrain_resume', type=bool, default=False)
     parser.add_argument('--finetune', type=bool, default=False)
     parser.add_argument('--eval_only', type=bool, default=False)
+    parser.add_argument('--step_to_eval', type=int, default=19)
 
     # set up path
     working_dir = os.path.dirname(os.path.abspath(__file__))
@@ -186,11 +212,11 @@ if __name__ == '__main__':
     parser.add_argument('--seed', type=int, default=1, metavar='S',
                         help='random seed (default: 1)')
 
-    parser.add_argument('-b', '--batch_size', type=int, default=4)
-    parser.add_argument('--threshold', type=float, default=0.1)
+    parser.add_argument('-b', '--batch_size', type=int, default=8)
+    parser.add_argument('--threshold', type=float, default=0.7)
 
     parser.add_argument('--dropout', type=float, default=0.2)
-    parser.add_argument('--EF', type=int, default=20)
+    parser.add_argument('--EF', type=int, default=5)
     parser.add_argument('--loss', type=str, default='nll', choices=['nll', 'focal', 'smooth'])
     parser.add_argument('--ranking', type=str, default='logits', choices=['entropy', 'logits', 'uncertainty'])
 
