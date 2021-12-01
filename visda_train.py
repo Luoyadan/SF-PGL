@@ -23,8 +23,8 @@ os.environ["CUDA_VISIBLE_DEVICES"]="0,1,2"
 
 # data
 from data_loader import Visda_Dataset, Office_Dataset, Home_Dataset, Visda18_Dataset
-from model_trainer import ModelTrainer
-from src_model_trainer import SRCModelTrainer
+from model_trainer_new import ModelTrainer
+from src_model_trainer_new import SRCModelTrainer
 from utils.logger import Logger
 
 def main(args):
@@ -73,52 +73,79 @@ def main(args):
     args.experiment = set_exp_name(args)
     logger = Logger(args)
 
-    # Phase 1
-    src_trainer = SRCModelTrainer(args=args, data=src_data, logger=logger)
-    model = src_trainer.train(epochs=args.pretrain_epoch)
 
-    # Phase 2
-    pred_y, pred_score, pred_acc = src_trainer.estimate_label()
-    selected_idx = src_trainer.select_top_data(pred_y, pred_score)
-
-    label_flag, data = src_trainer.generate_new_train_data(selected_idx, pred_y, pred_acc)
-
-    # initialize GNN
-    gnn_model = None
-    del src_trainer
     if not args.visualization:
+            # Phase 1
+            src_trainer = SRCModelTrainer(args=args, data=src_data, logger=logger)
+            model = src_trainer.train(epochs=args.pretrain_epoch)
+            # Phase 2
+            pred_y, pred_score, pred_acc, pred_ent, pred_std = src_trainer.estimate_label()
+            selected_idx, new_pred_y, new_pred_acc = src_trainer.select_top_data(pred_y, pred_score, pred_acc, pred_ent, pred_std)
+            
 
-        for step in range(1, total_step):
+            label_flag, data = src_trainer.generate_new_train_data(selected_idx, new_pred_y, new_pred_acc)
+            # initialize GNN
+            gnn_model = None
+            del src_trainer
 
-            print("This is {}-th step with EF={}%".format(step, args.EF))
 
-            trainer = ModelTrainer(args=args, data=data, model=model, gnn_model=gnn_model, step=step, label_flag=label_flag, v=selected_idx,
-                                   logger=logger)
+            # step = 1
+            for step in range(1, total_step):
 
-            # train the model
-            args.log_epoch = 4 + step//2
-            if step == 1:
-                num_epoch = 1
-            else:
-                num_epoch = 1 + step // 2
-            model, gnn_model = trainer.train(step, epochs=num_epoch, step_size=args.log_epoch)
+                print("This is {}-th step".format(step))
 
-            # pseudo_label
-            pred_y, pred_score, pred_acc = trainer.estimate_label()
+                trainer = ModelTrainer(args=args, data=data, model=model, gnn_model=gnn_model, step=step, label_flag=label_flag, v=selected_idx,
+                                        logger=logger)
 
-            # select data from target to source
-            selected_idx = trainer.select_top_data(pred_y, pred_score)
+                # train the model
+                # step_size = 15 + step//2
 
-            # add new data
-            label_flag, data = trainer.generate_new_train_data(selected_idx, pred_y, pred_acc)
+                args.log_epoch = 4 + step//2
+                if step == 1:
+                    num_epoch = 1
+                else:
+                    num_epoch = 1 + step // 2
+                model, gnn_model = trainer.train(step, epochs=num_epoch)
+
+                # pseudo_label
+                pred_y, pred_score, pred_acc, pred_ent, pred_std = trainer.estimate_label()
+
+                # select data from target to source
+                selected_idx = trainer.select_top_data(pred_y, pred_score, pred_ent, pred_std)
+
+                # add new data
+                label_flag, data = trainer.generate_new_train_data(selected_idx, pred_y, pred_acc)
+
     else:
-        # load trained weights
-        trainer = ModelTrainer(args=args, data=data)
-        trainer.load_model_weight(args.checkpoint_path)
-        vgg_feat, node_feat, target_labels, split = trainer.extract_feature()
-        visualize_TSNE(node_feat, target_labels, args.num_class, args, split)
+        # evaluation only
+        if os.path.exists('./vis.pickle'):
+            with open('./vis.pickle', 'rb') as f:
+                data = pickle.load(f)
+            node_feat = data['node_feat']
+            target_labels = data['target_labels']
+            split = data['split']
+            visualize_TSNE(node_feat, target_labels, args.num_class, args, split)
 
-        plt.savefig('./node_tsne.png', dpi=300)
+            plt.savefig('./node_tsne.pdf', dpi=500)
+            print('successfully drawed and saved.')
+        else:
+            step_to_eval = args.step_to_eval
+            # Load model from Phase 1
+            src_model = SRCModelTrainer(args=args, data=src_data, step=step_to_eval, logger=logger)
+            
+            # initialize GNN
+        
+            trainer = ModelTrainer(args=args, data=src_data, model=src_model, gnn_model=None, step=step_to_eval, label_flag=None, v=None,
+                                    logger=logger)
+            _, node_feat, target_labels, split = trainer.extract_feature()
+            vis_data = {'node_feat':node_feat, 'target_labels':target_labels, 'split':split}
+            with open('./vis.pickle', 'wb') as f:
+                pickle.dump(vis_data, f)
+            print('successfully saved vis data.')
+            
+    
+
+ 
 
 
 
@@ -138,7 +165,7 @@ if __name__ == '__main__':
     dataset = 'visda'
     parser.add_argument('--dataset', type=str, default=dataset)
     parser.add_argument('--graph_off', type=bool, default=True)
-    parser.add_argument('-a', '--arch', type=str, default='vgg')
+    parser.add_argument('-a', '--arch', type=str, default='res', choices=['res', 'res152', 'vgg'])
     parser.add_argument('--root_path', type=str, default='./utils/', metavar='B',
                         help='root dir')
 
@@ -176,16 +203,16 @@ if __name__ == '__main__':
     parser.add_argument('--threshold', type=float, default=0.7)
 
     parser.add_argument('--dropout', type=float, default=0.2)
-    parser.add_argument('--EF', type=int, default=5)
-    parser.add_argument('--loss', type=str, default='focal', choices=['nll', 'focal'])
-
+    parser.add_argument('--EF', type=int, default=10)
+    parser.add_argument('--loss', type=str, default='nll', choices=['nll', 'focal'])
+    parser.add_argument('--ranking', type=str, default='logits', choices=['entropy', 'logits', 'uncertainty'])
 
     # optimizer
     parser.add_argument('--lr', type=float, default=1e-3)
     parser.add_argument('--weight_decay', type=float, default=5e-5)
 
     # GNN parameters
-    parser.add_argument('--in_features', type=int, default=4096)
+    parser.add_argument('--in_features', type=int, default=2048)
     if dataset == 'home':
         parser.add_argument('--node_features', type=int, default=512)
         parser.add_argument('--edge_features', type=int, default=512)
@@ -203,7 +230,9 @@ if __name__ == '__main__':
     parser.add_argument('--discriminator', type=bool, default=False)
     parser.add_argument('--adv_coeff', type=float, default=0.4)
 
+    parser.add_argument('--center_loss', type=bool, default=False)
     #GNN hyper-parameters
     parser.add_argument('--node_loss', type=float, default=0.3)
+    parser.add_argument('--diverse_loss', type=float, default=3.0)
     main(parser.parse_args())
 

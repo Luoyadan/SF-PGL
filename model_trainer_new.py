@@ -32,8 +32,10 @@ class ModelTrainer():
         self.class_name = data.class_name
         self.class_ratio = None
 
-
-        self.model = model.model
+        if self.args.visualization:
+            self.model = self.model.model
+        else:
+            self.model = model
         # self.model = models.create(args.arch, args)
         # self.model = nn.DataParallel(self.model).cuda()
         #

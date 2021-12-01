@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "visda_train.py", line 235, in <module>
+    main(parser.parse_args())
+  File "visda_train.py", line 79, in main
+    src_trainer = SRCModelTrainer(args=args, data=src_data, logger=logger)
+  File "/scratch/itee/uqyluo/SF-PGL/src_model_trainer_new.py", line 59, in __init__
+    if args.center_loss:
+AttributeError: 'Namespace' object has no attribute 'center_loss'
+srun: error: gpunode-1-3: task 0: Exited with exit code 1

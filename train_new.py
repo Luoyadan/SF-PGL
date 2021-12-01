@@ -167,7 +167,7 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Source-free Progressive Graph Learning for Open-set Domain Adaptation')
     # set up dataset & backbone embedding
-    dataset = 'visda'
+    dataset = 'visda18'
     parser.add_argument('--dataset', type=str, default=dataset)
     parser.add_argument('--graph_off', type=bool, default=True)
     parser.add_argument('--center_loss', type=bool, default=False)
@@ -213,10 +213,10 @@ if __name__ == '__main__':
                         help='random seed (default: 1)')
 
     parser.add_argument('-b', '--batch_size', type=int, default=8)
-    parser.add_argument('--threshold', type=float, default=0.7)
+    parser.add_argument('--threshold', type=float, default=0.1)
 
     parser.add_argument('--dropout', type=float, default=0.2)
-    parser.add_argument('--EF', type=int, default=5)
+    parser.add_argument('--EF', type=int, default=10)
     parser.add_argument('--loss', type=str, default='nll', choices=['nll', 'focal', 'smooth'])
     parser.add_argument('--ranking', type=str, default='logits', choices=['entropy', 'logits', 'uncertainty'])
 

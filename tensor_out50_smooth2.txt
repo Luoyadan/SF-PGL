@@ -1,3 +1,0 @@
-Epoch 0, current lr 0.001
----- Start Epoch 3 Training --------
-Step: 2980 | 745; Epoch: 3	Training Loss -0.278	Training Prec 92.708%	
