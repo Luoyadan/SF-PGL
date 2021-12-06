@@ -102,7 +102,7 @@ def main(args):
 
                 args.log_epoch = 4 + step//2
                 if step == 1:
-                    num_epoch = 1
+                    num_epoch = 3
                 else:
                     num_epoch = 1 + step // 2
                 model, gnn_model = trainer.train(step, epochs=num_epoch)
@@ -168,6 +168,10 @@ if __name__ == '__main__':
     parser.add_argument('-a', '--arch', type=str, default='res', choices=['res', 'res152', 'vgg'])
     parser.add_argument('--root_path', type=str, default='./utils/', metavar='B',
                         help='root dir')
+    parser.add_argument('--pretrain_resume', type=bool, default=False)
+    parser.add_argument('--finetune', type=bool, default=False)
+    parser.add_argument('--eval_only', type=bool, default=False)
+    parser.add_argument('--step_to_eval', type=int, default=19)
 
     # set up path
     working_dir = os.path.dirname(os.path.abspath(__file__))
@@ -179,7 +183,7 @@ if __name__ == '__main__':
                         default=os.path.join(working_dir, 'checkpoints'))
 
 
-    parser.add_argument('--pretrain_epoch', type=int, default=2)
+    parser.add_argument('--pretrain_epoch', type=int, default=3)
     # verbose setting
     parser.add_argument('--log_step', type=int, default=100)
     parser.add_argument('--log_epoch', type=int, default=4)
@@ -199,11 +203,11 @@ if __name__ == '__main__':
     parser.add_argument('--seed', type=int, default=1, metavar='S',
                         help='random seed (default: 1)')
 
-    parser.add_argument('-b', '--batch_size', type=int, default=7)
+    parser.add_argument('-b', '--batch_size', type=int, default=12)
     parser.add_argument('--threshold', type=float, default=0.7)
 
     parser.add_argument('--dropout', type=float, default=0.2)
-    parser.add_argument('--EF', type=int, default=10)
+    parser.add_argument('--EF', type=int, default=5)
     parser.add_argument('--loss', type=str, default='nll', choices=['nll', 'focal'])
     parser.add_argument('--ranking', type=str, default='logits', choices=['entropy', 'logits', 'uncertainty'])
 

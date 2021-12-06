@@ -212,7 +212,7 @@ if __name__ == '__main__':
     parser.add_argument('--seed', type=int, default=1, metavar='S',
                         help='random seed (default: 1)')
 
-    parser.add_argument('-b', '--batch_size', type=int, default=8)
+    parser.add_argument('-b', '--batch_size', type=int, default=4)
     parser.add_argument('--threshold', type=float, default=0.1)
 
     parser.add_argument('--dropout', type=float, default=0.2)
