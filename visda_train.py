@@ -77,7 +77,7 @@ def main(args):
     if not args.visualization:
             # Phase 1
             src_trainer = SRCModelTrainer(args=args, data=src_data, logger=logger)
-            model = src_trainer.train(epochs=args.pretrain_epoch)
+            model = src_trainer.train(epochs=args.pretrain_epoch, step_size=args.pretrain_epoch)
             # Phase 2
             pred_y, pred_score, pred_acc, pred_ent, pred_std = src_trainer.estimate_label()
             selected_idx, new_pred_y, new_pred_acc = src_trainer.select_top_data(pred_y, pred_score, pred_acc, pred_ent, pred_std)
@@ -100,12 +100,12 @@ def main(args):
                 # train the model
                 # step_size = 15 + step//2
 
-                args.log_epoch = 4 + step//2
-                if step == 1:
-                    num_epoch = 3
+                args.log_epoch = 1 + step//2
+                if step == 1 or step == 2:
+                    num_epoch = 1
                 else:
-                    num_epoch = 1 + step // 2
-                model, gnn_model = trainer.train(step, epochs=num_epoch)
+                    num_epoch = 2 + step // 2
+                model, gnn_model = trainer.train(step, epochs=num_epoch, step_size=args.log_epoch)
 
                 # pseudo_label
                 pred_y, pred_score, pred_acc, pred_ent, pred_std = trainer.estimate_label()
@@ -183,10 +183,10 @@ if __name__ == '__main__':
                         default=os.path.join(working_dir, 'checkpoints'))
 
 
-    parser.add_argument('--pretrain_epoch', type=int, default=3)
+    parser.add_argument('--pretrain_epoch', type=int, default=2)
     # verbose setting
     parser.add_argument('--log_step', type=int, default=100)
-    parser.add_argument('--log_epoch', type=int, default=4)
+    parser.add_argument('--log_epoch', type=int, default=2)
 
     if dataset == 'office':
         parser.add_argument('--source_name', type=str, default='D')
@@ -203,7 +203,7 @@ if __name__ == '__main__':
     parser.add_argument('--seed', type=int, default=1, metavar='S',
                         help='random seed (default: 1)')
 
-    parser.add_argument('-b', '--batch_size', type=int, default=12)
+    parser.add_argument('-b', '--batch_size', type=int, default=4)
     parser.add_argument('--threshold', type=float, default=0.7)
 
     parser.add_argument('--dropout', type=float, default=0.2)
@@ -232,11 +232,11 @@ if __name__ == '__main__':
 
     #Discrminator
     parser.add_argument('--discriminator', type=bool, default=False)
-    parser.add_argument('--adv_coeff', type=float, default=0.4)
+    parser.add_argument('--adv_coeff', type=float, default=0)
 
     parser.add_argument('--center_loss', type=bool, default=False)
     #GNN hyper-parameters
     parser.add_argument('--node_loss', type=float, default=0.3)
-    parser.add_argument('--diverse_loss', type=float, default=3.0)
+    parser.add_argument('--diverse_loss', type=float, default=1)
     main(parser.parse_args())
 

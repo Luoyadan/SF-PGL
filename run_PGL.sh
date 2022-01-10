@@ -4,8 +4,8 @@
 #SBATCH --job-name=SF_PGL
 #SBATCH --time=48:00:00
 #SBATCH --mem-per-cpu=30G
-#SBATCH -o tensor_out_visda17_res_5_ep3.txt
-#SBATCH -e tensor_err_visda17_res_5_ep3.txt
+#SBATCH -o tensor_out_visda17_res_batch4_EF5_ep2_the0.7.txt
+#SBATCH -e tensor_err_visda17_res_batch4_EF5_ep2_the0.7.txt
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:tesla-smx2:1
 #SBATCH --ntasks-per-node=1
