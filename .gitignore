@@ -1,7 +1,3 @@
-# old scripts
-train_new.py
-train.py
-
 # data
 data/
 checkpoints/
