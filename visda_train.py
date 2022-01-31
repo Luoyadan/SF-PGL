@@ -145,8 +145,6 @@ def main(args):
             
     
 
- 
-
 
 
 def set_exp_name(args):
@@ -160,7 +158,7 @@ def set_exp_name(args):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Source-free Progressive Graph Learning for Open-set Domain Adaptation')
+    parser = argparse.ArgumentParser(description='Source-free Progressive Graph Learning for Open-set Domain Adaptation on Visda-17')
     # set up dataset & backbone embedding
     dataset = 'visda'
     parser.add_argument('--dataset', type=str, default=dataset)
@@ -228,8 +226,7 @@ if __name__ == '__main__':
 
     #tsne
     parser.add_argument('--visualization', type=bool, default=False)
-    # parser.add_argument('--checkpoint_path', type=str, default='/home/Desktop/Open_DA_git/checkpoints/D-visda18_A-res_L-1_E-20_B-4_step_1.pth.tar')
-
+  
     #Discrminator
     parser.add_argument('--discriminator', type=bool, default=False)
     parser.add_argument('--adv_coeff', type=float, default=0)
