@@ -14,7 +14,33 @@ Open-Set Domain Adaptation**
 [*International Conference on Machine Learning (ICML) 2020*](http://proceedings.mlr.press/v119/luo20b.html)  
 [[Paper](http://proceedings.mlr.press/v119/luo20b.html)] [Code](https://github.com/BUserName/PGL)]
 
-### Requirements
+-----
+## Framework
+To further handle a more realistic yet challenging source-free setting, a novel SF-PGL framework was proposed, which leverages a balanced pseudo-labeling regime to enable uncertainty-aware progressive learning without relying on any distribution matching or adversarial learning methods. 
+As an extension of PGL, we have significantly extended the idea of open-set domain adaptation from the unsupervised learning case to the source-free and semi-supervised settings, from image classification to action recognition, where the complex data interaction and more significant domain gap are addressed. We further discussed a hitherto untouched aspect of OSDA model - the model calibration issue. Experimental results evidenced that the SF-PGL can alleviate the class imbalance introduced by pseudo-labeled sets so that the overconfidence and under-confidence of the OSDA model can be avoided.
+
+<p align="center">
+<img src="docs/sf-pgl.png" width="70%">
+</p>
+
+----
+## Contents
+* [Requirements](#requirements)
+* [Dataset Preparation](#dataset-preparation)
+  * [Data structure](#data-structure)
+  * [File lists for training/validation](#file-lists-for-trainingvalidation)
+  * [Input data](#input-data)
+* [Usage](#usage)
+  * [Training](#training)
+  * [Testing](#testing)
+<!--   * [Video Demo](#video-demo) -->
+* [Options](#options)
+  * [Domain Adaptation](#domain-adaptation)
+  * [More options](#more-options)
+* [Citation](#citation)
+* [Contact](#contact)
+
+## Requirements
 - Python 3.6
 - Pytorch 1.3
 
