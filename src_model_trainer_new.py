@@ -176,8 +176,10 @@ class SRCModelTrainer():
 
         
         self.model.train()
+
         if not args.graph_off:
             self.gnnModel.train()
+
         self.meter.reset()
 
         for epoch in range(epochs):
@@ -438,7 +440,7 @@ class SRCModelTrainer():
                     # global diverse loss
                     gentropy_loss = torch.sum(msoftmax * torch.log(msoftmax + 1e-5))
     
-                    loss = entropy_loss + gentropy_loss * self.args.diverse_loss
+                    loss = self.args.entropy_loss * entropy_loss + gentropy_loss * self.args.diverse_loss
 
                     # only for debugging
                     target_labels = Variable(target_labels).cuda()

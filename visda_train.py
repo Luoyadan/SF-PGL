@@ -234,6 +234,7 @@ if __name__ == '__main__':
     parser.add_argument('--center_loss', type=bool, default=False)
     #GNN hyper-parameters
     parser.add_argument('--node_loss', type=float, default=0.3)
-    parser.add_argument('--diverse_loss', type=float, default=1)
+    parser.add_argument('--diverse_loss', type=float, default=0)
+    parser.add_argument('--entropy_loss', type=float, default=0.5)
     main(parser.parse_args())
 

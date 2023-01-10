@@ -1,4 +1,4 @@
-# SF-PGL
+# **SF-PGL**
 
 
 This work is the official Pytorch implementation of our papers:
@@ -12,10 +12,10 @@ Open-Set Domain Adaptation**
 **Progressive Graph Learning for Open-Set Domain Adaptation**  
 [__***Yadan Luo^***__](https://sites.google.com/view/yadanluo/), Zijian Wang^, Zi Huang, Mahsa Baktashmotlagh  
 [*International Conference on Machine Learning (ICML) 2020*](http://proceedings.mlr.press/v119/luo20b.html)  
-[[Paper](http://proceedings.mlr.press/v119/luo20b.html)] [Code](https://github.com/BUserName/PGL)]
+[[Paper](http://proceedings.mlr.press/v119/luo20b.html)] [[Code](https://github.com/BUserName/PGL)]
 
 -----
-## Framework
+## **Framework**
 To further handle a more realistic yet challenging source-free setting, a novel SF-PGL framework was proposed, which leverages a balanced pseudo-labeling regime to enable uncertainty-aware progressive learning without relying on any distribution matching or adversarial learning methods. 
 As an extension of PGL, we have significantly extended the idea of open-set domain adaptation from the unsupervised learning case to the source-free and semi-supervised settings, from image classification to action recognition, where the complex data interaction and more significant domain gap are addressed. We further discussed a hitherto untouched aspect of OSDA model - the model calibration issue. Experimental results evidenced that the SF-PGL can alleviate the class imbalance introduced by pseudo-labeled sets so that the overconfidence and under-confidence of the OSDA model can be avoided.
 
@@ -24,7 +24,7 @@ As an extension of PGL, we have significantly extended the idea of open-set doma
 </p>
 
 ----
-## Contents
+## **Contents**
 * [Requirements](#requirements)
 * [Dataset Preparation](#dataset-preparation)
   * [Data structure](#data-structure)
@@ -33,10 +33,10 @@ As an extension of PGL, we have significantly extended the idea of open-set doma
 * [Usage](#usage)
   * [Training](#training)
   * [Testing](#testing)
+  * [Visualization](#visualization)
 <!--   * [Video Demo](#video-demo) -->
-* [Options](#options)
-  * [Domain Adaptation](#domain-adaptation)
-  * [More options](#more-options)
+* [Video Domain Adaptation](#vda)
+* [To-do List](#to-do)
 * [Citation](#citation)
 * [Contact](#contact)
 
@@ -45,11 +45,12 @@ As an extension of PGL, we have significantly extended the idea of open-set doma
 - Pytorch 1.3
 
 
-### Datasets
-The links of datasets will be released afterwards,
-- Syn2Real-O (VisDA-18)
-- VisDA-17
+### Dataset Preparation
 - Office-home
+- VisDA-17
+- Syn2Real-O (VisDA-18)
+- 
+
 
 
 ### Training

@@ -40,7 +40,7 @@ class ModelTrainer():
         # self.model = nn.DataParallel(self.model).cuda()
         #
         # #GNN
-        args.in_features = 4096
+
         if gnn_model is None:
             self.gnnModel = models.create('gnn', args)
             self.gnnModel = nn.DataParallel(self.gnnModel).cuda()

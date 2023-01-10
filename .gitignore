@@ -3,12 +3,12 @@ data/
 checkpoints/
 logs/
 .idea/
-# wiener_logs/
-# new_logs/
+wiener_logs/
+new_logs/
 /data/
 
 # Byte-compiled / optimized / DLL files
-# __pycache__/
+__pycache__/
 *.py[cod]
 *$py.class
 
