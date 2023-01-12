@@ -1,0 +1,1053 @@
+Epoch 0, current lr 0.001
+---- Start Epoch 1 Training --------
+Step: 3682 | 1841; Epoch: 1	Training Loss 0.014	Training Prec 97.917%	
+label estimation...
+Step: 0 | 2308; 	OS Prec 0.000%	
+Step: 100 | 2308; 	OS Prec 0.000%	
+Step: 200 | 2308; 	OS Prec 6.337%	
+Step: 300 | 2308; 	OS Prec 6.903%	
+Step: 400 | 2308; 	OS Prec 6.794%	
+Step: 500 | 2308; 	OS Prec 6.781%	
+Step: 600 | 2308; 	OS Prec 18.317%	
+Step: 700 | 2308; 	OS Prec 18.550%	
+Step: 800 | 2308; 	OS Prec 18.673%	
+Step: 900 | 2308; 	OS Prec 18.665%	
+Step: 1000 | 2308; 	OS Prec 18.677%	
+Step: 1100 | 2308; 	OS Prec 18.722%	
+Step: 1200 | 2308; 	OS Prec 23.977%	
+Step: 1300 | 2308; 	OS Prec 23.975%	
+Step: 1400 | 2308; 	OS Prec 24.165%	
+Step: 1500 | 2308; 	OS Prec 24.172%	
+Step: 1600 | 2308; 	OS Prec 24.171%	
+Step: 1700 | 2308; 	OS Prec 24.171%	
+Step: 1800 | 2308; 	OS Prec 24.171%	
+Step: 1900 | 2308; 	OS Prec 24.171%	
+Step: 2000 | 2308; 	OS Prec 24.171%	
+Step: 2100 | 2308; 	OS Prec 30.619%	
+Step: 2200 | 2308; 	OS Prec 30.556%	
+Step: 2300 | 2308; 	OS Prec 30.545%	
+Pseudo Label for class bicycle is threshholded by 0.0
+Pseudo Label for class bus is threshholded by 0.970755398273468
+Pseudo Label for class car is threshholded by 0.9998037219047546
+Pseudo Label for class motorcycle is threshholded by 0.9962177872657776
+Pseudo Label for class train is threshholded by 0.9933426976203918
+Pseudo Label for class truck is threshholded by 0.523233950138092
+Pseudo Label for class unk is threshholded by 0.3514997065067291
+Target bicycle Precision: 0.003
+Target bus Precision: 0.363
+Target car Precision: 0.829
+Target motorcycle Precision: 0.473
+Target train Precision: 0.444
+Target truck Precision: 0.017
+Target unk Precision: 0.024
+Node predictions: OS accuracy = 0.3075, OS* accuracy = 0.3547
+class weighted reconsidered
+tensor([0.3248, 0.1230, 0.1195, 0.1199, 0.1203, 0.1925], dtype=torch.float64)
+selected pseudo-labeled data: 1322 of 2465 is correct, accuracy: 0.5363
+positive data: 811 of 1634 is correct, accuracy: 0.4963
+negative data: 511 of 831 is correct, accuracy: 0.6149
+Finished source pre-training: 0:25:09.404197
+This is 1-th step
+Epoch 0, current lr 0.001
+---- Start Epoch 0 Training --------
+Step: 3722 | 40; Epoch: 0	Training Loss 1.500	Training Prec 91.667%	Target Prec 28.941%	
+label estimation...
+class weighted reconsidered
+tensor([1., 0., 0., 0., 0., 0.])
+Step: 0 | 2308; 	OS Prec 0.000%	
+Step: 100 | 2308; 	OS Prec 0.000%	
+Step: 200 | 2308; 	OS Prec 11.493%	
+Step: 300 | 2308; 	OS Prec 11.330%	
+Step: 400 | 2308; 	OS Prec 11.390%	
+Step: 500 | 2308; 	OS Prec 11.360%	
+Step: 600 | 2308; 	OS Prec 17.546%	
+Step: 700 | 2308; 	OS Prec 18.022%	
+Step: 800 | 2308; 	OS Prec 17.898%	
+Step: 900 | 2308; 	OS Prec 18.018%	
+Step: 1000 | 2308; 	OS Prec 18.086%	
+Step: 1100 | 2308; 	OS Prec 19.010%	
+Step: 1200 | 2308; 	OS Prec 25.252%	
+Step: 1300 | 2308; 	OS Prec 25.451%	
+Step: 1400 | 2308; 	OS Prec 30.534%	
+Step: 1500 | 2308; 	OS Prec 30.288%	
+Step: 1600 | 2308; 	OS Prec 30.328%	
+Step: 1700 | 2308; 	OS Prec 30.328%	
+Step: 1800 | 2308; 	OS Prec 30.328%	
+Step: 1900 | 2308; 	OS Prec 30.328%	
+Step: 2000 | 2308; 	OS Prec 30.328%	
+Step: 2100 | 2308; 	OS Prec 35.801%	
+Step: 2200 | 2308; 	OS Prec 35.922%	
+Step: 2300 | 2308; 	OS Prec 35.933%	
+Pseudo Label for class bicycle is threshholded by 0.3187711536884308
+Pseudo Label for class bus is threshholded by 0.4164296090602875
+Pseudo Label for class car is threshholded by 0.682645857334137
+Pseudo Label for class motorcycle is threshholded by 0.5645278096199036
+Pseudo Label for class train is threshholded by 0.5535498857498169
+Pseudo Label for class truck is threshholded by 0.4939913749694824
+Pseudo Label for class unk is threshholded by 0.20014353096485138
+Target bicycle Precision: 0.062
+Target bus Precision: 0.446
+Target car Precision: 0.467
+Target motorcycle Precision: 0.787
+Target train Precision: 0.389
+Target truck Precision: 0.338
+Target unk Precision: 0.047
+Node predictions: OS accuracy = 0.3622, OS* accuracy = 0.4148
+class weighted reconsidered
+tensor([0.1994, 0.1809, 0.1386, 0.1560, 0.1577, 0.1674], dtype=torch.float64)
+selected pseudo-labeled data: 2778 of 5234 is correct, accuracy: 0.5308
+positive data: 1786 of 3572 is correct, accuracy: 0.5000
+negative data: 992 of 1662 is correct, accuracy: 0.5969
+Step 1 model weights saved.
+This is 2-th step
+Epoch 0, current lr 0.001
+label estimation...
+class weighted reconsidered
+tensor([1., 0., 0., 0., 0., 0.])
+Step: 0 | 2308; 	OS Prec 0.000%	
+Step: 100 | 2308; 	OS Prec 0.000%	
+Step: 200 | 2308; 	OS Prec 10.311%	
+Step: 300 | 2308; 	OS Prec 10.631%	
+Step: 400 | 2308; 	OS Prec 10.541%	
+Step: 500 | 2308; 	OS Prec 10.470%	
+Step: 600 | 2308; 	OS Prec 16.165%	
+Step: 700 | 2308; 	OS Prec 16.570%	
+Step: 800 | 2308; 	OS Prec 16.492%	
+Step: 900 | 2308; 	OS Prec 16.598%	
+Step: 1000 | 2308; 	OS Prec 16.678%	
+Step: 1100 | 2308; 	OS Prec 18.236%	
+Step: 1200 | 2308; 	OS Prec 27.205%	
+Step: 1300 | 2308; 	OS Prec 27.060%	
+Step: 1400 | 2308; 	OS Prec 33.163%	
+Step: 1500 | 2308; 	OS Prec 33.136%	
+Step: 1600 | 2308; 	OS Prec 33.178%	
+Step: 1700 | 2308; 	OS Prec 33.178%	
+Step: 1800 | 2308; 	OS Prec 33.178%	
+Step: 1900 | 2308; 	OS Prec 33.178%	
+Step: 2000 | 2308; 	OS Prec 33.178%	
+Step: 2100 | 2308; 	OS Prec 41.512%	
+Step: 2200 | 2308; 	OS Prec 41.436%	
+Step: 2300 | 2308; 	OS Prec 41.437%	
+Pseudo Label for class bicycle is threshholded by 0.40652337670326233
+Pseudo Label for class bus is threshholded by 0.5689692497253418
+Pseudo Label for class car is threshholded by 0.7136163711547852
+Pseudo Label for class motorcycle is threshholded by 0.7089178562164307
+Pseudo Label for class train is threshholded by 0.6711844205856323
+Pseudo Label for class truck is threshholded by 0.5703156590461731
+Pseudo Label for class unk is threshholded by 0.20752693712711334
+Target bicycle Precision: 0.103
+Target bus Precision: 0.604
+Target car Precision: 0.431
+Target motorcycle Precision: 0.725
+Target train Precision: 0.564
+Target truck Precision: 0.421
+Target unk Precision: 0.070
+Node predictions: OS accuracy = 0.4168, OS* accuracy = 0.4746
+class weighted reconsidered
+tensor([0.2024, 0.1720, 0.1489, 0.1496, 0.1553, 0.1718], dtype=torch.float64)
+selected pseudo-labeled data: 4572 of 8003 is correct, accuracy: 0.5713
+positive data: 3089 of 5510 is correct, accuracy: 0.5606
+negative data: 1483 of 2493 is correct, accuracy: 0.5949
+Step 2 model weights saved.
+This is 3-th step
+Epoch 0, current lr 0.001
+---- Start Epoch 1 Training --------
+Step: 4085 | 137; Epoch: 1	Training Loss 1.227	Training Prec 96.296%	Target Prec 39.267%	
+Epoch 2, current lr 0.0005
+label estimation...
+class weighted reconsidered
+tensor([1., 0., 0., 0., 0., 0.])
+Step: 0 | 2308; 	OS Prec 0.000%	
+Step: 100 | 2308; 	OS Prec 0.000%	
+Step: 200 | 2308; 	OS Prec 11.815%	
+Step: 300 | 2308; 	OS Prec 12.261%	
+Step: 400 | 2308; 	OS Prec 12.302%	
+Step: 500 | 2308; 	OS Prec 12.247%	
+Step: 600 | 2308; 	OS Prec 18.727%	
+Step: 700 | 2308; 	OS Prec 19.833%	
+Step: 800 | 2308; 	OS Prec 19.860%	
+Step: 900 | 2308; 	OS Prec 19.942%	
+Step: 1000 | 2308; 	OS Prec 20.028%	
+Step: 1100 | 2308; 	OS Prec 24.623%	
+Step: 1200 | 2308; 	OS Prec 36.430%	
+Step: 1300 | 2308; 	OS Prec 36.403%	
+Step: 1400 | 2308; 	OS Prec 45.020%	
+Step: 1500 | 2308; 	OS Prec 44.704%	
+Step: 1600 | 2308; 	OS Prec 44.833%	
+Step: 1700 | 2308; 	OS Prec 44.833%	
+Step: 1800 | 2308; 	OS Prec 44.833%	
+Step: 1900 | 2308; 	OS Prec 44.833%	
+Step: 2000 | 2308; 	OS Prec 44.833%	
+Step: 2100 | 2308; 	OS Prec 55.706%	
+Step: 2200 | 2308; 	OS Prec 55.675%	
+Step: 2300 | 2308; 	OS Prec 55.658%	
+Pseudo Label for class bicycle is threshholded by 0.5380522012710571
+Pseudo Label for class bus is threshholded by 0.7985754013061523
+Pseudo Label for class car is threshholded by 0.5984995365142822
+Pseudo Label for class motorcycle is threshholded by 0.8041754364967346
+Pseudo Label for class train is threshholded by 0.6016510128974915
+Pseudo Label for class truck is threshholded by 0.5269803404808044
+Pseudo Label for class unk is threshholded by 0.19717302918434143
+Target bicycle Precision: 0.284
+Target bus Precision: 0.814
+Target car Precision: 0.536
+Target motorcycle Precision: 0.834
+Target train Precision: 0.737
+Target truck Precision: 0.575
+Target unk Precision: 0.102
+Node predictions: OS accuracy = 0.5547, OS* accuracy = 0.6302
+class weighted reconsidered
+tensor([0.1842, 0.1420, 0.1734, 0.1412, 0.1729, 0.1863], dtype=torch.float64)
+selected pseudo-labeled data: 6937 of 10772 is correct, accuracy: 0.6440
+positive data: 4772 of 7448 is correct, accuracy: 0.6407
+negative data: 2165 of 3324 is correct, accuracy: 0.6513
+Step 3 model weights saved.
+This is 4-th step
+Epoch 0, current lr 0.001
+---- Start Epoch 2 Training --------
+Step: 4780 | 186; Epoch: 2	Training Loss 0.920	Training Prec 100.000%	Target Prec 42.016%	
+Epoch 3, current lr 0.0005
+label estimation...
+class weighted reconsidered
+tensor([1., 0., 0., 0., 0., 0.])
+Step: 0 | 2308; 	OS Prec 0.000%	
+Step: 100 | 2308; 	OS Prec 0.000%	
+Step: 200 | 2308; 	OS Prec 10.849%	
+Step: 300 | 2308; 	OS Prec 11.105%	
+Step: 400 | 2308; 	OS Prec 11.016%	
+Step: 500 | 2308; 	OS Prec 10.988%	
+Step: 600 | 2308; 	OS Prec 19.284%	
+Step: 700 | 2308; 	OS Prec 20.777%	
+Step: 800 | 2308; 	OS Prec 20.818%	
+Step: 900 | 2308; 	OS Prec 20.815%	
+Step: 1000 | 2308; 	OS Prec 20.965%	
+Step: 1100 | 2308; 	OS Prec 31.122%	
+Step: 1200 | 2308; 	OS Prec 44.463%	
+Step: 1300 | 2308; 	OS Prec 44.436%	
+Step: 1400 | 2308; 	OS Prec 51.877%	
+Step: 1500 | 2308; 	OS Prec 51.643%	
+Step: 1600 | 2308; 	OS Prec 51.702%	
+Step: 1700 | 2308; 	OS Prec 51.702%	
+Step: 1800 | 2308; 	OS Prec 51.702%	
+Step: 1900 | 2308; 	OS Prec 51.702%	
+Step: 2000 | 2308; 	OS Prec 51.702%	
+Step: 2100 | 2308; 	OS Prec 65.114%	
+Step: 2200 | 2308; 	OS Prec 64.918%	
+Step: 2300 | 2308; 	OS Prec 64.936%	
+Pseudo Label for class bicycle is threshholded by 0.49839869141578674
+Pseudo Label for class bus is threshholded by 0.7322518229484558
+Pseudo Label for class car is threshholded by 0.5432907342910767
+Pseudo Label for class motorcycle is threshholded by 0.80475914478302
+Pseudo Label for class train is threshholded by 0.5683581233024597
+Pseudo Label for class truck is threshholded by 0.46030986309051514
+Pseudo Label for class unk is threshholded by 0.19207152724266052
+Target bicycle Precision: 0.635
+Target bus Precision: 0.922
+Target car Precision: 0.681
+Target motorcycle Precision: 0.750
+Target train Precision: 0.897
+Target truck Precision: 0.498
+Target unk Precision: 0.137
+Node predictions: OS accuracy = 0.6457, OS* accuracy = 0.7305
+class weighted reconsidered
+tensor([0.1833, 0.1451, 0.1753, 0.1349, 0.1709, 0.1904], dtype=torch.float64)
+selected pseudo-labeled data: 9719 of 13541 is correct, accuracy: 0.7177
+positive data: 6810 of 9386 is correct, accuracy: 0.7255
+negative data: 2909 of 4155 is correct, accuracy: 0.7001
+Step 4 model weights saved.
+This is 5-th step
+Epoch 0, current lr 0.001
+---- Start Epoch 2 Training --------
+Step: 5668 | 234; Epoch: 2	Training Loss 1.000	Training Prec 100.000%	Target Prec 41.586%	
+Epoch 3, current lr 0.0005
+label estimation...
+class weighted reconsidered
+tensor([1., 0., 0., 0., 0., 0.])
+Step: 0 | 2308; 	OS Prec 0.000%	
+Step: 100 | 2308; 	OS Prec 0.000%	
+Step: 200 | 2308; 	OS Prec 14.071%	
+Step: 300 | 2308; 	OS Prec 14.167%	
+Step: 400 | 2308; 	OS Prec 14.158%	
+Step: 500 | 2308; 	OS Prec 14.158%	
+Step: 600 | 2308; 	OS Prec 25.890%	
+Step: 700 | 2308; 	OS Prec 26.575%	
+Step: 800 | 2308; 	OS Prec 26.518%	
+Step: 900 | 2308; 	OS Prec 26.429%	
+Step: 1000 | 2308; 	OS Prec 26.462%	
+Step: 1100 | 2308; 	OS Prec 38.908%	
+Step: 1200 | 2308; 	OS Prec 52.327%	
+Step: 1300 | 2308; 	OS Prec 52.329%	
+Step: 1400 | 2308; 	OS Prec 59.984%	
+Step: 1500 | 2308; 	OS Prec 59.900%	
+Step: 1600 | 2308; 	OS Prec 59.986%	
+Step: 1700 | 2308; 	OS Prec 59.986%	
+Step: 1800 | 2308; 	OS Prec 59.986%	
+Step: 1900 | 2308; 	OS Prec 59.986%	
+Step: 2000 | 2308; 	OS Prec 59.986%	
+Step: 2100 | 2308; 	OS Prec 74.208%	
+Step: 2200 | 2308; 	OS Prec 74.178%	
+Step: 2300 | 2308; 	OS Prec 74.178%	
+Pseudo Label for class bicycle is threshholded by 0.5170503258705139
+Pseudo Label for class bus is threshholded by 0.6766574382781982
+Pseudo Label for class car is threshholded by 0.5622611045837402
+Pseudo Label for class motorcycle is threshholded by 0.6128570437431335
+Pseudo Label for class train is threshholded by 0.6267368793487549
+Pseudo Label for class truck is threshholded by 0.4441116452217102
+Pseudo Label for class unk is threshholded by 0.1894398182630539
+Target bicycle Precision: 0.779
+Target bus Precision: 0.944
+Target car Precision: 0.835
+Target motorcycle Precision: 0.947
+Target train Precision: 0.960
+Target truck Precision: 0.518
+Target unk Precision: 0.176
+Node predictions: OS accuracy = 0.7371, OS* accuracy = 0.8307
+class weighted reconsidered
+tensor([0.1758, 0.1499, 0.1680, 0.1597, 0.1575, 0.1891], dtype=torch.float64)
+selected pseudo-labeled data: 12680 of 16310 is correct, accuracy: 0.7774
+positive data: 8948 of 11324 is correct, accuracy: 0.7902
+negative data: 3732 of 4986 is correct, accuracy: 0.7485
+Step 5 model weights saved.
+This is 6-th step
+Epoch 0, current lr 0.001
+---- Start Epoch 3 Training --------
+Step: 7034 | 283; Epoch: 3	Training Loss 0.838	Training Prec 100.000%	Target Prec 45.708%	
+Epoch 4, current lr 0.0005
+label estimation...
+class weighted reconsidered
+tensor([0.0000e+00, 1.0000e+00, 0.0000e+00, 0.0000e+00, 0.0000e+00, 1.3336e-34])
+Step: 0 | 2308; 	OS Prec 0.000%	
+Step: 100 | 2308; 	OS Prec 0.000%	
+Step: 200 | 2308; 	OS Prec 14.178%	
+Step: 300 | 2308; 	OS Prec 14.241%	
+Step: 400 | 2308; 	OS Prec 14.251%	
+Step: 500 | 2308; 	OS Prec 14.254%	
+Step: 600 | 2308; 	OS Prec 27.999%	
+Step: 700 | 2308; 	OS Prec 27.998%	
+Step: 800 | 2308; 	OS Prec 27.933%	
+Step: 900 | 2308; 	OS Prec 27.866%	
+Step: 1000 | 2308; 	OS Prec 27.889%	
+Step: 1100 | 2308; 	OS Prec 41.958%	
+Step: 1200 | 2308; 	OS Prec 55.923%	
+Step: 1300 | 2308; 	OS Prec 55.855%	
+Step: 1400 | 2308; 	OS Prec 66.622%	
+Step: 1500 | 2308; 	OS Prec 66.684%	
+Step: 1600 | 2308; 	OS Prec 66.825%	
+Step: 1700 | 2308; 	OS Prec 66.825%	
+Step: 1800 | 2308; 	OS Prec 66.825%	
+Step: 1900 | 2308; 	OS Prec 66.825%	
+Step: 2000 | 2308; 	OS Prec 66.825%	
+Step: 2100 | 2308; 	OS Prec 81.000%	
+Step: 2200 | 2308; 	OS Prec 80.973%	
+Step: 2300 | 2308; 	OS Prec 80.972%	
+Pseudo Label for class bicycle is threshholded by 0.5505315661430359
+Pseudo Label for class bus is threshholded by 0.5578824877738953
+Pseudo Label for class car is threshholded by 0.5746377110481262
+Pseudo Label for class motorcycle is threshholded by 0.5573468804359436
+Pseudo Label for class train is threshholded by 0.5662717819213867
+Pseudo Label for class truck is threshholded by 0.46789538860321045
+Pseudo Label for class unk is threshholded by 0.1752055287361145
+Target bicycle Precision: 0.906
+Target bus Precision: 0.962
+Target car Precision: 0.922
+Target motorcycle Precision: 0.953
+Target train Precision: 0.958
+Target truck Precision: 0.743
+Target unk Precision: 0.214
+Node predictions: OS accuracy = 0.8084, OS* accuracy = 0.9074
+class weighted reconsidered
+tensor([0.1658, 0.1646, 0.1618, 0.1646, 0.1632, 0.1800], dtype=torch.float64)
+selected pseudo-labeled data: 15694 of 19079 is correct, accuracy: 0.8226
+positive data: 11139 of 13262 is correct, accuracy: 0.8399
+negative data: 4555 of 5817 is correct, accuracy: 0.7830
+Step 6 model weights saved.
+This is 7-th step
+Epoch 0, current lr 0.001
+---- Start Epoch 3 Training --------
+Step: 8641 | 331; Epoch: 3	Training Loss 0.725	Training Prec 100.000%	Target Prec 51.324%	
+Epoch 4, current lr 0.0005
+label estimation...
+class weighted reconsidered
+tensor([0.0000e+00, 1.0000e+00, 0.0000e+00, 0.0000e+00, 0.0000e+00, 6.6397e-36])
+Step: 0 | 2308; 	OS Prec 0.000%	
+Step: 100 | 2308; 	OS Prec 0.000%	
+Step: 200 | 2308; 	OS Prec 14.071%	
+Step: 300 | 2308; 	OS Prec 14.218%	
+Step: 400 | 2308; 	OS Prec 14.222%	
+Step: 500 | 2308; 	OS Prec 14.222%	
+Step: 600 | 2308; 	OS Prec 28.016%	
+Step: 700 | 2308; 	OS Prec 27.706%	
+Step: 800 | 2308; 	OS Prec 27.637%	
+Step: 900 | 2308; 	OS Prec 27.619%	
+Step: 1000 | 2308; 	OS Prec 27.649%	
+Step: 1100 | 2308; 	OS Prec 41.910%	
+Step: 1200 | 2308; 	OS Prec 56.139%	
+Step: 1300 | 2308; 	OS Prec 56.134%	
+Step: 1400 | 2308; 	OS Prec 69.848%	
+Step: 1500 | 2308; 	OS Prec 69.927%	
+Step: 1600 | 2308; 	OS Prec 69.995%	
+Step: 1700 | 2308; 	OS Prec 69.995%	
+Step: 1800 | 2308; 	OS Prec 69.995%	
+Step: 1900 | 2308; 	OS Prec 69.995%	
+Step: 2000 | 2308; 	OS Prec 69.995%	
+Step: 2100 | 2308; 	OS Prec 84.170%	
+Step: 2200 | 2308; 	OS Prec 84.154%	
+Step: 2300 | 2308; 	OS Prec 84.156%	
+Pseudo Label for class bicycle is threshholded by 0.6910684704780579
+Pseudo Label for class bus is threshholded by 0.5601450800895691
+Pseudo Label for class car is threshholded by 0.5777905583381653
+Pseudo Label for class motorcycle is threshholded by 0.5085129141807556
+Pseudo Label for class train is threshholded by 0.5515271425247192
+Pseudo Label for class truck is threshholded by 0.6126123070716858
+Pseudo Label for class unk is threshholded by 0.16707198321819305
+Target bicycle Precision: 0.936
+Target bus Precision: 0.971
+Target car Precision: 0.906
+Target motorcycle Precision: 0.951
+Target train Precision: 0.958
+Target truck Precision: 0.941
+Target unk Precision: 0.254
+Node predictions: OS accuracy = 0.8452, OS* accuracy = 0.9438
+class weighted reconsidered
+tensor([0.1494, 0.1703, 0.1674, 0.1794, 0.1718, 0.1616], dtype=torch.float64)
+selected pseudo-labeled data: 18590 of 21848 is correct, accuracy: 0.8509
+positive data: 13204 of 15200 is correct, accuracy: 0.8687
+negative data: 5386 of 6648 is correct, accuracy: 0.8102
+Step 7 model weights saved.
+This is 8-th step
+Epoch 0, current lr 0.001
+---- Start Epoch 4 Training --------
+Step: 10872 | 380; Epoch: 4	Training Loss 0.908	Training Prec 100.000%	Target Prec 57.468%	
+Epoch 5, current lr 0.0005
+label estimation...
+class weighted reconsidered
+tensor([0., 1., 0., 0., 0., 0.])
+Step: 0 | 2308; 	OS Prec 0.000%	
+Step: 100 | 2308; 	OS Prec 0.000%	
+Step: 200 | 2308; 	OS Prec 14.071%	
+Step: 300 | 2308; 	OS Prec 14.229%	
+Step: 400 | 2308; 	OS Prec 14.242%	
+Step: 500 | 2308; 	OS Prec 14.244%	
+Step: 600 | 2308; 	OS Prec 28.333%	
+Step: 700 | 2308; 	OS Prec 28.439%	
+Step: 800 | 2308; 	OS Prec 28.389%	
+Step: 900 | 2308; 	OS Prec 28.404%	
+Step: 1000 | 2308; 	OS Prec 28.397%	
+Step: 1100 | 2308; 	OS Prec 42.677%	
+Step: 1200 | 2308; 	OS Prec 56.835%	
+Step: 1300 | 2308; 	OS Prec 56.794%	
+Step: 1400 | 2308; 	OS Prec 70.857%	
+Step: 1500 | 2308; 	OS Prec 70.927%	
+Step: 1600 | 2308; 	OS Prec 70.942%	
+Step: 1700 | 2308; 	OS Prec 70.942%	
+Step: 1800 | 2308; 	OS Prec 70.942%	
+Step: 1900 | 2308; 	OS Prec 70.942%	
+Step: 2000 | 2308; 	OS Prec 70.942%	
+Step: 2100 | 2308; 	OS Prec 85.173%	
+Step: 2200 | 2308; 	OS Prec 85.188%	
+Step: 2300 | 2308; 	OS Prec 85.184%	
+Pseudo Label for class bicycle is threshholded by 0.6888905167579651
+Pseudo Label for class bus is threshholded by 0.4782243072986603
+Pseudo Label for class car is threshholded by 0.6299440264701843
+Pseudo Label for class motorcycle is threshholded by 0.5465281009674072
+Pseudo Label for class train is threshholded by 0.5335163474082947
+Pseudo Label for class truck is threshholded by 0.7329801917076111
+Pseudo Label for class unk is threshholded by 0.16700537502765656
+Target bicycle Precision: 0.936
+Target bus Precision: 0.962
+Target car Precision: 0.956
+Target motorcycle Precision: 0.952
+Target train Precision: 0.964
+Target truck Precision: 0.963
+Target unk Precision: 0.293
+Node predictions: OS accuracy = 0.8608, OS* accuracy = 0.9554
+class weighted reconsidered
+tensor([0.1521, 0.1878, 0.1614, 0.1754, 0.1777, 0.1456], dtype=torch.float64)
+selected pseudo-labeled data: 21534 of 24617 is correct, accuracy: 0.8748
+positive data: 15317 of 17138 is correct, accuracy: 0.8937
+negative data: 6217 of 7479 is correct, accuracy: 0.8313
+Step 8 model weights saved.
+This is 9-th step
+Epoch 0, current lr 0.001
+---- Start Epoch 4 Training --------
+Step: 13392 | 428; Epoch: 4	Training Loss 0.724	Training Prec 100.000%	Target Prec 62.605%	
+Epoch 5, current lr 0.0005
+label estimation...
+class weighted reconsidered
+tensor([0.0000e+00, 1.0000e+00, 0.0000e+00, 0.0000e+00, 0.0000e+00, 1.2664e-14])
+Step: 0 | 2308; 	OS Prec 0.000%	
+Step: 100 | 2308; 	OS Prec 0.000%	
+Step: 200 | 2308; 	OS Prec 14.286%	
+Step: 300 | 2308; 	OS Prec 14.258%	
+Step: 400 | 2308; 	OS Prec 14.265%	
+Step: 500 | 2308; 	OS Prec 14.264%	
+Step: 600 | 2308; 	OS Prec 28.353%	
+Step: 700 | 2308; 	OS Prec 28.470%	
+Step: 800 | 2308; 	OS Prec 28.468%	
+Step: 900 | 2308; 	OS Prec 28.492%	
+Step: 1000 | 2308; 	OS Prec 28.489%	
+Step: 1100 | 2308; 	OS Prec 42.768%	
+Step: 1200 | 2308; 	OS Prec 57.032%	
+Step: 1300 | 2308; 	OS Prec 57.036%	
+Step: 1400 | 2308; 	OS Prec 71.141%	
+Step: 1500 | 2308; 	OS Prec 71.250%	
+Step: 1600 | 2308; 	OS Prec 71.272%	
+Step: 1700 | 2308; 	OS Prec 71.272%	
+Step: 1800 | 2308; 	OS Prec 71.272%	
+Step: 1900 | 2308; 	OS Prec 71.272%	
+Step: 2000 | 2308; 	OS Prec 71.272%	
+Step: 2100 | 2308; 	OS Prec 85.558%	
+Step: 2200 | 2308; 	OS Prec 85.558%	
+Step: 2300 | 2308; 	OS Prec 85.554%	
+Pseudo Label for class bicycle is threshholded by 0.686033308506012
+Pseudo Label for class bus is threshholded by 0.5900773406028748
+Pseudo Label for class car is threshholded by 0.6443675756454468
+Pseudo Label for class motorcycle is threshholded by 0.5271641612052917
+Pseudo Label for class train is threshholded by 0.6040233373641968
+Pseudo Label for class truck is threshholded by 0.7577127814292908
+Pseudo Label for class unk is threshholded by 0.16694749891757965
+Target bicycle Precision: 0.936
+Target bus Precision: 0.974
+Target car Precision: 0.961
+Target motorcycle Precision: 0.954
+Target train Precision: 0.967
+Target truck Precision: 0.967
+Target unk Precision: 0.332
+Node predictions: OS accuracy = 0.8700, OS* accuracy = 0.9597
+class weighted reconsidered
+tensor([0.1579, 0.1738, 0.1647, 0.1851, 0.1714, 0.1470], dtype=torch.float64)
+selected pseudo-labeled data: 24362 of 27386 is correct, accuracy: 0.8896
+positive data: 17314 of 19076 is correct, accuracy: 0.9076
+negative data: 7048 of 8310 is correct, accuracy: 0.8481
+Step 9 model weights saved.
+This is 10-th step
+Epoch 0, current lr 0.001
+---- Start Epoch 5 Training --------
+Step: 16676 | 476; Epoch: 5	Training Loss 0.779	Training Prec 100.000%	Target Prec 67.849%	
+Epoch 6, current lr 0.0005
+label estimation...
+class weighted reconsidered
+tensor([0.0000e+00, 6.3051e-16, 0.0000e+00, 1.2996e-24, 0.0000e+00, 1.0000e+00])
+Step: 0 | 2308; 	OS Prec 0.000%	
+Step: 100 | 2308; 	OS Prec 0.000%	
+Step: 200 | 2308; 	OS Prec 14.286%	
+Step: 300 | 2308; 	OS Prec 14.269%	
+Step: 400 | 2308; 	OS Prec 14.274%	
+Step: 500 | 2308; 	OS Prec 14.273%	
+Step: 600 | 2308; 	OS Prec 28.363%	
+Step: 700 | 2308; 	OS Prec 28.485%	
+Step: 800 | 2308; 	OS Prec 28.458%	
+Step: 900 | 2308; 	OS Prec 28.489%	
+Step: 1000 | 2308; 	OS Prec 28.503%	
+Step: 1100 | 2308; 	OS Prec 42.780%	
+Step: 1200 | 2308; 	OS Prec 57.058%	
+Step: 1300 | 2308; 	OS Prec 57.058%	
+Step: 1400 | 2308; 	OS Prec 71.093%	
+Step: 1500 | 2308; 	OS Prec 71.259%	
+Step: 1600 | 2308; 	OS Prec 71.279%	
+Step: 1700 | 2308; 	OS Prec 71.279%	
+Step: 1800 | 2308; 	OS Prec 71.279%	
+Step: 1900 | 2308; 	OS Prec 71.279%	
+Step: 2000 | 2308; 	OS Prec 71.279%	
+Step: 2100 | 2308; 	OS Prec 85.564%	
+Step: 2200 | 2308; 	OS Prec 85.564%	
+Step: 2300 | 2308; 	OS Prec 85.564%	
+Pseudo Label for class bicycle is threshholded by 0.5921401381492615
+Pseudo Label for class bus is threshholded by 0.6380689740180969
+Pseudo Label for class car is threshholded by 0.5760873556137085
+Pseudo Label for class motorcycle is threshholded by 0.5113124847412109
+Pseudo Label for class train is threshholded by 0.6268286108970642
+Pseudo Label for class truck is threshholded by 0.690527617931366
+Pseudo Label for class unk is threshholded by 0.16695520281791687
+Target bicycle Precision: 0.936
+Target bus Precision: 0.976
+Target car Precision: 0.961
+Target motorcycle Precision: 0.954
+Target train Precision: 0.967
+Target truck Precision: 0.965
+Target unk Precision: 0.371
+Node predictions: OS accuracy = 0.8757, OS* accuracy = 0.9598
+class weighted reconsidered
+tensor([0.1687, 0.1611, 0.1714, 0.1829, 0.1629, 0.1529], dtype=torch.float64)
+selected pseudo-labeled data: 27137 of 30155 is correct, accuracy: 0.8999
+positive data: 19258 of 21014 is correct, accuracy: 0.9164
+negative data: 7879 of 9141 is correct, accuracy: 0.8619
+Step 10 model weights saved.
+This is 11-th step
+Epoch 0, current lr 0.001
+---- Start Epoch 5 Training --------
+Step: 20302 | 525; Epoch: 5	Training Loss 0.996	Training Prec 100.000%	Target Prec 73.020%	
+Epoch 6, current lr 0.0005
+label estimation...
+class weighted reconsidered
+tensor([0., 0., 0., 1., 0., 0.])
+Step: 0 | 2308; 	OS Prec 0.000%	
+Step: 100 | 2308; 	OS Prec 0.000%	
+Step: 200 | 2308; 	OS Prec 14.286%	
+Step: 300 | 2308; 	OS Prec 14.280%	
+Step: 400 | 2308; 	OS Prec 14.280%	
+Step: 500 | 2308; 	OS Prec 14.281%	
+Step: 600 | 2308; 	OS Prec 28.370%	
+Step: 700 | 2308; 	OS Prec 28.513%	
+Step: 800 | 2308; 	OS Prec 28.533%	
+Step: 900 | 2308; 	OS Prec 28.544%	
+Step: 1000 | 2308; 	OS Prec 28.548%	
+Step: 1100 | 2308; 	OS Prec 42.825%	
+Step: 1200 | 2308; 	OS Prec 57.106%	
+Step: 1300 | 2308; 	OS Prec 57.106%	
+Step: 1400 | 2308; 	OS Prec 71.160%	
+Step: 1500 | 2308; 	OS Prec 71.293%	
+Step: 1600 | 2308; 	OS Prec 71.323%	
+Step: 1700 | 2308; 	OS Prec 71.323%	
+Step: 1800 | 2308; 	OS Prec 71.323%	
+Step: 1900 | 2308; 	OS Prec 71.323%	
+Step: 2000 | 2308; 	OS Prec 71.323%	
+Step: 2100 | 2308; 	OS Prec 85.608%	
+Step: 2200 | 2308; 	OS Prec 85.608%	
+Step: 2300 | 2308; 	OS Prec 85.608%	
+Pseudo Label for class bicycle is threshholded by 0.5109972357749939
+Pseudo Label for class bus is threshholded by 0.6008967161178589
+Pseudo Label for class car is threshholded by 0.651064932346344
+Pseudo Label for class motorcycle is threshholded by 0.5453591346740723
+Pseudo Label for class train is threshholded by 0.5304648876190186
+Pseudo Label for class truck is threshholded by 0.725778341293335
+Pseudo Label for class unk is threshholded by 0.16692788898944855
+Target bicycle Precision: 0.936
+Target bus Precision: 0.976
+Target car Precision: 0.964
+Target motorcycle Precision: 0.955
+Target train Precision: 0.967
+Target truck Precision: 0.964
+Target unk Precision: 0.410
+Node predictions: OS accuracy = 0.8817, OS* accuracy = 0.9603
+class weighted reconsidered
+tensor([0.1806, 0.1651, 0.1570, 0.1745, 0.1771, 0.1457], dtype=torch.float64)
+selected pseudo-labeled data: 29851 of 32924 is correct, accuracy: 0.9067
+positive data: 21141 of 22952 is correct, accuracy: 0.9211
+negative data: 8710 of 9972 is correct, accuracy: 0.8734
+Step 11 model weights saved.
+This is 12-th step
+Epoch 0, current lr 0.001
+---- Start Epoch 6 Training --------
+Step: 24838 | 573; Epoch: 6	Training Loss 0.857	Training Prec 100.000%	Target Prec 77.508%	
+Epoch 7, current lr 0.0005
+label estimation...
+class weighted reconsidered
+tensor([0., 0., 0., 1., 0., 0.])
+Step: 0 | 2308; 	OS Prec 0.000%	
+Step: 100 | 2308; 	OS Prec 0.000%	
+Step: 200 | 2308; 	OS Prec 14.286%	
+Step: 300 | 2308; 	OS Prec 14.280%	
+Step: 400 | 2308; 	OS Prec 14.280%	
+Step: 500 | 2308; 	OS Prec 14.281%	
+Step: 600 | 2308; 	OS Prec 28.370%	
+Step: 700 | 2308; 	OS Prec 28.513%	
+Step: 800 | 2308; 	OS Prec 28.519%	
+Step: 900 | 2308; 	OS Prec 28.534%	
+Step: 1000 | 2308; 	OS Prec 28.541%	
+Step: 1100 | 2308; 	OS Prec 42.818%	
+Step: 1200 | 2308; 	OS Prec 57.099%	
+Step: 1300 | 2308; 	OS Prec 57.099%	
+Step: 1400 | 2308; 	OS Prec 71.184%	
+Step: 1500 | 2308; 	OS Prec 71.321%	
+Step: 1600 | 2308; 	OS Prec 71.344%	
+Step: 1700 | 2308; 	OS Prec 71.344%	
+Step: 1800 | 2308; 	OS Prec 71.344%	
+Step: 1900 | 2308; 	OS Prec 71.344%	
+Step: 2000 | 2308; 	OS Prec 71.344%	
+Step: 2100 | 2308; 	OS Prec 85.621%	
+Step: 2200 | 2308; 	OS Prec 85.622%	
+Step: 2300 | 2308; 	OS Prec 85.623%	
+Pseudo Label for class bicycle is threshholded by 0.37296804785728455
+Pseudo Label for class bus is threshholded by 0.6992553472518921
+Pseudo Label for class car is threshholded by 0.6101750731468201
+Pseudo Label for class motorcycle is threshholded by 0.5904582738876343
+Pseudo Label for class train is threshholded by 0.25180038809776306
+Pseudo Label for class truck is threshholded by 0.7133250832557678
+Pseudo Label for class unk is threshholded by 0.16698038578033447
+Target bicycle Precision: 0.936
+Target bus Precision: 0.976
+Target car Precision: 0.963
+Target motorcycle Precision: 0.955
+Target train Precision: 0.966
+Target truck Precision: 0.966
+Target unk Precision: 0.449
+Node predictions: OS accuracy = 0.8874, OS* accuracy = 0.9605
+class weighted reconsidered
+tensor([0.1940, 0.1400, 0.1530, 0.1561, 0.2190, 0.1380], dtype=torch.float64)
+selected pseudo-labeled data: 32240 of 35693 is correct, accuracy: 0.9033
+positive data: 22699 of 24890 is correct, accuracy: 0.9120
+negative data: 9541 of 10803 is correct, accuracy: 0.8832
+Step 12 model weights saved.
+This is 13-th step
+Epoch 0, current lr 0.001
+---- Start Epoch 6 Training --------
+Step: 29765 | 622; Epoch: 6	Training Loss 0.878	Training Prec 100.000%	Target Prec 81.225%	
+Epoch 7, current lr 0.0005
+label estimation...
+class weighted reconsidered
+tensor([0., 0., 0., 1., 0., 0.])
+Step: 0 | 2308; 	OS Prec 0.000%	
+Step: 100 | 2308; 	OS Prec 0.000%	
+Step: 200 | 2308; 	OS Prec 14.286%	
+Step: 300 | 2308; 	OS Prec 14.286%	
+Step: 400 | 2308; 	OS Prec 14.286%	
+Step: 500 | 2308; 	OS Prec 14.286%	
+Step: 600 | 2308; 	OS Prec 28.375%	
+Step: 700 | 2308; 	OS Prec 28.513%	
+Step: 800 | 2308; 	OS Prec 28.510%	
+Step: 900 | 2308; 	OS Prec 28.526%	
+Step: 1000 | 2308; 	OS Prec 28.531%	
+Step: 1100 | 2308; 	OS Prec 42.809%	
+Step: 1200 | 2308; 	OS Prec 57.073%	
+Step: 1300 | 2308; 	OS Prec 57.082%	
+Step: 1400 | 2308; 	OS Prec 71.185%	
+Step: 1500 | 2308; 	OS Prec 71.314%	
+Step: 1600 | 2308; 	OS Prec 71.337%	
+Step: 1700 | 2308; 	OS Prec 71.337%	
+Step: 1800 | 2308; 	OS Prec 71.337%	
+Step: 1900 | 2308; 	OS Prec 71.337%	
+Step: 2000 | 2308; 	OS Prec 71.337%	
+Step: 2100 | 2308; 	OS Prec 85.623%	
+Step: 2200 | 2308; 	OS Prec 85.623%	
+Step: 2300 | 2308; 	OS Prec 85.623%	
+Pseudo Label for class bicycle is threshholded by 0.41471394896507263
+Pseudo Label for class bus is threshholded by 0.7196342349052429
+Pseudo Label for class car is threshholded by 0.634113609790802
+Pseudo Label for class motorcycle is threshholded by 0.6853469610214233
+Pseudo Label for class train is threshholded by 0.2636335492134094
+Pseudo Label for class truck is threshholded by 0.7608751058578491
+Pseudo Label for class unk is threshholded by 0.1824084222316742
+Target bicycle Precision: 0.936
+Target bus Precision: 0.975
+Target car Precision: 0.963
+Target motorcycle Precision: 0.955
+Target train Precision: 0.967
+Target truck Precision: 0.967
+Target unk Precision: 0.488
+Node predictions: OS accuracy = 0.8930, OS* accuracy = 0.9605
+class weighted reconsidered
+tensor([0.1933, 0.1425, 0.1552, 0.1475, 0.2248, 0.1367], dtype=torch.float64)
+selected pseudo-labeled data: 34362 of 38462 is correct, accuracy: 0.8934
+positive data: 23990 of 26828 is correct, accuracy: 0.8942
+negative data: 10372 of 11634 is correct, accuracy: 0.8915
+Step 13 model weights saved.
+This is 14-th step
+Epoch 0, current lr 0.001
+---- Start Epoch 7 Training --------
+Step: 35747 | 670; Epoch: 7	Training Loss 0.962	Training Prec 100.000%	Target Prec 82.972%	
+Epoch 8, current lr 0.0005
+label estimation...
+class weighted reconsidered
+tensor([0., 0., 0., 1., 0., 0.])
+Step: 0 | 2308; 	OS Prec 0.000%	
+Step: 100 | 2308; 	OS Prec 0.000%	
+Step: 200 | 2308; 	OS Prec 14.286%	
+Step: 300 | 2308; 	OS Prec 14.286%	
+Step: 400 | 2308; 	OS Prec 14.286%	
+Step: 500 | 2308; 	OS Prec 14.286%	
+Step: 600 | 2308; 	OS Prec 28.375%	
+Step: 700 | 2308; 	OS Prec 28.518%	
+Step: 800 | 2308; 	OS Prec 28.518%	
+Step: 900 | 2308; 	OS Prec 28.533%	
+Step: 1000 | 2308; 	OS Prec 28.540%	
+Step: 1100 | 2308; 	OS Prec 42.802%	
+Step: 1200 | 2308; 	OS Prec 57.091%	
+Step: 1300 | 2308; 	OS Prec 57.091%	
+Step: 1400 | 2308; 	OS Prec 71.188%	
+Step: 1500 | 2308; 	OS Prec 71.313%	
+Step: 1600 | 2308; 	OS Prec 71.337%	
+Step: 1700 | 2308; 	OS Prec 71.337%	
+Step: 1800 | 2308; 	OS Prec 71.337%	
+Step: 1900 | 2308; 	OS Prec 71.337%	
+Step: 2000 | 2308; 	OS Prec 71.337%	
+Step: 2100 | 2308; 	OS Prec 85.623%	
+Step: 2200 | 2308; 	OS Prec 85.619%	
+Step: 2300 | 2308; 	OS Prec 85.620%	
+Pseudo Label for class bicycle is threshholded by 0.46905049681663513
+Pseudo Label for class bus is threshholded by 0.6201311349868774
+Pseudo Label for class car is threshholded by 0.682689368724823
+Pseudo Label for class motorcycle is threshholded by 0.7640252113342285
+Pseudo Label for class train is threshholded by 0.3338329493999481
+Pseudo Label for class truck is threshholded by 0.7484666109085083
+Pseudo Label for class unk is threshholded by 0.17888067662715912
+Target bicycle Precision: 0.935
+Target bus Precision: 0.976
+Target car Precision: 0.963
+Target motorcycle Precision: 0.955
+Target train Precision: 0.967
+Target truck Precision: 0.967
+Target unk Precision: 0.527
+Node predictions: OS accuracy = 0.8986, OS* accuracy = 0.9604
+class weighted reconsidered
+tensor([0.1882, 0.1618, 0.1520, 0.1401, 0.2155, 0.1423], dtype=torch.float64)
+selected pseudo-labeled data: 36483 of 41231 is correct, accuracy: 0.8848
+positive data: 25280 of 28766 is correct, accuracy: 0.8788
+negative data: 11203 of 12465 is correct, accuracy: 0.8988
+Step 14 model weights saved.
+This is 15-th step
+Epoch 0, current lr 0.001
+---- Start Epoch 7 Training --------
+Step: 42169 | 719; Epoch: 7	Training Loss 0.916	Training Prec 100.000%	Target Prec 85.255%	
+Epoch 8, current lr 0.0005
+label estimation...
+class weighted reconsidered
+tensor([0., 0., 0., 1., 0., 0.])
+Step: 0 | 2308; 	OS Prec 0.000%	
+Step: 100 | 2308; 	OS Prec 0.000%	
+Step: 200 | 2308; 	OS Prec 14.286%	
+Step: 300 | 2308; 	OS Prec 14.286%	
+Step: 400 | 2308; 	OS Prec 14.286%	
+Step: 500 | 2308; 	OS Prec 14.286%	
+Step: 600 | 2308; 	OS Prec 28.424%	
+Step: 700 | 2308; 	OS Prec 28.545%	
+Step: 800 | 2308; 	OS Prec 28.552%	
+Step: 900 | 2308; 	OS Prec 28.556%	
+Step: 1000 | 2308; 	OS Prec 28.560%	
+Step: 1100 | 2308; 	OS Prec 42.837%	
+Step: 1200 | 2308; 	OS Prec 57.118%	
+Step: 1300 | 2308; 	OS Prec 57.118%	
+Step: 1400 | 2308; 	OS Prec 71.203%	
+Step: 1500 | 2308; 	OS Prec 71.344%	
+Step: 1600 | 2308; 	OS Prec 71.368%	
+Step: 1700 | 2308; 	OS Prec 71.368%	
+Step: 1800 | 2308; 	OS Prec 71.368%	
+Step: 1900 | 2308; 	OS Prec 71.368%	
+Step: 2000 | 2308; 	OS Prec 71.368%	
+Step: 2100 | 2308; 	OS Prec 85.644%	
+Step: 2200 | 2308; 	OS Prec 85.650%	
+Step: 2300 | 2308; 	OS Prec 85.650%	
+Pseudo Label for class bicycle is threshholded by 0.4873819649219513
+Pseudo Label for class bus is threshholded by 0.0
+Pseudo Label for class car is threshholded by 0.6894587278366089
+Pseudo Label for class motorcycle is threshholded by 0.6755307912826538
+Pseudo Label for class train is threshholded by 0.44168299436569214
+Pseudo Label for class truck is threshholded by 0.728024959564209
+Pseudo Label for class unk is threshholded by 0.1841939389705658
+Target bicycle Precision: 0.936
+Target bus Precision: 0.976
+Target car Precision: 0.964
+Target motorcycle Precision: 0.955
+Target train Precision: 0.967
+Target truck Precision: 0.967
+Target unk Precision: 0.567
+Node predictions: OS accuracy = 0.9045, OS* accuracy = 0.9608
+class weighted reconsidered
+tensor([0.1638, 0.2666, 0.1338, 0.1357, 0.1714, 0.1287], dtype=torch.float64)
+selected pseudo-labeled data: 38364 of 43768 is correct, accuracy: 0.8765
+positive data: 26330 of 30472 is correct, accuracy: 0.8641
+negative data: 12034 of 13296 is correct, accuracy: 0.9051
+Step 15 model weights saved.
+This is 16-th step
+Epoch 0, current lr 0.001
+---- Start Epoch 8 Training --------
+Step: 49737 | 761; Epoch: 8	Training Loss 0.902	Training Prec 100.000%	Target Prec 87.635%	
+Epoch 9, current lr 0.0005
+label estimation...
+class weighted reconsidered
+tensor([0., 0., 0., 1., 0., 0.])
+Step: 0 | 2308; 	OS Prec 0.000%	
+Step: 100 | 2308; 	OS Prec 0.000%	
+Step: 200 | 2308; 	OS Prec 14.286%	
+Step: 300 | 2308; 	OS Prec 14.286%	
+Step: 400 | 2308; 	OS Prec 14.286%	
+Step: 500 | 2308; 	OS Prec 14.286%	
+Step: 600 | 2308; 	OS Prec 28.326%	
+Step: 700 | 2308; 	OS Prec 28.402%	
+Step: 800 | 2308; 	OS Prec 28.389%	
+Step: 900 | 2308; 	OS Prec 28.430%	
+Step: 1000 | 2308; 	OS Prec 28.459%	
+Step: 1100 | 2308; 	OS Prec 42.739%	
+Step: 1200 | 2308; 	OS Prec 57.021%	
+Step: 1300 | 2308; 	OS Prec 57.021%	
+Step: 1400 | 2308; 	OS Prec 71.106%	
+Step: 1500 | 2308; 	OS Prec 71.246%	
+Step: 1600 | 2308; 	OS Prec 71.270%	
+Step: 1700 | 2308; 	OS Prec 71.270%	
+Step: 1800 | 2308; 	OS Prec 71.270%	
+Step: 1900 | 2308; 	OS Prec 71.270%	
+Step: 2000 | 2308; 	OS Prec 71.270%	
+Step: 2100 | 2308; 	OS Prec 85.556%	
+Step: 2200 | 2308; 	OS Prec 85.556%	
+Step: 2300 | 2308; 	OS Prec 85.556%	
+Pseudo Label for class bicycle is threshholded by 0.6247721910476685
+Pseudo Label for class bus is threshholded by 0.0
+Pseudo Label for class car is threshholded by 0.6477850675582886
+Pseudo Label for class motorcycle is threshholded by 0.6519761681556702
+Pseudo Label for class train is threshholded by 0.5977367162704468
+Pseudo Label for class truck is threshholded by 0.835022509098053
+Pseudo Label for class unk is threshholded by 0.32219135761260986
+Target bicycle Precision: 0.936
+Target bus Precision: 0.976
+Target car Precision: 0.953
+Target motorcycle Precision: 0.953
+Target train Precision: 0.967
+Target truck Precision: 0.967
+Target unk Precision: 0.601
+Node predictions: OS accuracy = 0.9075, OS* accuracy = 0.9586
+class weighted reconsidered
+tensor([0.1502, 0.2806, 0.1468, 0.1462, 0.1544, 0.1218], dtype=torch.float64)
+selected pseudo-labeled data: 40060 of 46214 is correct, accuracy: 0.8668
+positive data: 27287 of 32087 is correct, accuracy: 0.8504
+negative data: 12773 of 14127 is correct, accuracy: 0.9042
+Step 16 model weights saved.
+This is 17-th step
+Epoch 0, current lr 0.001
+---- Start Epoch 8 Training --------
+Step: 57716 | 802; Epoch: 8	Training Loss 0.983	Training Prec 100.000%	Target Prec 88.719%	
+Epoch 9, current lr 0.0005
+label estimation...
+class weighted reconsidered
+tensor([0., 1., 0., 0., 0., 0.])
+Step: 0 | 2308; 	OS Prec 0.000%	
+Step: 100 | 2308; 	OS Prec 0.000%	
+Step: 200 | 2308; 	OS Prec 14.286%	
+Step: 300 | 2308; 	OS Prec 14.286%	
+Step: 400 | 2308; 	OS Prec 14.286%	
+Step: 500 | 2308; 	OS Prec 14.286%	
+Step: 600 | 2308; 	OS Prec 28.326%	
+Step: 700 | 2308; 	OS Prec 28.513%	
+Step: 800 | 2308; 	OS Prec 28.513%	
+Step: 900 | 2308; 	OS Prec 28.520%	
+Step: 1000 | 2308; 	OS Prec 28.530%	
+Step: 1100 | 2308; 	OS Prec 42.809%	
+Step: 1200 | 2308; 	OS Prec 57.091%	
+Step: 1300 | 2308; 	OS Prec 57.082%	
+Step: 1400 | 2308; 	OS Prec 71.182%	
+Step: 1500 | 2308; 	OS Prec 71.316%	
+Step: 1600 | 2308; 	OS Prec 71.336%	
+Step: 1700 | 2308; 	OS Prec 71.336%	
+Step: 1800 | 2308; 	OS Prec 71.336%	
+Step: 1900 | 2308; 	OS Prec 71.336%	
+Step: 2000 | 2308; 	OS Prec 71.336%	
+Step: 2100 | 2308; 	OS Prec 85.622%	
+Step: 2200 | 2308; 	OS Prec 85.618%	
+Step: 2300 | 2308; 	OS Prec 85.619%	
+Pseudo Label for class bicycle is threshholded by 0.6429222226142883
+Pseudo Label for class bus is threshholded by 0.0
+Pseudo Label for class car is threshholded by 0.7319020628929138
+Pseudo Label for class motorcycle is threshholded by 0.8025620579719543
+Pseudo Label for class train is threshholded by 0.6208472847938538
+Pseudo Label for class truck is threshholded by 0.808697521686554
+Pseudo Label for class unk is threshholded by 0.4205564856529236
+Target bicycle Precision: 0.936
+Target bus Precision: 0.975
+Target car Precision: 0.945
+Target motorcycle Precision: 0.953
+Target train Precision: 0.967
+Target truck Precision: 0.967
+Target unk Precision: 0.635
+Node predictions: OS accuracy = 0.9112, OS* accuracy = 0.9572
+class weighted reconsidered
+tensor([0.1529, 0.2909, 0.1399, 0.1304, 0.1563, 0.1296], dtype=torch.float64)
+selected pseudo-labeled data: 41748 of 48660 is correct, accuracy: 0.8580
+positive data: 28262 of 33702 is correct, accuracy: 0.8386
+negative data: 13486 of 14958 is correct, accuracy: 0.9016
+Step 17 model weights saved.
+This is 18-th step
+Epoch 0, current lr 0.001
+---- Start Epoch 9 Training --------
+Step: 66938 | 842; Epoch: 9	Training Loss 0.900	Training Prec 100.000%	Target Prec 90.264%	
+Epoch 10, current lr 0.0005
+label estimation...
+class weighted reconsidered
+tensor([0., 1., 0., 0., 0., 0.])
+Step: 0 | 2308; 	OS Prec 0.000%	
+Step: 100 | 2308; 	OS Prec 0.000%	
+Step: 200 | 2308; 	OS Prec 14.286%	
+Step: 300 | 2308; 	OS Prec 14.286%	
+Step: 400 | 2308; 	OS Prec 14.286%	
+Step: 500 | 2308; 	OS Prec 14.286%	
+Step: 600 | 2308; 	OS Prec 28.424%	
+Step: 700 | 2308; 	OS Prec 28.550%	
+Step: 800 | 2308; 	OS Prec 28.557%	
+Step: 900 | 2308; 	OS Prec 28.560%	
+Step: 1000 | 2308; 	OS Prec 28.563%	
+Step: 1100 | 2308; 	OS Prec 42.841%	
+Step: 1200 | 2308; 	OS Prec 57.087%	
+Step: 1300 | 2308; 	OS Prec 57.113%	
+Step: 1400 | 2308; 	OS Prec 71.201%	
+Step: 1500 | 2308; 	OS Prec 71.342%	
+Step: 1600 | 2308; 	OS Prec 71.366%	
+Step: 1700 | 2308; 	OS Prec 71.366%	
+Step: 1800 | 2308; 	OS Prec 71.366%	
+Step: 1900 | 2308; 	OS Prec 71.366%	
+Step: 2000 | 2308; 	OS Prec 71.366%	
+Step: 2100 | 2308; 	OS Prec 85.652%	
+Step: 2200 | 2308; 	OS Prec 85.652%	
+Step: 2300 | 2308; 	OS Prec 85.652%	
+Pseudo Label for class bicycle is threshholded by 0.7062580585479736
+Pseudo Label for class bus is threshholded by 0.0
+Pseudo Label for class car is threshholded by 0.8603094220161438
+Pseudo Label for class motorcycle is threshholded by 0.0
+Pseudo Label for class train is threshholded by 0.6382274031639099
+Pseudo Label for class truck is threshholded by 0.7797410488128662
+Pseudo Label for class unk is threshholded by 0.5702184438705444
+Target bicycle Precision: 0.936
+Target bus Precision: 0.975
+Target car Precision: 0.942
+Target motorcycle Precision: 0.953
+Target train Precision: 0.967
+Target truck Precision: 0.964
+Target unk Precision: 0.671
+Node predictions: OS accuracy = 0.9155, OS* accuracy = 0.9562
+class weighted reconsidered
+tensor([0.1264, 0.2562, 0.1084, 0.2562, 0.1353, 0.1175], dtype=torch.float64)
+selected pseudo-labeled data: 43460 of 51071 is correct, accuracy: 0.8510
+positive data: 29201 of 35282 is correct, accuracy: 0.8276
+negative data: 14259 of 15789 is correct, accuracy: 0.9031
+Step 18 model weights saved.
+This is 19-th step
+Epoch 0, current lr 0.001
+---- Start Epoch 9 Training --------
+Step: 76600 | 882; Epoch: 9	Training Loss 0.929	Training Prec 100.000%	Target Prec 91.789%	
+Epoch 10, current lr 0.0005
+label estimation...
+class weighted reconsidered
+tensor([0., 1., 0., 0., 0., 0.])
+Step: 0 | 2308; 	OS Prec 0.000%	
+Step: 100 | 2308; 	OS Prec 0.000%	
+Step: 200 | 2308; 	OS Prec 14.286%	
+Step: 300 | 2308; 	OS Prec 14.286%	
+Step: 400 | 2308; 	OS Prec 14.286%	
+Step: 500 | 2308; 	OS Prec 14.286%	
+Step: 600 | 2308; 	OS Prec 28.375%	
+Step: 700 | 2308; 	OS Prec 28.545%	
+Step: 800 | 2308; 	OS Prec 28.555%	
+Step: 900 | 2308; 	OS Prec 28.558%	
+Step: 1000 | 2308; 	OS Prec 28.561%	
+Step: 1100 | 2308; 	OS Prec 42.832%	
+Step: 1200 | 2308; 	OS Prec 57.117%	
+Step: 1300 | 2308; 	OS Prec 57.117%	
+Step: 1400 | 2308; 	OS Prec 71.202%	
+Step: 1500 | 2308; 	OS Prec 71.342%	
+Step: 1600 | 2308; 	OS Prec 71.361%	
+Step: 1700 | 2308; 	OS Prec 71.361%	
+Step: 1800 | 2308; 	OS Prec 71.361%	
+Step: 1900 | 2308; 	OS Prec 71.361%	
+Step: 2000 | 2308; 	OS Prec 71.361%	
+Step: 2100 | 2308; 	OS Prec 85.647%	
+Step: 2200 | 2308; 	OS Prec 85.647%	
+Step: 2300 | 2308; 	OS Prec 85.647%	
+Pseudo Label for class bicycle is threshholded by 0.0
+Pseudo Label for class bus is threshholded by 0.0
+Pseudo Label for class car is threshholded by 0.853600263595581
+Pseudo Label for class motorcycle is threshholded by 0.0
+Pseudo Label for class train is threshholded by 0.7084890007972717
+Pseudo Label for class truck is threshholded by 0.0
+Pseudo Label for class unk is threshholded by 0.6970896124839783
+Target bicycle Precision: 0.936
+Target bus Precision: 0.976
+Target car Precision: 0.896
+Target motorcycle Precision: 0.953
+Target train Precision: 0.967
+Target truck Precision: 0.956
+Target unk Precision: 0.686
+Node predictions: OS accuracy = 0.9099, OS* accuracy = 0.9472
+class weighted reconsidered
+tensor([0.2033, 0.2033, 0.0866, 0.2033, 0.1001, 0.2033], dtype=torch.float64)
+selected pseudo-labeled data: 44237 of 52897 is correct, accuracy: 0.8363
+positive data: 29666 of 36277 is correct, accuracy: 0.8178
+negative data: 14571 of 16620 is correct, accuracy: 0.8767
+Step 19 model weights saved.
+Finished all training: 9:05:23.926339

@@ -11,7 +11,7 @@ torch.backends.cudnn.enabled = False
 # torch.backends.cudnn.deterministic = True
 # torch.backends.cudnn.benchmark = True
 
-
+from datetime import datetime
 import sys
 import warnings
 
@@ -28,7 +28,7 @@ from src_model_trainer_new import SRCModelTrainer
 from utils.logger import Logger
 
 def main(args):
-
+    start_time = datetime.now()
     total_step = 100//args.EF
 
     # set random seed
@@ -88,7 +88,8 @@ def main(args):
             gnn_model = None
             del src_trainer
 
-
+            end_time = datetime.now()
+            print('Finished source pre-training: {}'.format(end_time - start_time))
             # step = 1
             for step in range(1, total_step):
 
@@ -142,6 +143,8 @@ def main(args):
             with open('./vis.pickle', 'wb') as f:
                 pickle.dump(vis_data, f)
             print('successfully saved vis data.')
+    end_time = datetime.now()
+    print('Finished all training: {}'.format(end_time - start_time))
             
     
 
@@ -182,6 +185,7 @@ if __name__ == '__main__':
 
 
     parser.add_argument('--pretrain_epoch', type=int, default=2)
+    parser.add_argument('--tune_epoch', type=int, default=0)
     # verbose setting
     parser.add_argument('--log_step', type=int, default=100)
     parser.add_argument('--log_epoch', type=int, default=2)

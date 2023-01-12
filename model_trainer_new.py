@@ -10,7 +10,7 @@ from torch.autograd import Variable
 import numpy as np
 from utils.logger import AverageMeter as meter
 from data_loader import Visda_Dataset, Office_Dataset, Home_Dataset, Visda18_Dataset
-from utils.loss import FocalLoss, LabelSmoothing
+from utils.loss import FocalLoss, LabelSmoothing, Entropy
 from torch.distributions import Categorical
 from models.component import Discriminator
 from torch.nn.functional import one_hot
@@ -208,10 +208,15 @@ class ModelTrainer():
                                                             targets.masked_select(source_node_mask))
 
                     edge_loss = 0
+
+                    # soft entropy loss
+                    entropy_loss = torch.mean(Entropy(norm_node_logits[target_node_mask, :]))
+
                     for l in range(args.num_layers - 1):
                         edge_loss += full_edge_loss[l] * 0.5
                     edge_loss += full_edge_loss[-1] * 1
-                    loss = 3 * edge_loss + args.node_loss* source_node_loss
+
+                    loss = 3 * edge_loss + args.node_loss * source_node_loss + args.entropy_loss * entropy_loss
 
                     node_pred = norm_node_logits[source_node_mask, :].detach().cpu().max(1)[1]
                     node_prec = node_pred.eq(targets.masked_select(source_node_mask).detach().cpu()).double().mean()
