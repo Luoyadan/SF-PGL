@@ -14,4 +14,4 @@
 module load anaconda/3.6
 source activate /scratch/itee/uqyluo/envs/SF-PGL
 
-srun python visda_train.py --entropy_loss=3
+srun python visda_train.py --entropy_loss=3 
