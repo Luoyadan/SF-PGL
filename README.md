@@ -6,7 +6,7 @@ This work is the official Pytorch implementation of our papers:
 **Source-Free Progressive Graph Learning for
 Open-Set Domain Adaptation**  
 [__***Yadan Luo***__](https://sites.google.com/view/yadanluo/), Zijian Wang, Zhuoxiao Chen, Zi Huang, Mahsa Baktashmotlagh  
-[*Submission to Transcations on Pattern Analysis and Machine Intelligence (TPAMI)*]() 
+[*Transcations on Pattern Analysis and Machine Intelligence (TPAMI)*]() 
 
 
 **Progressive Graph Learning for Open-Set Domain Adaptation**  
